@@ -1,0 +1,12 @@
+# Postman environment files with credentials
+postman-environment-*.json
+
+# Exclude the template (allow committing)
+!Documentation/postman/postman-environment.json
+Documentation/postman/ENV_V
+
+
+# Any other generated files with sensitive data
+*-configured.json
+*.secrets.json
+/Documentation/postman/ENV_VARIABLES_REFERENCE.md

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="tests/bootstrap_paratest.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Survey">
+            <directory>tests/Unit/Modules/Survey</directory>
+            <directory>tests/Feature/Modules/Survey</directory>
+        </testsuite>
+    </testsuites>
+    <coverage>
+        <report>
+            <text outputFile="php://stdout"/>
+            <html outputDirectory="storage/coverage/survey"/>
+        </report>
+    </coverage>
+    <source>
+        <include>
+            <directory>app/Integrations/Survey</directory>
+        </include>
+    </source>
+    <php>
+        <server name="APP_ENV" value="testing" force="true"/>
+        <server name="DB_CONNECTION" value="pgsql" force="true"/>
+        <server name="DB_HOST" value="db_engage_testing" force="true"/>
+        <server name="DB_PORT" value="5432" force="true"/>
+        <server name="DB_DATABASE" value="db_engage_testing" force="true"/>
+        <server name="DB_USERNAME" value="root" force="true"/>
+        <server name="DB_PASSWORD" value="password" force="true"/>
+        <server name="DB_SCHEMA" value="public" force="true"/>
+        <server name="APP_ENV_FILE" value=".env.testing" force="true"/>
+        <server name="LOG_CHANNEL" value="null"/>
+        <server name="LOG_DEPRECATIONS_CHANNEL" value="null"/>
+        <server name="LOG_DEPRECATIONS_CHANNEL" value="null"/>
+        <server name="DB_DUMP_COMMAND" value="false" force="true"/>
+        <server name="CACHE_STORE" value="array" force="true"/>
+        <server name="QUEUE_CONNECTION" value="sync" force="true"/>
+        <server name="SESSION_DRIVER" value="array" force="true"/>
+        <ini name="memory_limit" value="-1"/>
+    </php>
+</phpunit>

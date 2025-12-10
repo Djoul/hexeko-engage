@@ -1,0 +1,45 @@
+# Profile: Hotfix
+# Description: Urgent production fix with minimal process
+
+name: hotfix
+description: Urgent production fix
+complexity: urgent
+
+phases:
+  - name: implementation
+    required: true
+    description: Immediate fix
+    
+  - name: validation
+    required: true
+    description: Quick validation
+
+validation:
+  coverage_minimum: 60
+  phpstan_level: 8
+  regression_test: required
+  documentation_required: post-fix
+
+templates: []
+
+mcp_services:
+  sentry:
+    - get_error
+    - mark_resolved
+  jira:
+    - create_bug
+    - update_status
+
+todo_structure: |
+  ## HOTFIX: [ISSUE]
+  
+  ### Immediate Actions
+  - [ ] Apply fix
+  - [ ] Test fix
+  - [ ] Deploy to production
+  - [ ] Verify in production
+  
+  ### Post-Fix
+  - [ ] Add regression test
+  - [ ] Document fix
+  - [ ] Create follow-up tasks

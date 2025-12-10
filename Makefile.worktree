@@ -1,0 +1,28 @@
+# Makefile pour Worktree
+# Override le docker-compose pour utiliser le fichier worktree
+
+include Makefile
+
+# Override les commandes Docker pour le worktree
+DOCKER_COMPOSE := docker-compose -f docker-compose.worktree.yml
+DOCKER_EXEC := docker exec app_engage
+
+# Commandes spécifiques au worktree
+wt-status:
+	@echo -e "$(BLUE)📊 Worktree Status$(NC)"
+	@echo -e "Branch: $$(git branch --show-current)"
+	@echo -e "Directory: $$(pwd)"
+	@docker ps | grep -E "(app_engage|webserver_engage|db_engage)" || true
+
+wt-test:
+	@$(DOCKER_EXEC) php artisan test
+
+wt-migrate:
+	@$(DOCKER_EXEC) php artisan migrate
+
+wt-clean:
+	@echo -e "$(BLUE)🧹 Cleaning worktree caches...$(NC)"
+	@$(DOCKER_EXEC) php artisan cache:clear
+	@$(DOCKER_EXEC) php artisan view:clear
+	@$(DOCKER_EXEC) php artisan route:clear
+	@$(DOCKER_EXEC) php artisan config:clear

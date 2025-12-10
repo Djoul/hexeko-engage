@@ -1,0 +1,188 @@
+[
+    {
+        "name": {
+            "fr-BE": "Prendre sa place et progresser",
+            "fr-FR": "Prendre sa place et progresser",
+            "nl-BE": "Je plaats innemen en vooruitgaan",
+            "nl-NL": "Je plaats innemen en vooruitgaan",
+            "en-GB": "Taking Your Place and Growing",
+            "de-DE": "Seinen Platz einnehmen und voranschreiten",
+            "es-ES": "Tomar su lugar y progresar",
+            "it-IT": "Prendere il proprio posto e progredire",
+            "pt-PT": "Tomar o seu lugar e progredir"
+        },
+        "description": {
+            "fr-BE": "Évaluer la capacité à agir, à se développer et à être valorisé.",
+            "fr-FR": "Évaluer la capacité à agir, à se développer et à être valorisé.",
+            "nl-BE": "Beoordeel het vermogen om te handelen, zich te ontwikkelen en gewaardeerd te worden.",
+            "nl-NL": "Beoordeel het vermogen om te handelen, zich te ontwikkelen en gewaardeerd te worden.",
+            "en-GB": "Assess the ability to act, develop and be valued.",
+            "de-DE": "Bewerten Sie die Fähigkeit zu handeln, sich zu entwickeln und geschätzt zu werden.",
+            "es-ES": "Evaluar la capacidad de actuar, desarrollarse y ser valorado.",
+            "it-IT": "Valutare la capacità di agire, svilupparsi ed essere apprezzati.",
+            "pt-PT": "Avaliar a capacidade de agir, desenvolver-se e ser valorizado."
+        },
+        "question_slugs": [
+            "autonomy_daily_decisions",
+            "development_learning_progress",
+            "recognition_last_time",
+            "autonomy_responsibilities_clarity",
+            "development_future_learning"
+        ]
+    },
+    {
+        "name": {
+            "fr-BE": "Bien entouré pour avancer",
+            "fr-FR": "Bien entouré pour avancer",
+            "nl-BE": "Goed omringd om vooruit te komen",
+            "nl-NL": "Goed omringd om vooruit te komen",
+            "en-GB": "Well Supported to Move Forward",
+            "de-DE": "Gut umgeben, um voranzukommen",
+            "es-ES": "Bien rodeado para avanzar",
+            "it-IT": "Ben circondati per andare avanti",
+            "pt-PT": "Bem acompanhado para avançar"
+        },
+        "description": {
+            "fr-BE": "Évaluer la qualité du climat relationnel dans l'environnement de travail.",
+            "fr-FR": "Évaluer la qualité du climat relationnel dans l'environnement de travail.",
+            "nl-BE": "Beoordeel de kwaliteit van het relationele klimaat in de werkomgeving.",
+            "nl-NL": "Beoordeel de kwaliteit van het relationele klimaat in de werkomgeving.",
+            "en-GB": "Assess the quality of the relational climate in the work environment.",
+            "de-DE": "Bewerten Sie die Qualität des Beziehungsklimas im Arbeitsumfeld.",
+            "es-ES": "Evaluar la calidad del clima relacional en el entorno laboral.",
+            "it-IT": "Valutare la qualità del clima relazionale nell'ambiente di lavoro.",
+            "pt-PT": "Avaliar a qualidade do clima relacional no ambiente de trabalho."
+        },
+        "question_slugs": [
+            "colleagues_support_difficulty",
+            "manager_feedback_timing",
+            "colleagues_atmosphere_general",
+            "manager_safe_environment",
+            "team_support_daily"
+        ]
+    },
+    {
+        "name": {
+            "fr-BE": "Trouver sa place dans l'entreprise",
+            "fr-FR": "Trouver sa place dans l'entreprise",
+            "nl-BE": "Je plaats vinden in het bedrijf",
+            "nl-NL": "Je plaats vinden in het bedrijf",
+            "en-GB": "Finding Your Place in the Company",
+            "de-DE": "Seinen Platz im Unternehmen finden",
+            "es-ES": "Encontrar su lugar en la empresa",
+            "it-IT": "Trovare il proprio posto nell'azienda",
+            "pt-PT": "Encontrar o seu lugar na empresa"
+        },
+        "description": {
+            "fr-BE": "Mesurer l'alignement aux valeurs, le sens perçu et le sentiment d'appartenance.",
+            "fr-FR": "Mesurer l'alignement aux valeurs, le sens perçu et le sentiment d'appartenance.",
+            "nl-BE": "Meet de afstemming op waarden, de ervaren betekenis en het gevoel van verbondenheid.",
+            "nl-NL": "Meet de afstemming op waarden, de ervaren betekenis en het gevoel van verbondenheid.",
+            "en-GB": "Measure alignment with values, perceived meaning and sense of belonging.",
+            "de-DE": "Messen Sie die Ausrichtung an Werten, die wahrgenommene Bedeutung und das Zugehörigkeitsgefühl.",
+            "es-ES": "Medir la alineación con los valores, el sentido percibido y el sentimiento de pertenencia.",
+            "it-IT": "Misurare l'allineamento ai valori, il senso percepito e il senso di appartenenza.",
+            "pt-PT": "Medir o alinhamento com os valores, o sentido percebido e o sentimento de pertença."
+        },
+        "question_slugs": [
+            "belonging_feel_place",
+            "values_company_alignment",
+            "company_strength_particularity",
+            "meaning_work_importance",
+            "company_pride_moment"
+        ]
+    },
+    {
+        "name": {
+            "fr-BE": "Travailler dans de bonnes conditions",
+            "fr-FR": "Travailler dans de bonnes conditions",
+            "nl-BE": "Werken in goede omstandigheden",
+            "nl-NL": "Werken in goede omstandigheden",
+            "en-GB": "Working in Good Conditions",
+            "de-DE": "Unter guten Bedingungen arbeiten",
+            "es-ES": "Trabajar en buenas condiciones",
+            "it-IT": "Lavorare in buone condizioni",
+            "pt-PT": "Trabalhar em boas condições"
+        },
+        "description": {
+            "fr-BE": "Identifier les freins matériels et organisationnels au bien-être.",
+            "fr-FR": "Identifier les freins matériels et organisationnels au bien-être.",
+            "nl-BE": "Identificeer materiële en organisatorische belemmeringen voor welzijn.",
+            "nl-NL": "Identificeer materiële en organisatorische belemmeringen voor welzijn.",
+            "en-GB": "Identify material and organizational barriers to well-being.",
+            "de-DE": "Identifizieren Sie materielle und organisatorische Hindernisse für das Wohlbefinden.",
+            "es-ES": "Identificar los obstáculos materiales y organizativos para el bienestar.",
+            "it-IT": "Identificare gli ostacoli materiali e organizzativi al benessere.",
+            "pt-PT": "Identificar os obstáculos materiais e organizacionais ao bem-estar."
+        },
+        "question_slugs": [
+            "workplace_concentration",
+            "workplace_equipment_adequate",
+            "wellbeing_physical_hindrances",
+            "workload_sustainable",
+            "workplace_change_one_thing"
+        ]
+    },
+    {
+        "name": {
+            "fr-BE": "Aligné et bien informé",
+            "fr-FR": "Aligné et bien informé",
+            "nl-BE": "Op één lijn en goed geïnformeerd",
+            "nl-NL": "Op één lijn en goed geïnformeerd",
+            "en-GB": "Aligned and Well Informed",
+            "de-DE": "Ausgerichtet und gut informiert",
+            "es-ES": "Alineado y bien informado",
+            "it-IT": "Allineati e ben informati",
+            "pt-PT": "Alinhado e bem informado"
+        },
+        "description": {
+            "fr-BE": "Évaluer la compréhension des priorités et l'accès à l'information.",
+            "fr-FR": "Évaluer la compréhension des priorités et l'accès à l'information.",
+            "nl-BE": "Beoordeel het begrip van prioriteiten en de toegang tot informatie.",
+            "nl-NL": "Beoordeel het begrip van prioriteiten en de toegang tot informatie.",
+            "en-GB": "Assess understanding of priorities and access to information.",
+            "de-DE": "Bewerten Sie das Verständnis von Prioritäten und den Zugang zu Informationen.",
+            "es-ES": "Evaluar la comprensión de las prioridades y el acceso a la información.",
+            "it-IT": "Valutare la comprensione delle priorità e l'accesso alle informazioni.",
+            "pt-PT": "Avaliar a compreensão das prioridades e o acesso à informação."
+        },
+        "question_slugs": [
+            "strategy_company_priorities",
+            "strategy_team_direction",
+            "communication_decision_timing",
+            "communication_info_flow",
+            "communication_helper_understanding"
+        ]
+    },
+    {
+        "name": {
+            "fr-BE": "Prendre soin de soi au travail",
+            "fr-FR": "Prendre soin de soi au travail",
+            "nl-BE": "Zorg dragen voor jezelf op het werk",
+            "nl-NL": "Zorg dragen voor jezelf op het werk",
+            "en-GB": "Taking Care of Yourself at Work",
+            "de-DE": "Sich bei der Arbeit um sich selbst kümmern",
+            "es-ES": "Cuidarse en el trabajo",
+            "it-IT": "Prendersi cura di sé al lavoro",
+            "pt-PT": "Cuidar de si no trabalho"
+        },
+        "description": {
+            "fr-BE": "Évaluer la capacité à se préserver, la charge mentale et le soutien reçu.",
+            "fr-FR": "Évaluer la capacité à se préserver, la charge mentale et le soutien reçu.",
+            "nl-BE": "Beoordeel het vermogen om jezelf te beschermen, de mentale belasting en de ontvangen steun.",
+            "nl-NL": "Beoordeel het vermogen om jezelf te beschermen, de mentale belasting en de ontvangen steun.",
+            "en-GB": "Assess the ability to preserve oneself, mental load and support received.",
+            "de-DE": "Bewerten Sie die Fähigkeit, sich zu schützen, die mentale Belastung und die erhaltene Unterstützung.",
+            "es-ES": "Evaluar la capacidad de preservarse, la carga mental y el apoyo recibido.",
+            "it-IT": "Valutare la capacità di preservarsi, il carico mentale e il supporto ricevuto.",
+            "pt-PT": "Avaliar a capacidade de se preservar, a carga mental e o apoio recebido."
+        },
+        "question_slugs": [
+            "wellbeing_self_care",
+            "balance_work_schedule",
+            "wellbeing_good_days_week",
+            "wellbeing_health_alert",
+            "manager_support_balance"
+        ]
+    }
+]

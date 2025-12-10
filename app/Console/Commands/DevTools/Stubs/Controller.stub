@@ -1,0 +1,89 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\V1;
+
+use App\Actions\{$modelName}\Create{$modelName}Action;
+use App\Actions\{$modelName}\Delete{$modelName}Action;
+use App\Actions\{$modelName}\Update{$modelName}Action;
+use App\Attributes\RequiresPermission;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\{$modelName}FormRequest;
+use App\Http\Resources\{$modelName}\{$modelName}Collection;
+use App\Http\Resources\{$modelName}\{$modelName}Resource;
+use App\Services\Models\{$modelName}Service;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Symfony\Component\HttpFoundation\Response;
+
+/**
+ * Class {$modelName}Controller
+ */
+class {$modelName}Controller extends Controller
+{
+    /**
+     * {$modelName}Service constructor.
+     */
+    public function __construct(protected {$modelName}Service ${$modelVar}Service) {}
+
+    /**
+     * List {$modelVar}s.
+     *
+     * @return ResourceCollection<{$modelName}Resource>
+     */
+#[RequiresPermission('read_{$modelVar}')]
+ public function index(): ResourceCollection
+    {
+        return new {$modelName}Collection($this->{$modelVar}Service->all());
+    }
+
+    /**
+     * Show {$modelVar}.
+     */
+#[RequiresPermission('read_{$modelVar}')]
+ public function show(string $id): {$modelName}Resource
+    {
+        return new {$modelName}Resource($this->{$modelVar}Service->find($id));
+    }
+
+    /**
+     * Store {$modelVar}.
+     */
+#[RequiresPermission('create_{$modelVar}')]
+ public function store({$modelName}FormRequest $request, Create{$modelName}Action $create{$modelName}Action): {$modelName}Resource
+    {
+        $validatedData = $request->validated();
+
+        ${$modelVar} = $create{$modelName}Action->handle($validatedData);
+
+        return new {$modelName}Resource(${$modelVar});
+    }
+
+    /**
+     * Update {$modelVar}.
+     */
+#[RequiresPermission('update_{$modelVar}')]
+ public function update({$modelName}FormRequest $request, string $id, Update{$modelName}Action $update{$modelName}Action): {$modelName}Resource
+    {
+        $validatedData = $request->validated();
+
+        ${$modelVar} = $this->{$modelVar}Service->find($id);
+
+        ${$modelVar} = $update{$modelName}Action->handle(${$modelVar}, $validatedData);
+
+        return new {$modelName}Resource(${$modelVar});
+    }
+
+    /**
+     * Delete {$modelVar}.
+     *
+     * @return JsonResponse
+     */
+    public function destroy(string $id, Delete{$modelName}Action $delete{$modelName}Action): Response
+    {
+        ${$modelVar} = $this->{$modelVar}Service->find($id);
+
+        return response()->json(['success' => $delete{$modelName}Action->handle(${$modelVar})])->setStatusCode(204);
+    }
+}

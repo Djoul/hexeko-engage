@@ -1,0 +1,45 @@
+<?php
+
+return [
+    'welcome' => [
+        'subject' => 'Welkom bij UpPlus+!',
+        'title' => 'Welkom bij UpPlus+',
+        'greeting' => 'Hallo, :name!',
+        'intro' => 'U bent uitgenodigd om lid te worden van UpPlus+!',
+        'help' => 'Als u de minste vraag heeft, aarzel dan niet om contact met ons op te nemen.',
+        'access' => 'U kunt via onderstaande link toegang krijgen tot uw account:',
+        'cta_button' => 'Inschrijven',
+        'signature' => 'Met vriendelijke groet,',
+        'team' => 'Het UpPlus+ Team',
+        'footer_copyright' => '© :year UpPlus+. Alle rechten voorbehouden.',
+        'footer_notice' => 'U heeft deze e-mail ontvangen omdat u een account heeft aangemaakt op UpPlus+.<br>Als u deze actie niet herkent, neem dan onmiddellijk contact met ons op.',
+    ],
+    'cognito' => [
+        'reset_password' => [
+            'subject' => 'Reset uw wachtwoord',
+            'title' => 'Wachtwoord Resetten',
+            'heading' => 'Reset uw wachtwoord',
+            'intro' => 'U heeft verzocht om uw UpPlus+ wachtwoord te resetten. Gebruik de onderstaande code om verder te gaan.',
+            'code_label' => 'Uw verificatiecode',
+            'expiry' => 'Deze code verloopt over 15 minuten',
+            'instructions' => 'Voer deze code in de app in om een nieuw wachtwoord in te stellen.',
+            'warning_title' => 'Deze reset niet aangevraagd?',
+            'warning_text' => 'Als u deze reset niet heeft aangevraagd, negeer deze e-mail dan. Uw huidige wachtwoord blijft ongewijzigd.',
+            'footer_copyright' => '© :year UpPlus+. Alle rechten voorbehouden.',
+            'footer_support' => 'Hulp nodig? Neem contact op met onze ondersteuning.',
+        ],
+        'verification' => [
+            'subject' => 'Verifieer uw e-mailadres',
+            'title' => 'E-mail Verificatie',
+            'heading' => 'Verifieer uw e-mailadres',
+            'intro' => 'Welkom bij UpPlus+! Om uw registratie te voltooien, verifieer uw e-mailadres met de onderstaande code.',
+            'code_label' => 'Uw verificatiecode',
+            'expiry' => 'Deze code verloopt over 24 uur',
+            'instructions' => 'Voer deze code in de app in om uw account te activeren.',
+            'info_title' => 'Waarom deze verificatie?',
+            'info_text' => 'Deze stap zorgt voor de beveiliging van uw account en stelt ons in staat om u belangrijke meldingen te sturen.',
+            'footer_copyright' => '© :year UpPlus+. Alle rechten voorbehouden.',
+            'footer_support' => 'Hulp nodig? Neem contact op met onze ondersteuning.',
+        ],
+    ],
+];

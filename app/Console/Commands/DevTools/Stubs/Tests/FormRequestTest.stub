@@ -1,0 +1,81 @@
+<?php
+
+namespace Tests\Feature\ModelsCRUD\{$modelName};
+
+use App\Actions\{$modelName}\Create{$modelName}Action;
+use App\Models\{$modelName};
+
+use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\ProtectedRouteTestCase;
+
+class {$modelName}FormRequestTest extends ProtectedRouteTestCase
+{
+    protected $create{$modelName}Action;
+
+
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->create{$modelName}Action = Mockery::mock(Create{$modelName}Action::class);
+        $this->app->instance(Create{$modelName}Action::class, $this->create{$modelName}Action);
+    }
+
+    public static function {$modelVar}DataProvider(): array
+    {
+        return [
+            'valid_data' => [
+                'data' => [
+                    //data
+                ],
+                'expected' => true,
+            ],
+
+            'invalid_field1' => [
+                'data' => [
+                   //data
+                ],
+                'expected' => false,
+            ],
+
+            'invalid_field2' => [
+                'data' => [
+                   //data
+                ],
+                'expected' => false,
+            ],
+
+        ];
+    }
+
+    #[DataProvider('{$modelVar}DataProvider')]
+    public function test_{$modelVar}_form_request(array $data, bool $expected): void
+    {
+        if ($expected) {
+
+            $this->create{$modelName}Action
+                ->shouldReceive('handle')
+                ->once()
+                ->with($data)
+                ->andReturn({$modelName}::factory()->create($data));
+        }
+
+        $response = $this->post('/api/v1/{$modelVar}s', $data, [
+            'Accept' => 'application/json',
+        ]);
+
+        if ($expected) {
+            $response->assertStatus(201);
+        } else {
+            $response->assertStatus(422);
+        }
+
+        // Validate the response errors if expected to fail.
+        if ($expected) {
+            $this->assertEmpty($response->json('errors'));
+        } else {
+            $this->assertNotEmpty($response->json('errors'));
+        }
+    }
+}

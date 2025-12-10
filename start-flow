@@ -1,0 +1,196 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# start-flow
+# One-entrypoint helper to launch the development methodology workflows.
+# Usage examples:
+#   ./start-flow story UE-268 --title="Titre de la story"
+#   ./start-flow bug UE-301
+#   ./start-flow hotfix UE-999
+#   ./start-flow epic UE-250
+#   ./start-flow task --profile=feature-standard --key=UE-268 --title="Plan de tâches"
+#   ./start-flow audit namespace app/Integrations/InternalCommunication
+#   ./start-flow interactive
+#   ./start-flow help
+#
+# Flags (where applicable):
+#   --profile=NAME         Profile to use (feature-standard|bugfix|hotfix|...)
+#   --profile-file=PATH    Path to custom profile yaml
+#   --key=UE-XXX           Jira key (for story/bug/hotfix/task)
+#   --title="..."         Title used for planned_task.md generation
+#   --output=PATH          Output path for planned_task.md (default ./planned_task.md)
+#   --no-tasks             Do not generate planned_task.md automatically
+#
+# Notes:
+# - This command delegates to existing scripts in Workflows/scripts/.
+# - It aims to keep controllers minimal and push logic to scripts already in repo.
+
+SCRIPT_DIR_REL="Workflows/scripts"
+INIT_SCRIPT="${SCRIPT_DIR_REL}/init-feature.sh"
+AUDIT_SCRIPT="${SCRIPT_DIR_REL}/audit-feature.sh"
+TASKS_SCRIPT="${SCRIPT_DIR_REL}/generate-tasks.sh"
+
+command="${1:-help}"
+shift || true
+
+PROFILE=""
+PROFILE_FILE=""
+KEY=""
+TITLE=""
+OUTPUT="./planned_task.md"
+GENERATE_TASKS=1
+
+# parse common flags
+for arg in "$@"; do
+  case $arg in
+    --profile=*) PROFILE="${arg#*=}" ;;
+    --profile-file=*) PROFILE_FILE="${arg#*=}" ;;
+    --key=*) KEY="${arg#*=}" ;;
+    --title=*) TITLE="${arg#*=}" ;;
+    --output=*) OUTPUT="${arg#*=}" ;;
+    --no-tasks) GENERATE_TASKS=0 ;;
+  esac
+done
+
+print_help() {
+  cat <<'EOF'
+Usage:
+  ./start-flow story <UE-KEY> [--title="..."] [--profile=feature-standard] [--output=./planned_task.md]
+  ./start-flow bug <UE-KEY>   [--title="..."] [--profile=bugfix] [--output=./planned_task.md]
+  ./start-flow hotfix <UE-KEY> [--title="..."] [--profile=hotfix] [--output=./planned_task.md]
+  ./start-flow epic <UE-KEY>  [--title="..."] [--profile=feature-standard] [--output=./planned_task.md]
+  ./start-flow task --profile=feature-standard --key=<UE-KEY> [--title="..."] [--output=./planned_task.md]
+  ./start-flow audit story <UE-KEY>
+  ./start-flow audit epic <UE-KEY>
+  ./start-flow audit namespace <path>
+  ./start-flow interactive
+  ./start-flow help
+
+Description:
+  start-flow is a convenience wrapper that orchestrates existing workflow scripts:
+   - Workflows/scripts/init-feature.sh
+   - Workflows/scripts/generate-tasks.sh
+   - Workflows/scripts/audit-feature.sh
+
+Default profile mapping:
+  story/epic -> feature-standard | bug -> bugfix | hotfix -> hotfix
+
+After initialization, a resumable planned_task.md is generated unless --no-tasks is provided.
+
+Tips:
+  - Respect project guidelines (TDD first, Service/Action, DTOs, cache).
+  - Run: make test && make quality-check
+  - Use Postman/Newman for API validation and Phase 10 QUALITY CONTROL before merge.
+EOF
+}
+
+ensure_script() {
+  local path="$1"
+  if [[ ! -x "$path" ]]; then
+    if [[ -f "$path" ]]; then
+      chmod +x "$path" 2>/dev/null || true
+    fi
+  fi
+  if [[ ! -f "$path" ]]; then
+    echo "Error: required script not found: $path" >&2
+    exit 2
+  fi
+}
+
+run_tasks_generation() {
+  if [[ "$GENERATE_TASKS" -eq 0 ]]; then
+    return 0
+  fi
+  ensure_script "$TASKS_SCRIPT"
+  local args=("--output=${OUTPUT}")
+  if [[ -n "$PROFILE" ]]; then args+=("--profile=${PROFILE}"); fi
+  if [[ -n "$PROFILE_FILE" ]]; then args+=("--profile-file=${PROFILE_FILE}"); fi
+  if [[ -n "$KEY" ]]; then args+=("--key=${KEY}"); fi
+  if [[ -n "$TITLE" ]]; then args+=("--title=${TITLE}"); fi
+  echo "➡️  Generating tasks checklist: ${OUTPUT}"
+  "${TASKS_SCRIPT}" "${args[@]}"
+}
+
+post_success_message() {
+  cat <<EOF
+
+✅ Flow initialized successfully.
+
+Next steps:
+- Open ${OUTPUT} and start from the first unchecked task.
+- Write tests first (TDD), implement services/actions, keep controllers minimal.
+- Run: make test
+- Run: make quality-check   # Phase 10: QUALITY CONTROL (0 PHPStan errors, PSR-12 via Pint, Rector)
+- If API endpoints are involved, prepare/update Postman tests and run them.
+
+Docs:
+- Workflows/methodology/backend-api-methodology.md
+- docs/CodingWorkflows/METHODOLOGY_CHEATSHEET.md
+EOF
+}
+
+case "$command" in
+  help|-h|--help)
+    print_help
+    ;;
+
+  interactive)
+    ensure_script "$INIT_SCRIPT"
+    echo "🧭 Launching interactive initialization..."
+    "${INIT_SCRIPT}" --interactive
+    ;;
+
+  story|epic|bug|hotfix)
+    type="$command"
+    # determine default profile if not provided
+    if [[ -z "$PROFILE" ]]; then
+      case "$type" in
+        story|epic) PROFILE="feature-standard" ;;
+        bug) PROFILE="bugfix" ;;
+        hotfix) PROFILE="hotfix" ;;
+      esac
+    fi
+    if [[ -z "${KEY}" ]]; then
+      KEY="${1:-}"
+      shift || true
+    fi
+    if [[ -z "$KEY" ]]; then
+      echo "Error: Missing Jira key. Example: ./start-flow ${type} UE-268" >&2
+      exit 1
+    fi
+    ensure_script "$INIT_SCRIPT"
+    echo "🚀 Initializing ${type} ${KEY} with profile ${PROFILE}..."
+    "${INIT_SCRIPT}" "${KEY}" --profile="${PROFILE}"
+    run_tasks_generation
+    post_success_message
+    ;;
+
+  task)
+    # just generate tasks based on profile and optional key/title
+    if [[ -z "$PROFILE" && -z "$PROFILE_FILE" ]]; then
+      echo "Info: no --profile provided. Falling back to tasks-template.md"
+    fi
+    run_tasks_generation
+    post_success_message
+    ;;
+
+  audit)
+    ensure_script "$AUDIT_SCRIPT"
+    mode="${1:-story}"
+    target="${2:-}"
+    if [[ -z "$target" ]]; then
+      echo "Error: Missing audit target. Examples:\n  ./start-flow audit story UE-268\n  ./start-flow audit epic UE-250\n  ./start-flow audit namespace app/Integrations/InternalCommunication" >&2
+      exit 1
+    fi
+    echo "🔍 Running audit ($mode) on $target ..."
+    "${AUDIT_SCRIPT}" "$target" "$mode"
+    echo "ℹ️  See generated report under ./audit-reports"
+    ;;
+
+  *)
+    echo "Unknown command: $command" >&2
+    echo
+    print_help
+    exit 1
+    ;;
+esac

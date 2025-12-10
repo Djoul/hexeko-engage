@@ -1,0 +1,182 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_TAG =~ /v.*/'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "develop"'
+
+stages:
+  - auth
+  - build-ci-image
+  - validate
+  - push
+  - build-push-dev-image
+  - deploy-dev
+
+variables:
+  AWS_CONFIG_FILE: .aws/config
+  AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
+  AWS_ECR_PASSWORD_FILE: .aws/ecr_password
+  CICD_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+
+build-ci-image:
+  stage: build-ci-image
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - docker build -f ./docker/php/Dockerfile --target base -t "$CICD_IMAGE" .
+    - docker push "$CICD_IMAGE"
+
+#tests:
+#  stage: validate
+#  needs: ["build-ci-image"]
+#  rules:
+#    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+#  image: $CICD_IMAGE
+#  script:
+#    - cd /var/www/html
+#    - php artisan test
+#
+#pint:
+#  stage: validate
+#  needs: ["build-ci-image"]
+#  rules:
+#    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+#  image: $CICD_IMAGE
+#  script:
+#    - cd /var/www/html
+#    - php vendor/bin/pint --test
+
+aws-auth:
+  stage: auth
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_TAG =~ /v.*/'
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "develop"'
+  image:
+    name: amazon/aws-cli:2.24.3
+    entrypoint: [ "" ]
+  id_tokens:
+    AWS_OIDC_TOKEN:
+      aud: https://gitlab.com
+  artifacts:
+    paths:
+      - $AWS_SHARED_CREDENTIALS_FILE
+      - $AWS_ECR_PASSWORD_FILE
+    access: none
+  variables:
+    ROLE_ARN: arn:aws:iam::229566298092:role/GitLabImagePush
+  script:
+    - mkdir .aws/
+    - unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+    - >
+      AWS_STS_OUTPUT=$(aws sts assume-role-with-web-identity
+      --role-arn ${ROLE_ARN}
+      --role-session-name "GitLab-${CI_PROJECT_ID}-${CI_PIPELINE_ID}"
+      --web-identity-token ${AWS_OIDC_TOKEN}
+      --duration-seconds 3600
+      --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]'
+      --output text)
+    - |
+      echo "[default]
+      aws_access_key_id=$(echo $AWS_STS_OUTPUT | cut -d' ' -f1)
+      aws_secret_access_key=$(echo $AWS_STS_OUTPUT | cut -d' '  -f2)
+      aws_session_token=$(echo $AWS_STS_OUTPUT | cut -d' ' -f3)
+      " >> $AWS_SHARED_CREDENTIALS_FILE
+    - aws sts get-caller-identity
+    - aws ecr get-login-password --region eu-west-3 > $AWS_ECR_PASSWORD_FILE
+
+build-push-dev-image:
+  stage: build-push-dev-image
+  needs: ["aws-auth"]
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "develop"'
+      variables:
+        DOCKER_IMAGE_NAME: 229566298092.dkr.ecr.eu-west-3.amazonaws.com/upengage/main:dev-dev
+        DOCKER_NGINX_IMAGE_NAME: 229566298092.dkr.ecr.eu-west-3.amazonaws.com/upengage/main-nginx:dev-dev
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  script:
+    - cat $AWS_ECR_PASSWORD_FILE | docker login --username AWS --password-stdin 229566298092.dkr.ecr.eu-west-3.amazonaws.com
+    - docker build -f ./docker/php/Dockerfile --target deployable -t $DOCKER_IMAGE_NAME .
+    - docker push $DOCKER_IMAGE_NAME
+    - docker build -f ./docker/nginx/Dockerfile -t $DOCKER_NGINX_IMAGE_NAME .
+    - docker push $DOCKER_NGINX_IMAGE_NAME
+
+deploy-dev:
+  stage: "deploy-dev"
+  needs: ["build-push-dev-image"]
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "develop"'
+  image:
+    name: amazon/aws-cli:2.24.3
+    entrypoint: [ "" ]
+  variables:
+    AWS_REGION: eu-west-3
+    ROLE_ARN: arn:aws:iam::124355663492:role/GitLabInfrastructureApply
+  id_tokens:
+    AWS_OIDC_TOKEN:
+      aud: https://gitlab.com
+  script:
+    - yum install -y jq
+    - mkdir .aws/
+    - unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+    - >
+      AWS_STS_OUTPUT=$(aws sts assume-role-with-web-identity
+      --role-arn ${ROLE_ARN}
+      --role-session-name "GitLab-${CI_PROJECT_ID}-${CI_PIPELINE_ID}"
+      --web-identity-token ${AWS_OIDC_TOKEN}
+      --duration-seconds 3600
+      --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]'
+      --output text)
+    - |
+      echo "[default]
+      aws_access_key_id=$(echo $AWS_STS_OUTPUT | cut -d' ' -f1)
+      aws_secret_access_key=$(echo $AWS_STS_OUTPUT | cut -d' '  -f2)
+      aws_session_token=$(echo $AWS_STS_OUTPUT | cut -d' ' -f3)
+      " >> $AWS_SHARED_CREDENTIALS_FILE
+    - aws sts get-caller-identity
+    - >
+      aws lambda invoke --function-name dev-main-run-task --cli-binary-format raw-in-base64-out --payload '{"command": ["php", "artisan", "migrate", "--force"], "returnTaskArnOnly": true}' task_arn.txt
+    - TASK_ARN=$(cat task_arn.txt)
+    # The 2 following steps are there to remove the first and last " added by the Lambda
+    - TASK_ARN=${TASK_ARN%\"}
+    - TASK_ARN=${TASK_ARN#\"}
+    - >
+      echo "Task ARN of migration: $TASK_ARN"
+    # Fetch list of services related
+    - ASSOCIATED_SERVICES=$(aws ecs list-services --cluster dev-main | jq -r '.serviceArns | map(split("/")[2]) | map(select(startswith("main-"))) | join(" ")')
+    - >
+      echo "List of associated services: $ASSOCIATED_SERVICES"
+    - echo $ASSOCIATED_SERVICES | tr " " "\n" | xargs -I {} aws ecs update-service --cluster dev-main --service {} --force-new-deployment
+    - aws ecs wait tasks-stopped --cluster dev-main --tasks $TASK_ARN
+    - aws ecs wait services-stable --cluster dev-main --services $ASSOCIATED_SERVICES
+
+push-docker-image:
+  stage: push
+  needs: ["aws-auth"]
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_TAG =~ /v.*/'
+      variables:
+        DOCKER_IMAGE_NAME: 229566298092.dkr.ecr.eu-west-3.amazonaws.com/upengage/main:dev-$CI_COMMIT_SHA
+        DOCKER_NGINX_IMAGE_NAME: 229566298092.dkr.ecr.eu-west-3.amazonaws.com/upengage/main-nginx:dev-$CI_COMMIT_SHA
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - cat $AWS_ECR_PASSWORD_FILE | docker login --username AWS --password-stdin 229566298092.dkr.ecr.eu-west-3.amazonaws.com
+    - docker build -t $DOCKER_IMAGE_NAME -f ./docker/php/Dockerfile --target deployable --build-arg APP_VERSION=${$CI_COMMIT_TAG#"v"} .
+    - docker push $DOCKER_IMAGE_NAME
+    - docker build -t $DOCKER_NGINX_IMAGE_NAMEf ./docker/nginx/Dockerfile --build-arg APP_VERSION=${$CI_COMMIT_TAG#"v"} .
+    - docker push $DOCKER_NGINX_IMAGE_NAME

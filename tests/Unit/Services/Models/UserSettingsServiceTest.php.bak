@@ -1,0 +1,102 @@
+<?php
+
+namespace Tests\Unit\Services\Models;
+
+use App\Models\User;
+use App\Repositories\Models\UserSettingsRepository;
+use App\Services\Models\UserSettingsService;
+
+use Mockery;
+use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\Helpers\Facades\ModelFactory;
+use Tests\TestCase;
+
+#[Group('user')]
+class UserSettingsServiceTest extends TestCase
+{
+
+
+
+protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
+
+    #[Test]
+    public function it_updates_user_locale_when_valid_locale_provided(): void
+    {
+        // Arrange
+        $user = ModelFactory::createUser(data: ['locale' => 'en-GB']);
+        $payload = ['locale' => 'fr-FR'];
+
+        $userRepositoryMock = $this->mock(UserSettingsRepository::class, function (MockInterface $mock) use ($user): void {
+            $mock->shouldReceive('updateUserSettings')
+                ->once()
+                ->with(Mockery::on(function (User $userArg) use ($user): bool {
+                    return $userArg->id === $user->id && $userArg->locale === 'fr-FR';
+                }))
+                ->andReturn($user);
+        });
+
+        $service = new UserSettingsService($userRepositoryMock);
+
+        // Act
+        $result = $service->changeUserSettings($user, $payload);
+
+        // Assert
+        $this->assertSame($user, $result);
+    }
+
+    #[Test]
+    public function it_ignores_non_string_locale_values(): void
+    {
+        // Arrange
+        $user = ModelFactory::createUser(data: ['locale' => 'en-GB']);
+        $payload = ['locale' => 123]; // Non-string value
+
+        $userRepositoryMock = $this->mock(UserSettingsRepository::class, function (MockInterface $mock) use ($user): void {
+            $mock->shouldReceive('updateUserSettings')
+                ->once()
+                ->with(Mockery::on(function (User $userArg) use ($user): bool {
+                    return $userArg->id === $user->id && $userArg->locale === 'en-GB'; // Should not change
+                }))
+                ->andReturn($user);
+        });
+
+        $service = new UserSettingsService($userRepositoryMock);
+
+        // Act
+        $result = $service->changeUserSettings($user, $payload);
+
+        // Assert
+        $this->assertSame($user, $result);
+    }
+
+    #[Test]
+    public function it_handles_missing_locale_in_payload(): void
+    {
+        // Arrange
+        $user = ModelFactory::createUser(data: ['locale' => 'en-GB']);
+        $payload = ['other_setting' => 'value']; // No locale key
+
+        $userRepositoryMock = $this->mock(UserSettingsRepository::class, function (MockInterface $mock) use ($user): void {
+            $mock->shouldReceive('updateUserSettings')
+                ->once()
+                ->with(Mockery::on(function (User $userArg) use ($user): bool {
+                    return $userArg->id === $user->id && $userArg->locale === 'en-GB';
+                }))
+                ->andReturn($user);
+        });
+
+        $service = new UserSettingsService($userRepositoryMock);
+
+        // Act
+        $result = $service->changeUserSettings($user, $payload);
+
+        // Assert
+        $this->assertSame($user, $result);
+    }
+}

@@ -1,0 +1,36 @@
+<?php
+
+namespace Tests\Feature\ModelsCRUD\{$modelName};
+
+use App\Models\{$modelName};
+
+use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\ProtectedRouteTestCase;
+
+class Update{$modelName}Test extends ProtectedRouteTestCase
+{
+    use  WithFaker;
+
+    const URI = '/api/v1/{$modelVar}s/';
+
+    #[Test]
+    public function it_can_update_{$modelVar}(): void
+    {
+        ${$modelVar} = {$modelName}::factory()
+            ->create(['name' => '{$modelName} Test']);
+
+        $updatedData = [
+           //data
+        ];
+
+        $this->assertDatabaseCount('{$modelVar}s', 1);
+        $response = $this->put(self::URI."{${$modelVar}->id}", $updatedData);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseCount('{$modelVar}s', 1);
+        $this->assertDatabaseHas('{$modelVar}s', ['id' => ${$modelVar}['id'], 'name' => $updatedData['name']]);
+
+    }
+}

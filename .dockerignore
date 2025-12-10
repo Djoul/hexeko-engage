@@ -1,0 +1,43 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# IDE files
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Laravel files
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+
+# Docker volumes
+/docker/volumes
+
+# Build artifacts
+/public/build
+/public/mix-manifest.json
+
+# Logs
+*.log
+/storage/logs
+
+# Testing
+/coverage
+.phpunit.cache

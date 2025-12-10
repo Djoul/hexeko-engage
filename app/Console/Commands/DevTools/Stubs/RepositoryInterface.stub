@@ -1,0 +1,40 @@
+<?php
+namespace App\Repositories\Contracts;
+
+use App\Models\{$modelName};
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection;
+
+interface {$modelName}RepositoryInterface {
+     /**
+     * @param  array<string>  $relations
+     * @return Collection<int, {$modelName}>
+     */
+    public function all( array $relations = []);
+
+    /**
+     * @param  string  $id
+     * @param  array<string>  $relations
+     * @return {$modelName}
+     *
+     * @throws ModelNotFoundException
+     */
+    public function find($id, array $relations = []);
+
+    /**
+     * @param  array<string,mixed>  $data
+     * @return {$modelName}
+     */
+    public function create(array $data);
+
+    /**
+     * @param  array<string,mixed>  $data
+     * @return {$modelName}
+     */
+    public function update({$modelName} ${$modelVar}, array $data);
+
+    /**
+     * @return bool
+     */
+    public function delete({$modelName} ${$modelVar});
+}

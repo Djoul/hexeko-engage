@@ -1,0 +1,53 @@
+# Profile: Bugfix
+# Description: Standard bug fix with root cause analysis
+
+name: bugfix
+description: Bug fix with analysis and testing
+complexity: simple
+
+phases:
+  - name: analysis
+    required: true
+    description: Root cause analysis
+    
+  - name: implementation
+    required: true
+    description: Apply fix
+    
+  - name: validation
+    required: true
+    description: Verify fix and test
+
+validation:
+  coverage_minimum: 70
+  phpstan_level: max
+  regression_test: required
+  documentation_required: false
+
+templates:
+  - bug-analysis-template.md
+
+mcp_services:
+  jira:
+    - fetch_bug
+    - update_status
+  sentry:
+    - get_error_details
+    - mark_resolved
+
+todo_structure: |
+  ## Bug Fix: [KEY]
+  
+  ### Analysis
+  - [ ] Reproduce issue
+  - [ ] Identify root cause
+  - [ ] Plan fix approach
+  
+  ### Implementation
+  - [ ] Apply fix
+  - [ ] Add regression test
+  
+  ### Validation
+  - [ ] Verify fix locally
+  - [ ] Run related tests
+  - [ ] Test in staging

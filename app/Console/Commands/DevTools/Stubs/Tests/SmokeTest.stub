@@ -1,0 +1,24 @@
+<?php
+
+namespace Tests\Unit\Models;
+
+use App\Models\{$modelName};
+
+use Tests\TestCase;
+
+class {$modelName}SmokeTest extends TestCase
+{
+
+    public function test_to_array()
+    {
+        ${$modelName} = {$modelName}::factory()->create()->fresh();
+
+        $this->assertIsArray(${$modelName}->toArray());
+        $this->assertEquals(
+            array_keys(${$modelName}->toArray()),
+            [
+                // add model attributes here
+            ]
+        );
+    }
+}

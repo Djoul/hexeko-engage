@@ -1,0 +1,1077 @@
+# UpEngage
+
+This project includes services for an application built using PHP with PostgreSQL as the database, Redis for caching, and Nginx as the web server.
+
+---
+
+The sections below provide a quick start guide. For more details, see the complete documentation.
+
+## Version
+
+The current version of this application is **0.1.0-dev**.
+
+## Prerequisites
+
+- Docker (desktop)
+- Docker Compose
+- Xcode (for make commands)
+
+## Project Structure
+
+The project structure includes the following directories and files:
+
+- `docker/`: Contains Docker-related configuration files.
+  - `php/`: PHP-specific Docker configurations.
+  - `nginx/`: Nginx-specific Docker configurations.
+
+## Importing the Project
+
+1. Clone this repository:
+
+   ```bash
+   git clone https://gitlab.com/Hexeko/engage/main-api.git
+   cd main-api
+   ```
+2. full .env available in 1password
+
+## Environment Variables
+
+Ensure that you have the following environment variables set in a `.env` file at the root of your project: full .env available in 1password
+
+```dotenv
+APP_ENV=local
+APP_KEY=your-app-key
+DB_HOST=db_engage
+DB_DATABASE=db_engage
+DB_USERNAME=root
+DB_PASSWORD=password
+```
+
+## Starting Containers
+
+To start all the services defined in the Docker Compose file, run:
+
+```bash
+docker-compose up -d
+```
+
+This will pull the necessary images and start the containers. The `-d` flag runs the containers in detached mode.
+
+## Generating Application Key
+
+Generate a new application key if it's not already set in your `.env` file:
+
+```bash
+docker-compose exec app_engage php artisan key:generate
+```
+
+If you need to regenerate it, simply run the command again and update your `.env` with the new key.
+
+## Accessing Services
+
+- **Web Server**: Available at `http://localhost:1310`.
+- **Database**: Available on port `5433` (inside container) or mapped to `5433` on your host.
+- **Redis**: Available on port `6379`.
+
+## Creating the Database
+
+The PostgreSQL database will be created automatically when you start the containers using Docker Compose. The environment variables set in `.env` will be used for configuration.
+
+Run migrations and seed data:
+
+```bash
+docker-compose exec app_engage php artisan migrate --force
+docker-compose exec app_engage php artisan db:seed --force
+```
+
+## Stopping Containers
+
+To stop and remove all running containers, networks, and volumes defined in the `docker-compose.yml` file, run:
+
+```bash
+docker-compose down -v
+```
+
+The `-v` flag removes named volumes declared in the `volumes` section of the Compose file and anonymous volumes attached to containers.
+
+## Building Project
+
+If you need to build the PHP Docker image again (e.g., after changes to the Dockerfile or project code), run:
+
+```bash
+docker-compose up -d --build
+```
+
+## Running Artisan Commands Inside Container
+
+You can execute any Artisan command inside the `app_engage` container by using the following syntax:
+
+```bash
+docker-compose exec app_engage php artisan <command>
+```
+
+Replace `<command>` with the specific Artisan command you want to run. For example, to run migrations:
+
+```bash
+docker-compose exec app_engage php artisan migrate --force
+```
+
+## Laravel Reverb - WebSocket Server
+
+Laravel Reverb provides real-time WebSocket capabilities for broadcasting events to connected clients. This project includes a fully configured Reverb service running in Docker.
+
+### Initial Setup
+
+If Reverb is not yet installed in your project, run:
+
+```bash
+make reverb-install
+```
+
+This command will:
+
+- Install the Laravel Reverb package
+- Publish the configuration files
+- Generate unique app credentials (APP_ID, KEY, SECRET)
+- Update your `.env` file with the necessary variables
+
+**Note:** This step is only needed once during initial setup. The project already includes Reverb configuration.
+
+### Quick Start
+
+1. **Start Reverb service:**
+
+   ```bash
+   make reverb-start
+   make reverb-status  # Verify it's running
+   ```
+2. **Test WebSocket events:**
+
+   ```bash
+   # Quick test
+   make reverb-test
+
+   # Test specific event types
+   make reverb-test-stats      # Statistics on public-stats channel
+   make reverb-test-message    # Messages on public-messages channel
+   make reverb-test-notification  # Notifications on public-notifications
+
+   # See all available test commands
+   make help | grep reverb-test
+   ```
+3. **View the test dashboard:**
+
+   - Open http://localhost:1310/reverb-test-complete.html
+   - App Key: `qvou8nwiyg3h4rjbp3q7`
+   - Subscribe to channels and watch events in real-time
+4. **For developers:**
+
+   - Public channels: No authentication required
+   - Private channels: Require JWT Bearer token from AWS Cognito
+   - See "Testing WebSocket Connections" section for full details
+
+### Configuration
+
+Reverb is pre-configured with the following settings:
+
+- **WebSocket URL**: ws://localhost:8080
+- **App ID**: 681983
+- **App Key**: **qvou8nwiyg3h4rjbp3q7**
+- **Host**: reverb_engage (internal Docker network)
+
+### Available Commands
+
+
+| Command                             | Description                                 |
+| ----------------------------------- | ------------------------------------------- |
+| **Server Management**               |                                             |
+| `make reverb-install`               | Install Laravel Reverb (initial setup only) |
+| `make reverb-start`                 | Start the Reverb WebSocket server           |
+| `make reverb-stop`                  | Stop the Reverb server                      |
+| `make reverb-restart`               | Restart the Reverb server                   |
+| `make reverb-logs`                  | View real-time Reverb logs                  |
+| `make reverb-status`                | Check if Reverb is running                  |
+| **Public Event Tests**              |                                             |
+| `make reverb-test`                  | Quick test with public message              |
+| `make reverb-test-stats`            | Test statistics event                       |
+| `make reverb-test-message`          | Test message event                          |
+| `make reverb-test-notification`     | Test notification event                     |
+| `make reverb-test-apideck`          | Test Apideck sync event                     |
+| `make reverb-test-simple`           | Test simple public event                    |
+| `make reverb-test-custom`           | Test custom channel/event                   |
+| **Private Event Tests**             |                                             |
+| `make reverb-test-user-private`     | Test private user notification              |
+| `make reverb-test-team-private`     | Test private team update                    |
+| `make reverb-test-financer-private` | Test private financer activity              |
+| **Utilities**                       |                                             |
+| `make reverb-test-all`              | Run all test events                         |
+
+### Broadcasting Events
+
+#### Public Channels
+
+Public channels don't require authentication and are perfect for broadcasting general information:
+
+```php
+// Broadcast a public message
+broadcast(new \App\Events\Testing\PublicMessageEvent(
+    'Title',
+    'Message content',
+    'info' // type: info, success, warning, error
+));
+
+// Broadcast statistics
+broadcast(new \App\Events\Testing\PublicStatsEvent([
+    'users_online' => 100,
+    'revenue' => 5000
+]));
+```
+
+#### Private Channels
+
+Private channels require authentication and are used for user-specific data:
+
+```php
+// User notification (requires authenticated user)
+$user = User::find(1);
+broadcast(new \App\Events\Testing\PrivateUserNotification(
+    $user,
+    'Private Notification',
+    'This is a private message'
+));
+
+// Team updates
+$team = Team::find(1);
+broadcast(new \App\Events\Testing\PrivateTeamUpdate(
+    $team,
+    'members_updated',
+    ['added' => 2, 'removed' => 1]
+));
+```
+
+### Testing WebSocket Connections
+
+#### Quick Test Commands
+
+Laravel Reverb includes several test events that can be broadcasted to verify your WebSocket setup:
+
+##### Public Events (No Authentication Required)
+
+
+| Command                         | Description               | Channels                               | Event Name                |
+| ------------------------------- | ------------------------- | -------------------------------------- | ------------------------- |
+| `make reverb-test-stats`        | Send test statistics      | `public-stats`, `dashboard`            | `.stats.updated`          |
+| `make reverb-test-message`      | Send test message         | `public-messages`, `notifications`     | `.message.received`       |
+| `make reverb-test-notification` | Send public notification  | `public-notifications`                 | `.notification`           |
+| `make reverb-test-apideck`      | Test Apideck sync event   | `public-notifications`, `apideck-sync` | `.apideck.sync.completed` |
+| `make reverb-test-simple`       | Simple test event         | `public-test`                          | `.test.message`           |
+| `make reverb-test-custom`       | Custom channel/event test | Configurable                           | Configurable              |
+
+##### Private Events (Authentication Required)
+
+
+| Command                             | Description                    | Channels                        | Event Name               |
+| ----------------------------------- | ------------------------------ | ------------------------------- | ------------------------ |
+| `make reverb-test-user-private`     | Send private user notification | `private-user.{userId}`         | `.notification.received` |
+| `make reverb-test-team-private`     | Send team update               | `private-team.{teamId}`         | `.team.updated`          |
+| `make reverb-test-financer-private` | Send financer activity         | `private-financer.{financerId}` | `.activity.{type}`       |
+
+##### Utility Commands
+
+
+| Command                | Description               |
+| ---------------------- | ------------------------- |
+| `make reverb-test-all` | Run all test events       |
+| `make reverb-test`     | Quick public message test |
+
+#### Manual Testing with Tinker
+
+You can also send test events directly using tinker:
+
+```bash
+# Test Statistics Event
+docker compose exec app_engage php artisan tinker --execute="broadcast(new \App\Events\Testing\PublicStatsEvent(['users' => 100, 'revenue' => 5000]))"
+
+# Test Message Event
+docker compose exec app_engage php artisan tinker --execute="broadcast(new \App\Events\Testing\PublicMessageEvent('Test', 'Hello Reverb!', 'success'))"
+
+# Test Private User Notification (requires authenticated user)
+docker compose exec app_engage php artisan tinker --execute="
+    \$user = \App\Models\User::first();
+    broadcast(new \App\Events\Testing\PrivateUserNotification(\$user, 'Private Test', 'This is a private message'));
+"
+
+# Test Private Team Update (requires team)
+docker compose exec app_engage php artisan tinker --execute="
+    \$team = \App\Models\Team::first();
+    broadcast(new \App\Events\Testing\PrivateTeamUpdate(\$team, 'members_updated', ['added' => 2, 'removed' => 1]));
+"
+```
+
+#### Using the Test Dashboard
+
+1. Open http://localhost:1310/reverb-test-complete.html
+2. Enter the App Key: `qvou8nwiyg3h4rjbp3q7`
+3. Click "Se connecter" to connect
+4. Subscribe to channels by clicking the "+" button next to each channel
+5. Run the test commands above to see events in real-time
+
+#### Available Test Channels
+
+**Public Channels (no authentication required):**
+
+- `notifications` - General notifications
+- `public-messages` - Public messages (`.message.received`)
+- `public-stats` - Statistics updates (`.stats.updated`)
+- `dashboard` - Dashboard updates (`.stats.updated`)
+- `apideck-sync` - Apideck synchronization events
+
+**Private Channels (require authentication):**
+
+- `private-user.{userId}` - User-specific notifications
+- `private-team.{teamId}` - Team updates
+- `private-financer.{financerId}` - Financer activities
+
+#### Event Structure and Usage
+
+When subscribing to channels in your front-end application, events follow this naming convention:
+
+```javascript
+// Public channel examples
+echo.channel('public-stats')
+    .listen('.stats.updated', (data) => {
+        console.log('Stats updated:', data);
+        // data contains: { stats: {...}, period: 'daily', timestamp: '...' }
+    });
+
+echo.channel('public-messages')
+    .listen('.message.received', (data) => {
+        console.log('Message received:', data);
+        // data contains: { title: '...', message: '...', type: 'info|success|warning|error', timestamp: '...' }
+    });
+
+echo.channel('public-notifications')
+    .listen('.notification', (data) => {
+        console.log('Public notification:', data);
+        // data contains: { type: '...', data: {...}, severity: '...', timestamp: '...' }
+    });
+
+echo.channel('apideck-sync')
+    .listen('.apideck.sync.completed', (data) => {
+        console.log('Apideck sync completed:', data);
+        // data contains: { type: 'sync.success|sync.error|...', severity: '...', financer_id: '...', sync_data: {...} }
+    });
+
+// Private channel examples (requires authentication)
+echo.private(`user.${userId}`)
+    .listen('.notification.received', (data) => {
+        console.log('Private notification:', data);
+        // data contains: { title: '...', message: '...', type: '...', actions: [...], user_id: '...', timestamp: '...' }
+    });
+
+echo.private(`team.${teamId}`)
+    .listen('.team.updated', (data) => {
+        console.log('Team updated:', data);
+        // data contains: { team_id: '...', team_name: '...', update_type: '...', changes: {...}, timestamp: '...' }
+    });
+
+echo.private(`financer.${financerId}`)
+    .listen('.activity.credit_allocated', (data) => {
+        console.log('Financer activity:', data);
+        // data contains: { financer_id: '...', activity_type: '...', details: {...}, user_id: '...', timestamp: '...' }
+    });
+```
+
+#### Testing Workflow
+
+1. **Start Reverb Server**:
+
+   ```bash
+   make reverb-start
+   make reverb-status  # Verify it's running
+   ```
+2. **Open Test Dashboard**:
+
+   - Navigate to http://localhost:1310/reverb-test-complete.html
+   - Enter App Key: `qvou8nwiyg3h4rjbp3q7`
+   - Click "Se connecter"
+3. **Subscribe to Channels**:
+
+   - Click the "+" button next to channels you want to test
+   - For private channels, ensure you're authenticated
+4. **Send Test Events**:
+
+   ```bash
+   # Test all public events
+   make reverb-test-stats
+   make reverb-test-message
+   make reverb-test-notification
+   make reverb-test-apideck
+
+   # Test private events (requires data in DB)
+   make reverb-test-user-private
+   make reverb-test-team-private
+   make reverb-test-financer-private
+   ```
+5. **Verify Reception**:
+
+   - Check the dashboard for received events
+   - Events appear in real-time with full payload data
+
+#### Testing Private Channels - Step by Step
+
+Private channels require authentication to work. Here's how to test them:
+
+##### Prerequisites
+
+1. **Have data in your database**:
+
+   ```bash
+   # Ensure you have users, teams, and financers in DB
+   make migrate-fresh  # This will seed test data
+   ```
+2. **Authentication is required** - Private channels won't work in the basic test dashboard without auth.
+
+##### Option 1: Test via Tinker (Backend only)
+
+This tests that events are being broadcasted, but you won't see them in the dashboard without auth:
+
+```bash
+# The make commands automatically use the first user/team/financer in DB
+make reverb-test-user-private      # Broadcasts to first user found
+make reverb-test-team-private      # Broadcasts to first team found
+make reverb-test-financer-private  # Broadcasts to financer-123 (hardcoded)
+
+# Check the console output - it will tell you if data was found:
+# "Event sent to user 1" or "No users found in database"
+```
+
+##### Option 2: Test with Authentication (Full test)
+
+To actually receive private events in your frontend, you need to be authenticated:
+
+1. **Get a valid JWT token** from your authentication system (AWS Cognito)
+2. **Configure your Echo client** with the Bearer token:
+
+   ```javascript
+   const echo = new Echo({
+       broadcaster: 'reverb',
+       key: 'qvou8nwiyg3h4rjbp3q7',
+       wsHost: 'localhost',
+       wsPort: 8080,
+       forceTLS: false,
+       auth: {
+           headers: {
+               Authorization: `Bearer ${yourJWTToken}`,
+           },
+       },
+       authEndpoint: 'http://localhost:1310/api/v1/broadcasting/auth',
+   });
+   ```
+3. **Subscribe to your private channel**:
+
+   ```javascript
+   // Replace with your actual user ID
+   echo.private('user.123')
+       .listen('.notification.received', (data) => {
+           console.log('Private notification received:', data);
+       });
+   ```
+4. **Send the test event**:
+
+   ```bash
+   make reverb-test-user-private
+   ```
+
+##### Option 3: Create a Custom Test Script
+
+For easier testing, create a test script that includes authentication:
+
+To test private channels, you can use Laravel's built-in broadcasting test methods or create a custom test script. For example:
+
+```php
+// In a test or artisan command
+use App\Models\User;
+use App\Events\Testing\PrivateUserNotification;
+
+$user = User::first();
+
+broadcast(new PrivateUserNotification(
+    $user,
+    'Test Private Channel',
+    'This is a test of private channel broadcasting',
+    'info'
+));
+```
+
+##### Understanding Private Channel Authorization
+
+When you try to subscribe to a private channel, Laravel Reverb:
+
+1. Sends a request to `/broadcasting/auth` with your Bearer token
+2. Laravel checks if the authenticated user has permission to access that channel
+3. For `private-user.{id}` - only the user with that ID can subscribe
+4. For `private-team.{id}` - only members of that team can subscribe
+5. For `private-financer.{id}` - only users with financer permissions can subscribe
+
+##### Quick Test Summary
+
+- **Public channels**: Work immediately with `make reverb-test-*` commands
+- **Private channels**:
+  - Backend broadcasting works with `make reverb-test-*-private` commands
+  - Frontend reception requires JWT authentication
+  - Use the test dashboard with proper auth headers or create authenticated test clients
+
+### Docker Integration
+
+Reverb runs as a separate Docker service (`reverb_engage`) configured in `docker-compose.yml`:
+
+```yaml
+reverb_engage:
+  build:
+    context: .
+    dockerfile: ./docker/php/Dockerfile
+  container_name: reverb_engage
+  command: php artisan reverb:start --host=0.0.0.0 --port=8080 --debug
+  ports:
+    - "8080:8080"
+  depends_on:
+    - db_engage
+    - redis-cluster
+```
+
+### Troubleshooting
+
+1. **Reverb not starting:**
+
+   ```bash
+   # Check if port 8080 is already in use
+   lsof -i :8080
+
+   # Restart the service
+   make reverb-restart
+   ```
+2. **Events not received:**
+
+   ```bash
+   # Check queue is processing
+   make queue
+
+   # View Reverb logs
+   make reverb-logs
+   ```
+3. **Connection refused:**
+
+   - Ensure Reverb is running: `make reverb-status`
+   - Check `.env` has correct BROADCAST_CONNECTION=reverb
+   - Verify REVERB_HOST=reverb_engage in `.env`
+
+### Integration with Your Application
+
+To broadcast events from your application:
+
+1. Ensure your event implements `ShouldBroadcast`
+2. Define the channel(s) in the `broadcastOn()` method
+3. Dispatch the event using `broadcast()` helper
+4. Process the queue to send the event
+
+Example:
+
+```php
+// Your event class
+class OrderCreated implements ShouldBroadcast
+{
+    public function broadcastOn()
+    {
+        return new Channel('orders');
+    }
+}
+
+// Broadcasting the event
+broadcast(new OrderCreated($order));
+
+// Process queue (or use queue worker)
+php artisan queue:work
+```
+
+## Additional Notes
+
+- Ensure that your Nginx configuration (`./docker/nginx/default.local.conf`) is correctly set up to serve your application.
+- You might need to adjust PHP configurations in `./docker/php/local.ini` if necessary.
+
+## Troubleshooting
+
+If you encounter issues, check the logs of each container using:
+
+```bash
+docker-compose logs -f <service_name>
+```
+
+Replace `<service_name>` with one of `app_engage`, `webserver_engage`, `db_engage`, or `engage_redis`.
+
+## Redis & Cache Configuration
+
+This application uses Redis Cluster for caching and session storage to provide high-performance data retrieval and improve overall application responsiveness.
+
+### Redis Cluster Setup
+
+The application is configured to use a Redis Cluster with the following configuration:
+
+- **Redis Version**: Latest stable (specified in docker-compose.yml)
+- **Cluster Nodes**: 6 nodes (3 masters, 3 replicas)
+- **Default Port**: 6379
+- **Cluster Configuration**: Automatic failover and data distribution
+
+### Cache Configuration
+
+#### Cache Driver
+
+The application uses Redis as the primary cache driver with cluster support:
+
+```bash
+CACHE_DRIVER=redis
+CACHE_PREFIX=up_engage_cache
+```
+
+#### Cache TTL (Time To Live)
+
+Different cache types have different TTL values:
+
+- **Financer Metrics**: 1 hour (3600 seconds)
+- **Model Cache**: 5 minutes (300 seconds)
+- **Session Cache**: 2 hours (7200 seconds)
+
+#### Cache Key Structure
+
+The application uses structured cache keys for better organization:
+
+```
+# Financer Metrics
+{financer_metrics:FINANCER_ID}:METRIC_TYPE:START_DATE:END_DATE
+
+# Model Cache (using GlobalCachable trait)
+{model_name:MODEL_ID}:method_name
+
+# General Application Cache
+up_engage_cache:cache_key_name
+```
+
+### Cache Management Commands
+
+#### Clear All Cache
+
+```bash
+# Clear application cache
+docker-compose exec app_engage php artisan cache:clear
+
+# Clear config cache
+docker-compose exec app_engage php artisan config:clear
+
+# Clear route cache
+docker-compose exec app_engage php artisan route:clear
+
+# Clear all caches
+docker-compose exec app_engage php artisan optimize:clear
+```
+
+#### Financer Metrics Cache Management
+
+```bash
+# Clear cache for specific financer
+docker-compose exec app_engage php artisan cache:forget "financer_metrics:FINANCER_UUID"
+
+# Clear all financer metrics cache
+docker-compose exec app_engage php artisan cache:tags --flush financer_metrics
+```
+
+#### Monitor Cache Performance
+
+```bash
+# Check Redis cluster status
+docker-compose exec engage_redis redis-cli cluster info
+
+# Monitor Redis operations
+docker-compose exec engage_redis redis-cli monitor
+
+# Check memory usage
+docker-compose exec engage_redis redis-cli info memory
+```
+
+### Cache Traits
+
+The application provides two main caching traits:
+
+#### GlobalCachable
+
+For models that need static cache methods across the application:
+
+```php
+use App\Traits\GlobalCachable;
+
+class FinancerMetric extends Model
+{
+    use GlobalCachable;
+
+    protected static int $cacheTtl = 3600; // 1 hour
+}
+```
+
+#### Cachable
+
+For instance-specific caching:
+
+```php
+use App\Traits\Cachable;
+
+class User extends Model
+{
+    use Cachable;
+
+    protected int $cacheTtl = 300; // 5 minutes
+}
+```
+
+### Redis Cluster Benefits
+
+1. **High Availability**: Automatic failover ensures cache remains available
+2. **Scalability**: Data is distributed across multiple nodes
+3. **Performance**: Reduced latency with data locality
+4. **Fault Tolerance**: Continues operation even if nodes fail
+
+### Cache Monitoring
+
+To monitor cache hit rates and performance:
+
+```bash
+# View cache statistics
+docker-compose exec app_engage php artisan cache:stats
+
+# Monitor specific cache tags
+docker-compose exec engage_redis redis-cli --scan --pattern "*financer_metrics*"
+```
+
+### Environment Variables
+
+Key environment variables for cache configuration:
+
+```env
+CACHE_DRIVER=redis
+REDIS_HOST=engage_redis
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+REDIS_CLUSTER=true
+SESSION_DRIVER=redis
+SESSION_LIFETIME=120
+```
+
+## API Documentation
+
+The API documentation is available at:
+
+```
+http://localhost:1310/docs/api
+```
+
+### Generating API Documentation
+
+The API documentation is generated using [Scramble](https://github.com/dedoc/scramble), which creates OpenAPI documentation from your Laravel application.
+
+To generate or update the API documentation, run:
+
+```bash
+docker-compose exec app_engage php artisan scramble:export
+```
+
+This will analyze your routes, controllers, and request classes to generate comprehensive API documentation that is accessible at the URL mentioned above.
+
+## Financer Metrics API
+
+The Financer Metrics API provides comprehensive analytics and insights for financers to monitor beneficiary engagement and platform usage. These endpoints require the `view_financer_metrics` permission and use the `X-Financer-Context` header to specify the financer context.
+
+### Available Endpoints
+
+#### 1. Dashboard Metrics
+
+```
+GET /api/v1/financer/metrics/dashboard
+```
+
+Returns a comprehensive overview of all metrics including active beneficiaries, activation rates, session times, module usage, and HR communications.
+
+**Headers:**
+
+- `X-Financer-Context`: The financer UUID
+
+**Query Parameters:**
+
+- `period` (optional): Time period for metrics calculation. Options: `7_days`, `30_days`, `3_months`, `6_months`, `12_months`. Default: `7_days`
+
+#### 2. Active Beneficiaries
+
+```
+GET /api/v1/financer/metrics/active-beneficiaries
+```
+
+Returns daily active user counts and trends for the specified period.
+
+#### 3. Activation Rate
+
+```
+GET /api/v1/financer/metrics/activation-rate
+```
+
+Returns the percentage of users who have activated their accounts with trend analysis.
+
+#### 4. Session Time Analytics
+
+```
+GET /api/v1/financer/metrics/session-time
+```
+
+Returns median session duration and total session counts with time-based breakdowns.
+
+#### 5. Module Usage Statistics
+
+```
+GET /api/v1/financer/metrics/module-usage
+```
+
+Returns usage metrics for different modules including unique users and total uses.
+
+#### 6. HR Communications Metrics
+
+```
+GET /api/v1/financer/metrics/hr-communications
+```
+
+Returns metrics for article views, tool clicks, and total interactions in the HR communications module.
+
+### Example Request
+
+```bash
+curl -X GET "http://localhost:1310/api/v1/financer/metrics/dashboard?period=30_days" \
+     -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+     -H "X-Financer-Context: 123e4567-e89b-12d3-a456-426614174000" \
+     -H "Accept: application/json"
+```
+
+### Example Response
+
+```json
+{
+  "financer_id": "123e4567-e89b-12d3-a456-426614174000",
+  "period": "30_days",
+  "metrics": {
+    "active_beneficiaries": {
+      "total": 150,
+      "daily": [
+        {"date": "2025-07-01", "count": 45},
+        {"date": "2025-07-02", "count": 52}
+      ],
+      "change_percentage": 12.5
+    },
+    "activation_rate": {
+      "rate": 78.5,
+      "total_users": 200,
+      "activated_users": 157
+    },
+    "median_session_time": {
+      "median_minutes": 18,
+      "total_sessions": 1250
+    },
+    "module_usage": [
+      {
+        "name": "vouchers",
+        "unique_users": 85,
+        "total_uses": 320
+      }
+    ],
+    "article_viewed": {
+      "articles": {
+        "views": 450,
+        "unique_users": 125
+      },
+      "tools": {
+        "clicks": 280,
+        "unique_users": 90
+      },
+      "total_interactions": 730
+    }
+  },
+  "cache_info": {
+    "cached_at": "2025-07-24T12:00:00.000000Z",
+    "ttl_seconds": 3600
+  }
+}
+```
+
+### Generating Financer Metrics
+
+Metrics are automatically calculated daily via a scheduled command. You can also manually generate metrics:
+
+```bash
+# Generate metrics for all financers
+docker-compose exec app_engage php artisan metrics:generate-financer --all
+
+# Generate metrics for a specific financer
+docker-compose exec app_engage php artisan metrics:generate-financer --financer=FINANCER_UUID
+
+# Generate metrics for a date range
+docker-compose exec app_engage php artisan metrics:generate-financer --all --date-from=2025-07-01 --date-to=2025-07-31
+
+# Dry run to see what would be generated
+docker-compose exec app_engage php artisan metrics:generate-financer --all --dry-run
+```
+
+### Cache Configuration
+
+The Financer Metrics API uses Redis Cluster for caching with a 1-hour TTL by default. Cache keys are structured as:
+
+```
+{financer_metrics:FINANCER_ID}:METRIC_TYPE:START_DATE:END_DATE
+```
+
+To clear the cache for a specific financer:
+
+```bash
+docker-compose exec app_engage php artisan cache:forget "financer_metrics:FINANCER_UUID"
+```
+
+## Makefile Commands
+
+This project includes a comprehensive Makefile to simplify common development tasks. The Makefile provides shortcuts for Docker commands, code quality tools, testing, and Laravel artisan commands.
+
+### Prerequisites for Make
+
+To use the Makefile commands, you need to have `make` installed:
+
+**macOS:**
+
+```bash
+# Make is included with Xcode Command Line Tools
+xcode-select --install
+```
+
+**Linux (Ubuntu/Debian):**
+
+```bash
+sudo apt-get update
+sudo apt-get install build-essential
+```
+
+**Linux (CentOS/RHEL/Fedora):**
+
+```bash
+sudo yum install make
+```
+
+**Windows:**
+
+- Use WSL (Windows Subsystem for Linux) and follow Linux instructions
+- Or install Make via Chocolatey: `choco install make`
+- Or use Git Bash which includes Make
+
+### Available Make Commands
+
+#### Code Quality Commands
+
+
+| Command              | Description                                             |
+| -------------------- | ------------------------------------------------------- |
+| `make lint`          | Format code with Laravel Pint                           |
+| `make rector`        | Apply PHP modernization rules with Rector               |
+| `make stan`          | Run static analysis with PHPStan (level 9)              |
+| `make quality-check` | Run all quality checks (lint, rector, stan, test, docs) |
+
+#### Testing Commands
+
+
+| Command                                 | Description                                                                |
+| --------------------------------------- | -------------------------------------------------------------------------- |
+| `make test`                             | Run complete test suite                                                    |
+| `make test-with-report`                 | Run tests with optimized DB handling and failure export                    |
+| `make test-optimized`                   | Run optimized tests (use`ARGS="--stop-on-failure"` or `ARGS="--parallel"`) |
+| `make test-failed`                      | Run only previously failed tests                                           |
+| `make test-voucher-recovery`            | Run voucher recovery tests only                                            |
+| `make test-amilon`                      | Run all Amilon voucher tests                                               |
+| `make test-group GROUPS="user,apideck"` | Run tests for specific groups                                              |
+
+#### Docker Commands
+
+
+| Command                      | Description                                              |
+| ---------------------------- | -------------------------------------------------------- |
+| `make docker-restart`        | Complete restart (removes orphaned containers/networks)  |
+| `make docker-clean`          | Safe cleanup (preserves databases and active containers) |
+| `make docker-clean-worktree` | Clean worktree containers and redis_cluster_* containers |
+| `make docker-deep-clean`     | Deep cleanup (**DANGER**: removes all unused resources)  |
+
+#### Database Commands
+
+
+| Command              | Description                                       |
+| -------------------- | ------------------------------------------------- |
+| `make migrate`       | Run pending database migrations                   |
+| `make migrate-fresh` | Fresh database migration with seeders (resets DB) |
+| `make seed-amilon`   | Seed Amilon test orders data                      |
+
+#### Background Services
+
+
+| Command               | Description                                                    |
+| --------------------- | -------------------------------------------------------------- |
+| `make queue`          | Start queue worker (jobs, emails, etc.)                        |
+| `make reverb-install` | Install Reverb and configure environment                       |
+| `make reverb-start`   | Start Reverb WebSocket server (real-time features)             |
+| `make broadcast-test` | Send test WebSocket event (requires EVENT and USER parameters) |
+
+#### Integration Commands
+
+
+| Command            | Description                                                            |
+| ------------------ | ---------------------------------------------------------------------- |
+| `make amilon-sync` | Sync real Amilon data (Categories, Merchants, Products, etc.) from API |
+
+#### Utility Commands
+
+
+| Command        | Description                                      |
+| -------------- | ------------------------------------------------ |
+| `make clean`   | Clear all Laravel caches                         |
+| `make restore` | Restore all Git changes (unstage and discard)    |
+| `make docs`    | Generate API documentation with Scramble         |
+| `make help`    | Display all available commands with descriptions |
+
+### Usage Examples
+
+```bash
+# Run tests before committing
+make test
+
+# Full quality check before pushing
+make quality-check
+
+# Fresh database with test data
+make migrate-fresh
+
+# Start development services
+make queue        # In one terminal
+make reverb-start # In another terminal
+
+# Test WebSocket events
+make broadcast-test EVENT=user-updated USER=123
+make broadcast-test EVENT=notification-sent USER=456 DATA="title:Hello message:Test"
+
+# Quick cleanup of development containers
+make docker-clean-worktree
+
+# Get help on all available commands
+make help
+```
+
+### Tips
+
+- Always run `make quality-check` before committing code
+- Use `make docker-restart` when you encounter network conflicts
+- Use `make test-optimized ARGS="--parallel"` for faster test execution
+- The Makefile automatically uses Docker context, so you don't need to prefix commands with `docker-compose exec`

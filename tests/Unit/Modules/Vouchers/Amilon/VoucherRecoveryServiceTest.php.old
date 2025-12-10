@@ -1,0 +1,314 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\Modules\Vouchers\Amilon;
+
+use App\Integrations\Vouchers\Amilon\Database\factories\OrderFactory;
+use App\Integrations\Vouchers\Amilon\DTO\RecoveryResult;
+use App\Integrations\Vouchers\Amilon\Jobs\ProcessVoucherRecoveryJob;
+use App\Integrations\Vouchers\Amilon\Models\Order;
+use App\Integrations\Vouchers\Amilon\Services\AmilonOrderService;
+use App\Integrations\Vouchers\Amilon\Services\VoucherRecoveryService;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Queue;
+use Mockery;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+use Tests\Helpers\Traits\AmilonDatabaseCleanup;
+
+#[Group('amilon')]
+#[Group('vouchers')]
+class VoucherRecoveryServiceTest extends TestCase
+{
+    use AmilonDatabaseCleanup;
+    use DatabaseTransactions;
+
+    private VoucherRecoveryService $service;
+
+    private AmilonOrderService $orderService;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->cleanupAmilonDatabase();
+
+        // Clean up any existing orders to ensure test isolation
+        Order::query()->delete();
+
+        $this->orderService = Mockery::mock(AmilonOrderService::class);
+        $this->service = new VoucherRecoveryService($this->orderService);
+
+        Queue::fake();
+    }
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        parent::tearDown();
+    }
+
+    #[Test]
+    public function it_identifies_failed_orders_with_successful_payments(): void
+    {
+        // Get initial count
+        $initialOrderCount = Order::count();
+
+        // Arrange - Create actual database records
+        $failedOrder1 = resolve(OrderFactory::class)->create([
+            'status' => 'failed',
+            'recovery_attempts' => 0,
+            'created_at' => Carbon::now()->subHours(2),
+            'payment_id' => 'payment_1',
+        ]);
+
+        $failedOrder2 = resolve(OrderFactory::class)->create([
+            'status' => 'error',
+            'recovery_attempts' => 1,
+            'created_at' => Carbon::now()->subHours(1),
+            'payment_id' => 'payment_2',
+        ]);
+
+        // Create orders that should not be included
+        resolve(OrderFactory::class)->create([
+            'status' => 'delivered',
+            'payment_id' => 'payment_3',
+        ]);
+
+        resolve(OrderFactory::class)->create([
+            'status' => 'failed',
+            'payment_id' => null, // Explicitly set to null
+        ]);
+
+        // Act
+        $failedOrders = $this->service->identifyFailedOrders();
+
+        // Assert
+        $this->assertInstanceOf(Collection::class, $failedOrders);
+
+        // Only the two failed orders with payment_id should be returned
+        $this->assertCount(2, $failedOrders);
+        $this->assertTrue($failedOrders->contains($failedOrder1));
+        $this->assertTrue($failedOrders->contains($failedOrder2));
+
+        // Verify total orders created
+        $this->assertEquals($initialOrderCount + 4, Order::count());
+    }
+
+    #[Test]
+    public function it_attempts_recovery_for_failed_order(): void
+    {
+        // Arrange
+        $order = Mockery::mock(Order::class);
+        $order->shouldAllowMockingProtectedMethods();
+        $order->shouldReceive('getAttribute')->with('id')->andReturn('order-123');
+        $order->shouldReceive('getAttribute')->with('recovery_attempts')->andReturn(1);
+        $order->shouldReceive('getAttribute')->with('status')->andReturn('failed');
+        $order->shouldReceive('getAttribute')->with('external_order_id')->andReturn('external-123');
+        $order->shouldReceive('increment')->with('recovery_attempts')->once();
+        $order->shouldReceive('update')->with(Mockery::on(function ($data): bool {
+            return isset($data['status']) && $data['status'] === 'recovering' &&
+                   isset($data['last_recovery_attempt']) && $data['last_recovery_attempt'] instanceof Carbon;
+        }))->once();
+
+        $this->orderService->shouldReceive('getOrderInfo')
+            ->with('external-123')
+            ->once()
+            ->andReturn(['status' => 'delivered']);
+
+        // Act
+        $result = $this->service->attemptRecovery($order);
+
+        // Assert
+        $this->assertInstanceOf(RecoveryResult::class, $result);
+        $this->assertTrue($result->success);
+        $this->assertEquals('Order successfully recovered', $result->message);
+        $this->assertEquals('delivered', $result->newStatus);
+    }
+
+    #[Test]
+    public function it_handles_recovery_failure_and_updates_order(): void
+    {
+        // Arrange
+        $order = Mockery::mock(Order::class);
+        $order->shouldAllowMockingProtectedMethods();
+        $order->shouldReceive('getAttribute')->with('id')->andReturn('order-123');
+        $order->shouldReceive('getAttribute')->with('recovery_attempts')->andReturn(1);
+        $order->shouldReceive('getAttribute')->with('status')->andReturn('failed');
+        $order->shouldReceive('getAttribute')->with('external_order_id')->andReturn('external-123');
+        $order->shouldReceive('increment')->with('recovery_attempts')->once();
+        $order->shouldReceive('update')->with(Mockery::on(function ($data): bool {
+            return isset($data['status']) && $data['status'] === 'recovering';
+        }))->once();
+
+        $exception = new Exception('Amilon API error');
+        $this->orderService->shouldReceive('getOrderInfo')
+            ->with('external-123')
+            ->once()
+            ->andThrow($exception);
+
+        $order->shouldReceive('update')->with(Mockery::on(function ($data): bool {
+            return isset($data['status']) && $data['status'] === 'failed' &&
+                   isset($data['last_error']) && str_contains($data['last_error'], 'Amilon API error');
+        }))->once();
+
+        // Act
+        $result = $this->service->attemptRecovery($order);
+
+        // Assert
+        $this->assertFalse($result->success);
+        $this->assertStringContainsString('Recovery failed', $result->message);
+        $this->assertEquals('failed', $result->newStatus);
+        $this->assertNotNull($result->error);
+    }
+
+    #[Test]
+    public function it_schedules_retry_with_exponential_backoff(): void
+    {
+        // Arrange
+        $order = Mockery::mock(Order::class);
+        $order->shouldReceive('getAttribute')->with('id')->andReturn('order-123');
+        $order->shouldReceive('getAttribute')->with('recovery_attempts')->andReturn(1);
+        $order->shouldReceive('update')->with(Mockery::on(function ($data): bool {
+            return isset($data['next_retry_at']) && $data['next_retry_at'] instanceof Carbon;
+        }))->once();
+
+        // Act
+        $this->service->scheduleRetry($order, 5);
+
+        // Assert
+        Queue::assertPushed(ProcessVoucherRecoveryJob::class);
+    }
+
+    #[Test]
+    public function it_checks_if_order_can_be_retried(): void
+    {
+        // Arrange
+        $orderCanRetry = Mockery::mock(Order::class);
+        $orderCanRetry->shouldReceive('getAttribute')->with('recovery_attempts')->andReturn(1);
+        $orderCanRetry->shouldReceive('getAttribute')->with('status')->andReturn('failed');
+        $orderCanRetry->shouldReceive('getAttribute')->with('payment_id')->andReturn('payment_123');
+
+        $orderMaxAttempts = Mockery::mock(Order::class);
+        $orderMaxAttempts->shouldReceive('getAttribute')->with('recovery_attempts')->andReturn(3);
+        $orderMaxAttempts->shouldReceive('getAttribute')->with('status')->andReturn('failed');
+        $orderMaxAttempts->shouldReceive('getAttribute')->with('payment_id')->andReturn('payment_456');
+
+        $orderAlreadyDelivered = Mockery::mock(Order::class);
+        $orderAlreadyDelivered->shouldReceive('getAttribute')->with('recovery_attempts')->andReturn(1);
+        $orderAlreadyDelivered->shouldReceive('getAttribute')->with('status')->andReturn('delivered');
+        $orderAlreadyDelivered->shouldReceive('getAttribute')->with('payment_id')->andReturn('payment_789');
+
+        $orderPaymentPending = Mockery::mock(Order::class);
+        $orderPaymentPending->shouldReceive('getAttribute')->with('recovery_attempts')->andReturn(0);
+        $orderPaymentPending->shouldReceive('getAttribute')->with('status')->andReturn('failed');
+        $orderPaymentPending->shouldReceive('getAttribute')->with('payment_id')->andReturn(null);
+
+        // Act & Assert
+        $this->assertTrue($this->service->canRetry($orderCanRetry));
+        $this->assertFalse($this->service->canRetry($orderMaxAttempts));
+        $this->assertFalse($this->service->canRetry($orderAlreadyDelivered));
+        $this->assertFalse($this->service->canRetry($orderPaymentPending));
+    }
+
+    #[Test]
+    public function it_calculates_correct_backoff_delay_based_on_attempts(): void
+    {
+        // Arrange
+        $order1 = Mockery::mock(Order::class);
+        $order1->shouldReceive('getAttribute')->with('recovery_attempts')->andReturn(0);
+
+        $order2 = Mockery::mock(Order::class);
+        $order2->shouldReceive('getAttribute')->with('recovery_attempts')->andReturn(1);
+
+        $order3 = Mockery::mock(Order::class);
+        $order3->shouldReceive('getAttribute')->with('recovery_attempts')->andReturn(2);
+
+        // Act
+        $delay1 = $this->service->getRetryDelay($order1);
+        $delay2 = $this->service->getRetryDelay($order2);
+        $delay3 = $this->service->getRetryDelay($order3);
+
+        // Assert
+        $this->assertEquals(1, $delay1); // 1 minute
+        $this->assertEquals(5, $delay2); // 5 minutes
+        $this->assertEquals(15, $delay3); // 15 minutes
+    }
+
+    #[Test]
+    public function it_returns_recovery_statistics(): void
+    {
+        // Get initial count
+        $initialOrderCount = Order::count();
+
+        // Arrange - Create real database records for testing
+        $since = Carbon::now()->subDays(30);
+
+        // Create 10 failed orders with payment data
+        for ($i = 0; $i < 10; $i++) {
+            resolve(OrderFactory::class)->create([
+                'status' => 'failed',
+                'recovery_attempts' => 0,
+                'created_at' => Carbon::now()->subDays(15),
+                'payment_id' => 'payment_'.$i, // Add payment data
+            ]);
+        }
+
+        // Create 7 recovered orders
+        for ($i = 0; $i < 7; $i++) {
+            resolve(OrderFactory::class)->create([
+                'status' => 'delivered',
+                'recovery_attempts' => 2,
+                'created_at' => Carbon::now()->subDays(10),
+                'payment_id' => 'payment_recovered_'.$i,
+            ]);
+        }
+
+        // Create 3 permanently failed orders
+        for ($i = 0; $i < 3; $i++) {
+            resolve(OrderFactory::class)->create([
+                'status' => 'failed',
+                'recovery_attempts' => 3,
+                'created_at' => Carbon::now()->subDays(5),
+                'payment_id' => 'payment_perm_failed_'.$i,
+            ]);
+        }
+
+        // Create some orders that shouldn't be counted
+        resolve(OrderFactory::class)->create([
+            'status' => 'failed',
+            'created_at' => Carbon::now()->subDays(15),
+            'payment_id' => null, // No payment_id - should not be counted
+        ]);
+
+        resolve(OrderFactory::class)->create([
+            'status' => 'failed',
+            'created_at' => Carbon::now()->subDays(35), // Too old
+            'payment_id' => 'payment_old',
+        ]);
+
+        // Act
+        $stats = $this->service->getRecoveryStatistics($since);
+
+        // Assert
+        $this->assertArrayHasKey('total_failed', $stats);
+        $this->assertArrayHasKey('recovered', $stats);
+        $this->assertArrayHasKey('permanently_failed', $stats);
+        $this->assertArrayHasKey('recovery_rate', $stats);
+        $this->assertArrayHasKey('period', $stats);
+        // total_failed only counts orders with status 'failed' or 'error', not delivered ones
+        $this->assertEquals(13, $stats['total_failed']); // 10 failed + 3 permanently failed
+        $this->assertEquals(7, $stats['recovered']);
+        $this->assertEquals(3, $stats['permanently_failed']); // 20 orders total
+        $expectedRate = round((7 / 20) * 100, 1);
+        $this->assertEquals($expectedRate, $stats['recovery_rate']);
+
+        // Verify total orders created
+        $this->assertEquals($initialOrderCount + 22, Order::count());
+    }
+}

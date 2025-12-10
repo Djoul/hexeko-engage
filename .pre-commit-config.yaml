@@ -1,0 +1,57 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: detect-aws-credentials
+      - id: detect-private-key
+      - id: check-yaml
+        exclude: ^\.gitlab-ci\.yml$
+
+# Check for secrets commited
+#  - repo: https://github.com/Yelp/detect-secrets
+#    rev: v1.4.0
+#    hooks:
+#      - id: detect-secrets
+
+  # Protect dev branch from direct commits
+  - repo: local
+    hooks:
+      - id: protect-dev-branch
+        name: Protect dev branch
+        entry: .pre-commit/protect-branch.sh
+        language: system
+        pass_filenames: false
+        always_run: true
+
+  # Check for debugging tools in PHP code
+  - repo: local
+    hooks:
+      - id: no-debug-tools
+        name: Check for debugging tools
+        entry: .pre-commit/check-debug-tools.sh
+        language: system
+        pass_filenames: true
+        types: [ php ]
+        exclude: ^_ide_helper\.php$
+
+  # Laravel Pint for PHP code formatting (auto-fix and add to commit)
+  - repo: local
+    hooks:
+      - id: laravel-pint
+        name: Laravel Pint (auto-fix)
+        entry: sh -c 'vendor/bin/pint --config pint.json; git add -u; exit 0'
+        language: system
+        pass_filenames: false
+        types: [ php ]
+
+
+
+  # Rector for PHP code improvements (auto-fix and add to commit)
+  - repo: local
+    hooks:
+      - id: laravel-rector
+        name: Laravel Rector (auto-fix)
+        entry: .pre-commit/rector.sh
+        language: system
+        pass_filenames: false
+        types: [ php ]

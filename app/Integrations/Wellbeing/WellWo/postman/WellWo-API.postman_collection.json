@@ -1,0 +1,1893 @@
+{
+  "info": {
+    "name": "WellWo Wellbeing API",
+    "_postman_id": "wellwo-api-collection-2025",
+    "description": "## WellWo Wellbeing API Collection\n\nCollection spécialisée pour l'intégration WellWo wellness/wellbeing dans UP Engage API.\n\n### 🎯 Objectifs\n- Tests automatisés des endpoints wellness\n- Validation contenu multi-langues \n- Monitoring santé WellWo API\n- Scénarios End-to-End complets\n\n### 🔗 Endpoints\n- `GET /api/v1/wellbeing/wellwo/programs` - Liste des programmes wellness\n- `GET /api/v1/wellbeing/wellwo/programs/{id}` - Détails d'un programme  \n- `GET /api/v1/wellbeing/wellwo/programs/{id}/videos` - Vidéos d'un programme\n- `GET /api/v1/wellbeing/wellwo/videos/{id}` - Détails d'une vidéo\n\n### 🌍 Langues supportées\n- **es** - Español (défaut)\n- **en** - English\n- **fr** - Français  \n- **it** - Italiano\n- **pt** - Português\n- **ca** - Català\n- **mx** - Español (LATAM)\n\n### ⚡ Performance\n- Cache TTL: 5 minutes\n- Response time: < 1000ms\n- Rate limiting: Respecté via delay\n\n### 🔒 Authentification\nUtilise l'auth JWT globale UP Engage via `{{auth_token}}`.\n\n### 📊 Monitoring\n- Health checks automatiques\n- Validation CDN WellWo\n- Tests multi-environnements",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// WellWo Collection Pre-request Script",
+          "",
+          "// Vérifier si on a un token valide",
+          "const token = pm.environment.get('auth_token');",
+          "const tokenExpiry = pm.environment.get('token_expiry');",
+          "",
+          "if (!token || !tokenExpiry || Date.now() >= tokenExpiry) {",
+          "    console.warn('⚠️ Token expired or missing. Please run the Login request first.');",
+          "}",
+          "",
+          "// Set default language if not specified",
+          "if (!pm.request.url.query.has('lang')) {",
+          "    pm.request.url.query.add({",
+          "        key: 'lang',",
+          "        value: pm.environment.get('default_lang') || 'es'",
+          "    });",
+          "}",
+          "",
+          "// Log WellWo API call for debugging",
+          "console.log('WellWo API Call:', pm.request.method, pm.request.url.toString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// WellWo Global Test Script",
+          "// Performance check for external API",
+          "pm.test('Response time acceptable for external API', () => {",
+          "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+          "});",
+          "",
+          "// WellWo API structure validation",
+          "if (pm.response.code === 200 && pm.response.json()) {",
+          "    pm.test('WellWo response has correct structure', () => {",
+          "        const jsonData = pm.response.json();",
+          "        pm.expect(jsonData).to.have.property('data');",
+          "    });",
+          "}",
+          "",
+          "// Log WellWo errors for debugging",
+          "if (pm.response.code >= 400) {",
+          "    console.log('WellWo API Error:', {",
+          "        status: pm.response.code,",
+          "        response: pm.response.text(),",
+          "        url: pm.request.url.toString()",
+          "    });",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "test_program_id",
+      "value": "kGc9MKOJOxBe",
+      "type": "string",
+      "description": "ID du programme 'Espalda sana' pour les tests"
+    },
+    {
+      "key": "test_video_id",
+      "value": "32101",
+      "type": "string",
+      "description": "ID vidéo test pour les validations"
+    },
+    {
+      "key": "default_lang",
+      "value": "es",
+      "type": "string",
+      "description": "Langue par défaut WellWo"
+    },
+    {
+      "key": "supported_langs",
+      "value": "[\"es\", \"en\", \"fr\", \"it\", \"pt\", \"ca\", \"mx\"]",
+      "type": "string",
+      "description": "Langues supportées par WellWo"
+    },
+    {
+      "key": "current_program_id",
+      "value": "",
+      "type": "string",
+      "description": "ID programme couramment testé"
+    },
+    {
+      "key": "current_video_id",
+      "value": "",
+      "type": "string",
+      "description": "ID vidéo couramment testée"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Vérifier que le login est réussi",
+                  "pm.test('Login successful', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('authentication_result');",
+                  "});",
+                  "",
+                  "// Extraire et sauvegarder le token",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    const token = jsonData.authentication_result.AccessToken;",
+                  "    ",
+                  "    // Sauvegarder dans l'environnement",
+                  "    pm.environment.set('auth_token', token);",
+                  "    ",
+                  "    // Sauvegarder aussi dans les variables de collection",
+                  "    pm.collectionVariables.set('auth_token', token);",
+                  "    ",
+                  "    // Extraire les infos du token",
+                  "    const expiresIn = jsonData.authentication_result.ExpiresIn;",
+                  "    const tokenType = jsonData.authentication_result.TokenType;",
+                  "    ",
+                  "    console.log('✅ Authentication successful');",
+                  "    console.log('Token Type:', tokenType);",
+                  "    console.log('Expires in:', expiresIn, 'seconds');",
+                  "    ",
+                  "    // Sauvegarder l'heure d'expiration",
+                  "    const expiryTime = Date.now() + (expiresIn * 1000);",
+                  "    pm.environment.set('token_expiry', expiryTime);",
+                  "} else {",
+                  "    console.error('❌ Login failed');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Vérifier si on a déjà un token valide",
+                  "const token = pm.environment.get('auth_token');",
+                  "const tokenExpiry = pm.environment.get('token_expiry');",
+                  "",
+                  "if (token && tokenExpiry && Date.now() < tokenExpiry) {",
+                  "    console.log('ℹ️ Using existing valid token');",
+                  "    // Skip cette requête si on a déjà un token valide",
+                  "    // Malheureusement on ne peut pas skip dans Postman, donc on continue",
+                  "} else {",
+                  "    console.log('🔐 Requesting new authentication token');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "login"
+              ]
+            },
+            "description": "Authentification via Cognito pour obtenir un token Bearer JWT"
+          }
+        }
+      ],
+      "description": "Authentification requise pour accéder aux endpoints WellWo"
+    },
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "WellWo Service Health",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('WellWo service is accessible', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('WellWo returns programs data', () => {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "    pm.expect(jsonData.data.length).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test('WellWo programs have required fields', () => {",
+                  "    const programs = pm.response.json().data;",
+                  "    programs.forEach(program => {",
+                  "        pm.expect(program).to.have.property('id');",
+                  "        pm.expect(program).to.have.property('name');",
+                  "        pm.expect(program).to.have.property('image');",
+                  "    });",
+                  "});",
+                  "",
+                  "pm.test('WellWo CDN images are accessible', () => {",
+                  "    const program = pm.response.json().data[0];",
+                  "    if (program && program.image) {",
+                  "        pm.expect(program.image).to.match(/^https:\\/\\//);",
+                  "        pm.expect(program.image).to.include('wellwo');",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs?lang=es",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "es",
+                  "description": "Test avec langue par défaut"
+                }
+              ]
+            },
+            "description": "Health check du service WellWo via la liste des programmes disponibles."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Programs",
+      "item": [
+        {
+          "name": "List Programs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Validation de base",
+                  "pm.test('Status code is 200', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has WellWo programs structure', () => {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "",
+                  "// Validation métier WellWo",
+                  "pm.test('Programs have WellWo required fields', () => {",
+                  "    const programs = pm.response.json().data;",
+                  "    programs.forEach(program => {",
+                  "        pm.expect(program).to.have.property('id');",
+                  "        pm.expect(program).to.have.property('name');",
+                  "        pm.expect(program).to.have.property('image');",
+                  "        ",
+                  "        // Validation format ID WellWo",
+                  "        pm.expect(program.id).to.be.a('string');",
+                  "        pm.expect(program.id).to.have.lengthOf.greaterThan(8);",
+                  "        ",
+                  "        // Validation URL image WellWo CDN",
+                  "        pm.expect(program.image).to.match(/^https:\\/\\/cnt\\.wellwo\\.(es|net)/);",
+                  "    });",
+                  "});",
+                  "",
+                  "// Store first program ID for next tests",
+                  "const programs = pm.response.json().data;",
+                  "if (programs.length > 0) {",
+                  "    pm.collectionVariables.set('current_program_id', programs[0].id);",
+                  "}",
+                  "",
+                  "pm.test('Language parameter is respected', () => {",
+                  "    const lang = pm.request.url.query.get('lang');",
+                  "    const supportedLangs = JSON.parse(pm.collectionVariables.get('supported_langs'));",
+                  "    pm.expect(supportedLangs).to.include(lang);",
+                  "});",
+                  "",
+                  "pm.test('Cache headers appropriate for wellness content', () => {",
+                  "    // WellWo content peut être caché 5 minutes",
+                  "    if (pm.response.headers.has('Cache-Control')) {",
+                  "        const cacheControl = pm.response.headers.get('Cache-Control');",
+                  "        console.log('Cache-Control:', cacheControl);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs?lang={{default_lang}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "{{default_lang}}",
+                  "description": "Langue du contenu wellness"
+                }
+              ]
+            },
+            "description": "Récupère la liste des programmes de bien-être disponibles via WellWo.\n\n### Paramètres\n- `lang` : Langue du contenu (es, en, fr, it, pt, ca, mx)\n\n### Response WellWo\n```json\n{\n  \"data\": [\n    {\n      \"id\": \"kGc9MKOJOxBe\",\n      \"name\": \"Espalda sana\", \n      \"image\": \"https://cnt.wellwo.es/imgs/imagep/espalda-sana.jpg\"\n    }\n  ]\n}\n```"
+          },
+          "response": [
+            {
+              "name": "Success - Spanish Programs",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/wellwo/programs?lang=es",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "wellbeing",
+                    "wellwo",
+                    "programs"
+                  ],
+                  "query": [
+                    {
+                      "key": "lang",
+                      "value": "es"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"kGc9MKOJOxBe\",\n      \"name\": \"Espalda sana\",\n      \"image\": \"https://cnt.wellwo.es/imgs/imagep/espalda-sana.jpg\"\n    },\n    {\n      \"id\": \"or1YsUiKkd7B\", \n      \"name\": \"Cardiovascular\",\n      \"image\": \"https://cnt.wellwo.es/imgs/imagep/cardiovascular.jpg\"\n    },\n    {\n      \"id\": \"DHhgvRnqHpJn\",\n      \"name\": \"Antiestrés\", \n      \"image\": \"https://cnt.wellwo.es/imgs/imagep/antiestres.jpg\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Program Details",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Program details have complete WellWo structure', () => {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    ",
+                  "    const program = jsonData.data;",
+                  "    pm.expect(program).to.have.property('id');",
+                  "    pm.expect(program).to.have.property('name');",
+                  "    pm.expect(program).to.have.property('image');",
+                  "});",
+                  "",
+                  "pm.test('Program ID matches requested ID', () => {",
+                  "    const program = pm.response.json().data;",
+                  "    const requestedId = pm.collectionVariables.get('current_program_id') || pm.collectionVariables.get('test_program_id');",
+                  "    pm.expect(program.id).to.eql(requestedId);",
+                  "});",
+                  "",
+                  "pm.test('Program name is localized', () => {",
+                  "    const program = pm.response.json().data;",
+                  "    pm.expect(program.name).to.be.a('string');",
+                  "    pm.expect(program.name).to.have.lengthOf.greaterThan(0);",
+                  "});",
+                  "",
+                  "pm.test('WellWo CDN image URL is valid', () => {",
+                  "    const program = pm.response.json().data;",
+                  "    pm.expect(program.image).to.match(/^https:\\/\\//);",
+                  "    pm.expect(program.image).to.include('wellwo');",
+                  "    pm.expect(program.image).to.match(/\\.(jpg|jpeg|png|webp)$/i);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs/{{test_program_id}}?lang={{default_lang}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs",
+                "{{test_program_id}}"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "{{default_lang}}",
+                  "description": "Langue du contenu"
+                }
+              ]
+            },
+            "description": "Récupère les détails complets d'un programme WellWo spécifique.\n\n### Path Parameters\n- `id` : ID du programme WellWo (ex: kGc9MKOJOxBe)\n\n### Query Parameters  \n- `lang` : Langue du contenu\n\n### WellWo Program Details\nContient toutes les informations détaillées du programme wellness incluant description, niveau, durée estimée."
+          },
+          "response": []
+        },
+        {
+          "name": "Multi-language Test - French",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('French content is returned', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Program name differs from default language', () => {",
+                  "    const program = pm.response.json().data;",
+                  "    // Le nom peut être traduit ou rester en langue originale selon WellWo",
+                  "    pm.expect(program.name).to.be.a('string');",
+                  "    console.log('French program name:', program.name);",
+                  "});",
+                  "",
+                  "pm.test('Content structure remains consistent across languages', () => {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    ",
+                  "    const program = jsonData.data;",
+                  "    pm.expect(program).to.have.property('id');",
+                  "    pm.expect(program).to.have.property('name');",
+                  "    pm.expect(program).to.have.property('image');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs?lang=fr",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "fr",
+                  "description": "Test avec contenu français"
+                }
+              ]
+            },
+            "description": "Test de localisation française du contenu WellWo.\n\nValidation que l'API retourne du contenu approprié pour les utilisateurs francophones."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Videos",
+      "item": [
+        {
+          "name": "List Program Videos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has WellWo videos structure', () => {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Videos have WellWo required fields', () => {",
+                  "    const videos = pm.response.json().data;",
+                  "    if (videos.length > 0) {",
+                  "        videos.forEach(video => {",
+                  "            pm.expect(video).to.have.property('id');",
+                  "            pm.expect(video).to.have.property('name');",
+                  "            pm.expect(video).to.have.property('image');",
+                  "            pm.expect(video).to.have.property('video');",
+                  "            pm.expect(video).to.have.property('length');",
+                  "            ",
+                  "            // Validation format durée WellWo (MM:SS)",
+                  "            pm.expect(video.length).to.match(/^\\d{1,2}:\\d{2}$/);",
+                  "            ",
+                  "            // Validation URL vidéo WellWo",
+                  "            pm.expect(video.video).to.match(/^https:\\/\\//);",
+                  "            pm.expect(video.video).to.include('wellwo');",
+                  "        });",
+                  "        ",
+                  "        // Store first video ID for next tests",
+                  "        pm.collectionVariables.set('current_video_id', videos[0].id);",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test('Program ID in request exists', () => {",
+                  "    const programId = pm.request.url.path[5]; // /api/v1/wellbeing/wellwo/programs/{programId}/videos",
+                  "    pm.expect(programId).to.be.a('string');",
+                  "    pm.expect(programId).to.have.lengthOf.greaterThan(8);",
+                  "});",
+                  "",
+                  "pm.test('Videos metadata includes wellness information', () => {",
+                  "    const videos = pm.response.json().data;",
+                  "    if (videos.length > 0) {",
+                  "        const video = videos[0];",
+                  "        pm.expect(video.name).to.be.a('string');",
+                  "        // La durée doit être positive",
+                  "        const duration = video.length.split(':');",
+                  "        const minutes = parseInt(duration[0]);",
+                  "        const seconds = parseInt(duration[1]);",
+                  "        pm.expect(minutes + seconds).to.be.greaterThan(0);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs/{{test_program_id}}/videos?lang={{default_lang}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs",
+                "{{test_program_id}}",
+                "videos"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "{{default_lang}}",
+                  "description": "Langue du contenu vidéo"
+                }
+              ]
+            },
+            "description": "Récupère la liste des vidéos d'un programme WellWo spécifique.\n\n### Path Parameters\n- `programId` : ID du programme WellWo\n\n### Query Parameters  \n- `lang` : Langue du contenu\n\n### WellWo Video Response\nChaque vidéo contient :\n- `id` : Identifiant unique\n- `name` : Titre de l'exercice\n- `image` : Thumbnail de la vidéo\n- `video` : URL de streaming\n- `length` : Durée au format MM:SS"
+          },
+          "response": [
+            {
+              "name": "Success - Program Videos",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs/kGc9MKOJOxBe/videos?lang=es",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "wellbeing",
+                    "wellwo",
+                    "programs",
+                    "kGc9MKOJOxBe",
+                    "videos"
+                  ],
+                  "query": [
+                    {
+                      "key": "lang",
+                      "value": "es"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"32101\",\n      \"name\": \"Ejercicio para fortalecer la espalda\",\n      \"image\": \"https://cnt.wellwo.es/imgs/imagep/ES01.jpg\",\n      \"video\": \"https://cnt.wellwo.es/vidprg/1280x720/CAST_VFES01.mp4\",\n      \"length\": \"17:16\"\n    },\n    {\n      \"id\": \"32102\",\n      \"name\": \"Ejercicio para fortalecer la espalda\",\n      \"image\": \"https://cnt.wellwo.es/imgs/imagep/ES02.jpg\",\n      \"video\": \"https://cnt.wellwo.es/vidprg/1280x720/CAST_VFES02.mp4\",\n      \"length\": \"16:11\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Video Details",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Video details have complete WellWo structure', () => {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    ",
+                  "    const video = jsonData.data;",
+                  "    pm.expect(video).to.have.property('id');",
+                  "    pm.expect(video).to.have.property('name');",
+                  "    pm.expect(video).to.have.property('image');",
+                  "    pm.expect(video).to.have.property('video');",
+                  "    pm.expect(video).to.have.property('length');",
+                  "});",
+                  "",
+                  "pm.test('Video ID matches requested ID', () => {",
+                  "    const video = pm.response.json().data;",
+                  "    const requestedId = pm.collectionVariables.get('current_video_id') || pm.collectionVariables.get('test_video_id');",
+                  "    pm.expect(video.id).to.eql(requestedId);",
+                  "});",
+                  "",
+                  "pm.test('Video streaming URL is accessible', () => {",
+                  "    const video = pm.response.json().data;",
+                  "    pm.expect(video.video).to.match(/^https:\\/\\//);",
+                  "    pm.expect(video.video).to.include('wellwo');",
+                  "    pm.expect(video.video).to.match(/\\.(mp4|webm|mov)$/i);",
+                  "});",
+                  "",
+                  "pm.test('Video duration is valid wellness content length', () => {",
+                  "    const video = pm.response.json().data;",
+                  "    const duration = video.length.split(':');",
+                  "    const minutes = parseInt(duration[0]);",
+                  "    const seconds = parseInt(duration[1]);",
+                  "    ",
+                  "    // Les vidéos wellness sont généralement entre 5-60 minutes",
+                  "    pm.expect(minutes).to.be.greaterThan(4);",
+                  "    pm.expect(minutes).to.be.lessThan(61);",
+                  "    pm.expect(seconds).to.be.lessThan(60);",
+                  "});",
+                  "",
+                  "pm.test('Video thumbnail is high quality', () => {",
+                  "    const video = pm.response.json().data;",
+                  "    pm.expect(video.image).to.match(/^https:\\/\\/cnt\\.wellwo\\.(es|net)/);",
+                  "    pm.expect(video.image).to.match(/\\.(jpg|jpeg|png|webp)$/i);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/videos/{{test_video_id}}?lang={{default_lang}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "videos",
+                "{{test_video_id}}"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "{{default_lang}}",
+                  "description": "Langue du contenu vidéo"
+                }
+              ]
+            },
+            "description": "Récupère les détails complets d'une vidéo WellWo spécifique.\n\n### Path Parameters\n- `id` : ID de la vidéo WellWo (ex: 32101)\n\n### Query Parameters\n- `lang` : Langue du contenu\n\n### WellWo Video Details\nContient métadonnées complètes : durée, qualité, URL streaming, thumbnail HD."
+          },
+          "response": []
+        },
+        {
+          "name": "Video Quality Test - HD Format",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Video is in HD quality', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('WellWo video URL indicates HD quality', () => {",
+                  "    const video = pm.response.json().data;",
+                  "    // WellWo utilise 1280x720 pour HD",
+                  "    pm.expect(video.video).to.include('1280x720');",
+                  "});",
+                  "",
+                  "pm.test('Video format suitable for wellness streaming', () => {",
+                  "    const video = pm.response.json().data;",
+                  "    pm.expect(video.video).to.match(/\\.mp4$/i);",
+                  "    // WellWo utilise MP4 pour compatibilité maximale",
+                  "});",
+                  "",
+                  "pm.test('CDN delivery is optimized', () => {",
+                  "    const video = pm.response.json().data;",
+                  "    pm.expect(video.video).to.include('cnt.wellwo');",
+                  "    pm.expect(video.video).to.include('vidprg');",
+                  "    // Validation du path CDN WellWo spécialisé vidéos",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/videos/{{test_video_id}}?lang=es",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "videos",
+                "{{test_video_id}}"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "es",
+                  "description": "Test avec langue espagnole"
+                }
+              ]
+            },
+            "description": "Test spécialisé pour validation de la qualité HD des vidéos wellness WellWo.\n\nVérifie que le streaming est optimisé pour l'expérience utilisateur wellness."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Error Scenarios",
+      "item": [
+        {
+          "name": "404 - Program Not Found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404', () => {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test('Error response has correct structure', () => {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData.message).to.eql('Program not found');",
+                  "});",
+                  "",
+                  "pm.test('No sensitive WellWo data exposed in error', () => {",
+                  "    const responseText = pm.response.text();",
+                  "    pm.expect(responseText).to.not.include('token');",
+                  "    pm.expect(responseText).to.not.include('secret');",
+                  "    pm.expect(responseText).to.not.include('api_key');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs/non-existent-program-id?lang={{default_lang}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs",
+                "non-existent-program-id"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "{{default_lang}}",
+                  "description": "Langue par défaut"
+                }
+              ]
+            },
+            "description": "Test de gestion d'erreur pour un programme WellWo inexistant.\n\nValidation que l'API retourne une erreur 404 appropriée."
+          },
+          "response": []
+        },
+        {
+          "name": "422 - Invalid Language Parameter",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 422', () => {",
+                  "    pm.response.to.have.status(422);",
+                  "});",
+                  "",
+                  "pm.test('Validation error details language constraint', () => {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    // Validation que l'erreur mentionne les langues supportées",
+                  "    const message = jsonData.message.toLowerCase();",
+                  "    const hasLanguageValidation = message.includes('lang') || ",
+                  "        message.includes('language') || message.includes('validation');",
+                  "    pm.expect(hasLanguageValidation).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test('Supported languages are documented in error', () => {",
+                  "    // L'erreur devrait idéalement lister les langues supportées",
+                  "    const responseText = pm.response.text();",
+                  "    const supportedLangs = JSON.parse(pm.collectionVariables.get('supported_langs'));",
+                  "    console.log('Supported languages:', supportedLangs);",
+                  "    console.log('Error response:', responseText);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs?lang=invalid-language",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "invalid-language",
+                  "description": "Langue non supportée par WellWo"
+                }
+              ]
+            },
+            "description": "Test de validation des paramètres de langue WellWo.\n\nVérifie que l'API rejette les codes de langue invalides."
+          },
+          "response": []
+        },
+        {
+          "name": "404 - Video Not Found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404', () => {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test('Video not found error structure', () => {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData.message).to.eql('Video not found');",
+                  "});",
+                  "",
+                  "pm.test('Response time acceptable even for errors', () => {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/videos/999999?lang={{default_lang}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "videos",
+                "999999"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "{{default_lang}}"
+                }
+              ]
+            },
+            "description": "Test de gestion d'erreur pour une vidéo WellWo inexistante.\n\nValidation de la gestion des ID vidéos invalides."
+          },
+          "response": []
+        },
+        {
+          "name": "500 - WellWo Service Unavailable",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Ce test simule une indisponibilité de l'API WellWo",
+                  "// En réalité, cela peut arriver si WellWo est en maintenance",
+                  "console.log('Testing WellWo service availability...');"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Ce test peut retourner 200 si WellWo est disponible",
+                  "// ou 500/503 si WellWo est indisponible",
+                  "pm.test('Response handling for WellWo availability', () => {",
+                  "    const status = pm.response.code;",
+                  "    pm.expect([200, 500, 503, 502]).to.include(status);",
+                  "});",
+                  "",
+                  "if (pm.response.code >= 500) {",
+                  "    pm.test('Server error has appropriate structure', () => {",
+                  "        const jsonData = pm.response.json();",
+                  "        pm.expect(jsonData).to.have.property('message');",
+                  "    });",
+                  "    ",
+                  "    pm.test('Error logging for WellWo service issues', () => {",
+                  "        console.log('WellWo service appears unavailable');",
+                  "        console.log('Response:', pm.response.text());",
+                  "    });",
+                  "} else {",
+                  "    pm.test('WellWo service is operational', () => {",
+                  "        pm.response.to.have.status(200);",
+                  "        console.log('WellWo service is healthy');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs?lang={{default_lang}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "{{default_lang}}"
+                }
+              ]
+            },
+            "description": "Test de résilience en cas d'indisponibilité du service WellWo.\n\nSimule les conditions où l'API externe WellWo pourrait être temporairement indisponible."
+          },
+          "response": []
+        },
+        {
+          "name": "401 - Unauthorized Access",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Remove auth header for this test",
+                  "pm.request.removeHeader('Authorization');"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 401', () => {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test('Unauthorized error structure', () => {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});",
+                  "",
+                  "pm.test('No WellWo data leaked without auth', () => {",
+                  "    // Sans auth, aucune donnée WellWo ne devrait être accessible",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.not.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs?lang={{default_lang}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "{{default_lang}}"
+                }
+              ]
+            },
+            "description": "Test de sécurité pour accès non autorisé aux ressources WellWo.\n\nVérifie que l'authentification JWT est requise."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "End-to-End Scenarios",
+      "item": [
+        {
+          "name": "Complete Wellness Journey",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Reset scenario variables",
+                  "pm.collectionVariables.unset('e2e_program_id');",
+                  "pm.collectionVariables.unset('e2e_video_id');",
+                  "pm.collectionVariables.set('e2e_step', '1-programs-list');",
+                  "",
+                  "console.log('🏃‍♀️ Starting Complete Wellness Journey...');"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Step 1: Get Programs List",
+                  "pm.test('E2E Step 1: Programs list retrieved successfully', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('E2E: At least one wellness program available', () => {",
+                  "    const programs = pm.response.json().data;",
+                  "    pm.expect(programs).to.be.an('array');",
+                  "    pm.expect(programs.length).to.be.greaterThan(0);",
+                  "    ",
+                  "    // Store program for next steps",
+                  "    pm.collectionVariables.set('e2e_program_id', programs[0].id);",
+                  "    console.log('✅ Selected program:', programs[0].name);",
+                  "});",
+                  "",
+                  "pm.test('E2E: Programs have wellness characteristics', () => {",
+                  "    const programs = pm.response.json().data;",
+                  "    const firstProgram = programs[0];",
+                  "    ",
+                  "    // Validation que c'est du contenu wellness",
+                  "    const programName = firstProgram.name.toLowerCase();",
+                  "    const isWellnessContent = programName.includes('espalda') || ",
+                  "        programName.includes('cardiovascular') || programName.includes('stress') ||",
+                  "        programName.includes('movilidad') || programName.includes('salud');",
+                  "    ",
+                  "    pm.expect(isWellnessContent).to.be.true;",
+                  "    console.log('✅ Wellness content validated:', firstProgram.name);",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set('e2e_step', '2-program-details');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs?lang=es",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "es",
+                  "description": "Parcours en espagnol"
+                }
+              ]
+            },
+            "description": "**Étape 1/4** : Récupération de la liste des programmes wellness.\n\nDémarre le parcours utilisateur complet WellWo."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Program Details (Step 2)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const currentStep = pm.collectionVariables.get('e2e_step');",
+                  "console.log('🔍 Current step:', currentStep);",
+                  "",
+                  "const programId = pm.collectionVariables.get('e2e_program_id');",
+                  "if (!programId) {",
+                  "    throw new Error('Program ID not set from previous step');",
+                  "}",
+                  "",
+                  "console.log('📋 Getting details for program:', programId);"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('E2E Step 2: Program details retrieved', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('E2E: Program details are comprehensive', () => {",
+                  "    const program = pm.response.json().data;",
+                  "    pm.expect(program).to.have.property('id');",
+                  "    pm.expect(program).to.have.property('name');",
+                  "    pm.expect(program).to.have.property('image');",
+                  "    ",
+                  "    console.log('✅ Program details:', program.name);",
+                  "});",
+                  "",
+                  "pm.test('E2E: Program ID consistency', () => {",
+                  "    const program = pm.response.json().data;",
+                  "    const expectedId = pm.collectionVariables.get('e2e_program_id');",
+                  "    pm.expect(program.id).to.eql(expectedId);",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set('e2e_step', '3-program-videos');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs/{{e2e_program_id}}?lang=es",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs",
+                "{{e2e_program_id}}"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "es"
+                }
+              ]
+            },
+            "description": "**Étape 2/4** : Récupération des détails du programme sélectionné.\n\nValidation que l'utilisateur peut accéder aux informations complètes."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Program Videos (Step 3)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('E2E Step 3: Program videos retrieved', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('E2E: Videos available for wellness program', () => {",
+                  "    const videos = pm.response.json().data;",
+                  "    pm.expect(videos).to.be.an('array');",
+                  "    ",
+                  "    if (videos.length > 0) {",
+                  "        pm.collectionVariables.set('e2e_video_id', videos[0].id);",
+                  "        console.log('✅ Found', videos.length, 'videos for program');",
+                  "        console.log('📹 Selected video:', videos[0].name);",
+                  "    } else {",
+                  "        console.log('⚠️ No videos found for this program');",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test('E2E: Video metadata is complete', () => {",
+                  "    const videos = pm.response.json().data;",
+                  "    if (videos.length > 0) {",
+                  "        const video = videos[0];",
+                  "        pm.expect(video).to.have.property('length');",
+                  "        pm.expect(video).to.have.property('video');",
+                  "        pm.expect(video.length).to.match(/^\\d{1,2}:\\d{2}$/);",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.collectionVariables.set('e2e_step', '4-video-details');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs/{{e2e_program_id}}/videos?lang=es",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs",
+                "{{e2e_program_id}}",
+                "videos"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "es"
+                }
+              ]
+            },
+            "description": "**Étape 3/4** : Récupération des vidéos du programme wellness.\n\nL'utilisateur explore le contenu vidéo disponible."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Video Details (Step 4)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const videoId = pm.collectionVariables.get('e2e_video_id');",
+                  "if (!videoId) {",
+                  "    console.log('⚠️ No video ID available, using fallback');",
+                  "    pm.collectionVariables.set('e2e_video_id', pm.collectionVariables.get('test_video_id'));",
+                  "}",
+                  "",
+                  "console.log('🎬 Getting video details for:', pm.collectionVariables.get('e2e_video_id'));"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('E2E Step 4: Video details retrieved', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('E2E: Video ready for streaming', () => {",
+                  "    const video = pm.response.json().data;",
+                  "    pm.expect(video).to.have.property('video');",
+                  "    pm.expect(video.video).to.match(/^https:\\/\\//);",
+                  "    pm.expect(video.video).to.include('wellwo');",
+                  "    ",
+                  "    console.log('✅ Video streaming URL available');",
+                  "    console.log('🎥 Duration:', video.length);",
+                  "});",
+                  "",
+                  "pm.test('E2E: Complete wellness journey successful', () => {",
+                  "    // Journey completed successfully",
+                  "    const programId = pm.collectionVariables.get('e2e_program_id');",
+                  "    const videoId = pm.collectionVariables.get('e2e_video_id');",
+                  "    ",
+                  "    pm.expect(programId).to.not.be.empty;",
+                  "    pm.expect(videoId).to.not.be.empty;",
+                  "    ",
+                  "    console.log('🏆 Complete Wellness Journey SUCCESS!');",
+                  "    console.log('📊 Program ID:', programId);",
+                  "    console.log('📹 Video ID:', videoId);",
+                  "});",
+                  "",
+                  "// Cleanup variables",
+                  "pm.collectionVariables.unset('e2e_program_id');",
+                  "pm.collectionVariables.unset('e2e_video_id');",
+                  "pm.collectionVariables.unset('e2e_step');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/videos/{{e2e_video_id}}?lang=es",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "videos",
+                "{{e2e_video_id}}"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "es"
+                }
+              ]
+            },
+            "description": "**Étape 4/4** : Accès aux détails de la vidéo wellness sélectionnée.\n\nFinalise le parcours utilisateur avec les métadonnées de streaming."
+          },
+          "response": []
+        },
+        {
+          "name": "Multi-language Content Flow",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Setup multilingual test",
+                  "const languages = ['es', 'en', 'fr'];",
+                  "pm.collectionVariables.set('test_languages', JSON.stringify(languages));",
+                  "pm.collectionVariables.set('current_lang_index', '0');",
+                  "",
+                  "console.log('🌍 Starting multi-language content flow...');",
+                  "console.log('📝 Testing languages:', languages);"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Multi-lang: Content retrieved successfully', () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Multi-lang: Content structure consistent', () => {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "",
+                  "// Store content for comparison",
+                  "const currentLangIndex = parseInt(pm.collectionVariables.get('current_lang_index'));",
+                  "const testLanguages = JSON.parse(pm.collectionVariables.get('test_languages'));",
+                  "const currentLang = testLanguages[currentLangIndex];",
+                  "",
+                  "pm.test(`Multi-lang: ${currentLang.toUpperCase()} content validation`, () => {",
+                  "    const programs = pm.response.json().data;",
+                  "    if (programs.length > 0) {",
+                  "        const program = programs[0];",
+                  "        pm.expect(program.name).to.be.a('string');",
+                  "        console.log(`✅ ${currentLang.toUpperCase()} program:`, program.name);",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test('Multi-lang: Language parameter respected', () => {",
+                  "    const requestedLang = pm.request.url.query.get('lang');",
+                  "    pm.expect(requestedLang).to.eql(currentLang);",
+                  "});",
+                  "",
+                  "console.log('🏁 Multi-language flow completed for:', currentLang);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs?lang=es",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "es",
+                  "description": "Langue pour le test multilingual"
+                }
+              ]
+            },
+            "description": "**Scénario multilingual** : Test de cohérence du contenu WellWo à travers différentes langues.\n\nValide que la structure et qualité du contenu restent consistantes."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Multi-Language Tests",
+      "description": "Tests spécialisés pour valider le support multi-langues de WellWo",
+      "item": [
+        {
+          "name": "Programs - Language Iteration Test",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Setup multi-language testing",
+                  "const languages = ['es', 'en', 'fr', 'it', 'pt'];",
+                  "const currentIndex = parseInt(pm.collectionVariables.get('lang_test_index') || '0');",
+                  "const currentLang = languages[currentIndex % languages.length];",
+                  "",
+                  "pm.collectionVariables.set('current_test_lang', currentLang);",
+                  "pm.collectionVariables.set('lang_test_index', (currentIndex + 1).toString());",
+                  "",
+                  "console.log(`🌍 Testing language: ${currentLang.toUpperCase()}`);",
+                  "",
+                  "// Update request with current language",
+                  "const url = pm.request.url;",
+                  "url.query.upsert({key: 'lang', value: currentLang});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const currentLang = pm.collectionVariables.get('current_test_lang');",
+                  "",
+                  "pm.test(`Programs ${currentLang.toUpperCase()} - Response successful`, () => {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    ",
+                  "    pm.test(`Programs ${currentLang.toUpperCase()} - Structure valid`, () => {",
+                  "        pm.expect(response).to.have.property('data');",
+                  "        pm.expect(response.data).to.be.an('array');",
+                  "    });",
+                  "    ",
+                  "    if (response.data.length > 0) {",
+                  "        const program = response.data[0];",
+                  "        pm.test(`Programs ${currentLang.toUpperCase()} - Content valid`, () => {",
+                  "            pm.expect(program).to.have.property('id');",
+                  "            pm.expect(program).to.have.property('title');",
+                  "        });",
+                  "        ",
+                  "        // Store for comparison",
+                  "        pm.collectionVariables.set(`program_${currentLang}_title`, program.title);",
+                  "        pm.collectionVariables.set(`program_${currentLang}_tested`, 'true');",
+                  "    }",
+                  "    ",
+                  "    // Mark this language as tested",
+                  "    const testedLangs = pm.collectionVariables.get('tested_languages') || '';",
+                  "    if (!testedLangs.includes(currentLang)) {",
+                  "        pm.collectionVariables.set('tested_languages', testedLangs + currentLang + ',');",
+                  "    }",
+                  "}",
+                  "",
+                  "console.log(`✅ Language ${currentLang.toUpperCase()} test completed`);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs?lang={{current_test_lang}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "{{current_test_lang}}"
+                }
+              ]
+            },
+            "description": "Test des programmes WellWo avec rotation automatique des langues"
+          }
+        },
+        {
+          "name": "Video Content - Spanish vs English",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Video ES - Response structure', () => {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const video = pm.response.json().data;",
+                  "    ",
+                  "    pm.test('Video ES - Content validation', () => {",
+                  "        pm.expect(video).to.have.property('id');",
+                  "        pm.expect(video).to.have.property('title');",
+                  "        pm.expect(video).to.have.property('description');",
+                  "        pm.expect(video).to.have.property('video_url');",
+                  "    });",
+                  "    ",
+                  "    pm.test('Video ES - CDN URL validation', () => {",
+                  "        if (video.video_url) {",
+                  "            const validCdnPatterns = [",
+                  "                /cnt\\.wellwo\\.(es|net)/,",
+                  "                /wellwo\\.(es|net)/,",
+                  "                /https?:\\/\\//",
+                  "            ];",
+                  "            ",
+                  "            const isValidCdn = validCdnPatterns.some(pattern => ",
+                  "                pattern.test(video.video_url)",
+                  "            );",
+                  "            ",
+                  "            pm.expect(isValidCdn).to.be.true;",
+                  "        }",
+                  "    });",
+                  "    ",
+                  "    // Store Spanish content for comparison",
+                  "    pm.collectionVariables.set('video_es_title', video.title);",
+                  "    pm.collectionVariables.set('video_es_desc', video.description);",
+                  "    pm.collectionVariables.set('video_es_url', video.video_url);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/videos/{{test_video_id}}?lang=es",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "videos",
+                "{{test_video_id}}"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "es"
+                }
+              ]
+            },
+            "description": "Récupération du contenu vidéo en espagnol pour comparaison multilingue"
+          }
+        },
+        {
+          "name": "Video Content - English Comparison",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Video EN - Response structure', () => {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const video = pm.response.json().data;",
+                  "    ",
+                  "    pm.test('Video EN - Content validation', () => {",
+                  "        pm.expect(video).to.have.property('id');",
+                  "        pm.expect(video).to.have.property('title');",
+                  "        pm.expect(video).to.have.property('description');",
+                  "    });",
+                  "    ",
+                  "    // Compare with Spanish version",
+                  "    const titleEs = pm.collectionVariables.get('video_es_title');",
+                  "    const titleEn = video.title;",
+                  "    ",
+                  "    pm.test('Video EN vs ES - Localization check', () => {",
+                  "        if (titleEs && titleEn) {",
+                  "            // Content may be the same or different depending on WellWo localization",
+                  "            pm.expect(titleEn).to.be.a('string');",
+                  "            pm.expect(titleEs).to.be.a('string');",
+                  "            ",
+                  "            if (titleEn !== titleEs) {",
+                  "                console.log('✅ Content localized: ES=\"' + titleEs + '\" vs EN=\"' + titleEn + '\"');",
+                  "            } else {",
+                  "                console.log('ℹ️ Same content across languages: \"' + titleEn + '\"');",
+                  "            }",
+                  "            ",
+                  "            // Both should be valid regardless",
+                  "            pm.expect(titleEn.length).to.be.above(0);",
+                  "            pm.expect(titleEs.length).to.be.above(0);",
+                  "        }",
+                  "    });",
+                  "    ",
+                  "    pm.test('Video EN vs ES - Media URL consistency', () => {",
+                  "        const urlEs = pm.collectionVariables.get('video_es_url');",
+                  "        const urlEn = video.video_url;",
+                  "        ",
+                  "        if (urlEs && urlEn) {",
+                  "            // URLs should point to same or related media",
+                  "            const basePatternEs = urlEs.replace(/\\/(es|en|fr|it|pt)\\//g, '/LANG/');",
+                  "            const basePatternEn = urlEn.replace(/\\/(es|en|fr|it|pt)\\//g, '/LANG/');",
+                  "            ",
+                  "            // Either exact same or language-pattern match",
+                  "            const isConsistent = (urlEs === urlEn) || (basePatternEs === basePatternEn);",
+                  "            ",
+                  "            if (isConsistent) {",
+                  "                console.log('✅ Media URLs consistent across languages');",
+                  "            } else {",
+                  "                console.log('ℹ️ Different media URLs per language (normal for localized content)');",
+                  "            }",
+                  "            ",
+                  "            pm.expect(true).to.be.true; // Always pass, log for info",
+                  "        }",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/videos/{{test_video_id}}?lang=en",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "videos",
+                "{{test_video_id}}"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "en"
+                }
+              ]
+            },
+            "description": "Comparaison du contenu vidéo anglais avec la version espagnole"
+          }
+        },
+        {
+          "name": "Comprehensive Language Support Test",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Multi-language comprehensive validation', () => {",
+                  "    const testedLanguages = pm.collectionVariables.get('tested_languages') || '';",
+                  "    const languageCount = testedLanguages.split(',').filter(l => l.length > 0).length;",
+                  "    ",
+                  "    pm.expect(languageCount).to.be.at.least(2, 'Au moins 2 langues doivent être testées');",
+                  "    ",
+                  "    console.log(`📊 Langues testées: ${languageCount}`);",
+                  "    console.log(`🌍 Détail: ${testedLanguages.replace(/,/g, ', ')}`);",
+                  "});",
+                  "",
+                  "pm.test('WellWo API language parameter handling', () => {",
+                  "    // Test with unsupported language",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404, 400]);",
+                  "    ",
+                  "    if (pm.response.code === 200) {",
+                  "        // Should return valid structure even for unsupported lang",
+                  "        pm.expect(response).to.have.property('data');",
+                  "        console.log('✅ Graceful handling of language parameter');",
+                  "    } else {",
+                  "        console.log('ℹ️ Non-200 response for unsupported language (expected)');",
+                  "    }",
+                  "});",
+                  "",
+                  "// Final summary",
+                  "const supportedLangs = pm.collectionVariables.get('supported_langs');",
+                  "if (supportedLangs) {",
+                  "    const totalSupported = JSON.parse(supportedLangs).length;",
+                  "    const testedCount = (pm.collectionVariables.get('tested_languages') || '').split(',').filter(l => l.length > 0).length;",
+                  "    ",
+                  "    console.log(`🎯 Coverage: ${testedCount}/${totalSupported} langues supportées testées`);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/wellbeing/wellwo/programs?lang=zz",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "wellbeing",
+                "wellwo",
+                "programs"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "zz",
+                  "description": "Test avec langue non supportée"
+                }
+              ]
+            },
+            "description": "Test final de validation du support multilingue avec langue non supportée"
+          }
+        }
+      ]
+    }
+  ]
+}

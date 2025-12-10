@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Actions\{$modelName};
+
+use App\Models\{$modelName};
+use App\Services\Models\{$modelName}Service;
+
+class Create{$modelName}Action
+{
+    public function __construct(protected {$modelName}Service ${$modelVar}Service) {}
+
+    /**
+     * run action
+     *
+     * @param  array<string,mixed>  $validatedData
+     */
+    public function handle(array $validatedData): {$modelName}
+    {
+        return $this->{$modelVar}Service->create($validatedData);
+    }
+}

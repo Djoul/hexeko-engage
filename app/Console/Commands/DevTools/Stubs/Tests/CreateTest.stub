@@ -1,0 +1,37 @@
+<?php
+
+namespace Tests\Feature\ModelsCRUD\{$modelName};
+
+use App\Models\{$modelName};
+
+use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\ProtectedRouteTestCase;
+
+class Create{$modelName}Test extends ProtectedRouteTestCase
+{
+    use  WithFaker;
+
+    protected $create{$modelName}Action;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
+    #[Test]
+    public function it_can_create_{$modelVar}(): void
+    {
+        $this->assertDatabaseCount('{$modelVar}s', 0);
+
+        ${$modelVar}Data = {$modelName}::factory()->make(['name' => '{$modelName} Test'])->toUserModelArray();
+
+        $response = $this->post('/api/v1/{$modelVar}s', ${$modelVar}Data);
+
+        $response->assertStatus(201);
+
+        $this->assertDatabaseCount('{$modelVar}s', 1);
+
+        $this->assertDatabaseHas('{$modelVar}s', ['name' => ${$modelVar}Data['name']]);
+    }
+}

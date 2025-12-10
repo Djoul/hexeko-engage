@@ -1,0 +1,225 @@
+{
+  "wellwo_api_examples": {
+    "description": "Exemples d'utilisation de la Collection WellWo API avec Newman",
+    "version": "1.0.0",
+    "examples": [
+      {
+        "name": "Basic Collection Run",
+        "description": "Exécution basique de toute la collection",
+        "command": "newman run ./app/Integrations/wellbeing/WellWo/postman/WellWo-API.postman_collection.json --environment ./postman/environments/dev.postman_environment.json",
+        "expected_output": {
+          "tests": "60+",
+          "assertions": "200+",
+          "requests": "15+",
+          "duration": "< 30s"
+        }
+      },
+      {
+        "name": "Health Check Only",
+        "description": "Vérification rapide de la santé WellWo",
+        "command": "newman run ./WellWo-API.postman_collection.json --folder \"Health Check\" --environment ../../../../postman/environments/production.postman_environment.json --timeout 5000",
+        "use_case": "Monitoring continu, alerts",
+        "expected_duration": "< 3s"
+      },
+      {
+        "name": "Programs Endpoint Testing",
+        "description": "Test complet des endpoints programmes",
+        "command": "newman run ./WellWo-API.postman_collection.json --folder \"Programs\" --environment ../../../../postman/environments/dev.postman_environment.json --reporters cli,json --reporter-json-export reports/programs-test.json",
+        "validations": [
+          "Program list structure",
+          "Individual program details",
+          "Cache performance",
+          "Multi-language support"
+        ]
+      },
+      {
+        "name": "Video Content Validation",
+        "description": "Validation complète du contenu vidéo",
+        "command": "newman run ./WellWo-API.postman_collection.json --folder \"Videos\" --environment ../../../../postman/environments/staging.postman_environment.json --delay-request 200",
+        "checks": [
+          "Video metadata completeness",
+          "CDN URL validity (cnt.wellwo.es)",
+          "HD format availability (1280x720)",
+          "Streaming readiness"
+        ]
+      },
+      {
+        "name": "Multi-Language Testing",
+        "description": "Test de rotation automatique des langues",
+        "command": "newman run ./WellWo-API.postman_collection.json --folder \"Multi-Language Tests\" --environment ../../../../postman/environments/dev.postman_environment.json --iteration-count 5",
+        "behavior": "Tests with automatic language rotation (es, en, fr, it, pt)",
+        "expected_coverage": "5 languages tested with content comparison"
+      },
+      {
+        "name": "Error Scenarios Validation",
+        "description": "Test de gestion des erreurs",
+        "command": "newman run ./WellWo-API.postman_collection.json --folder \"Error Scenarios\" --environment ../../../../postman/environments/dev.postman_environment.json --bail false",
+        "purpose": "Validate proper error handling and responses",
+        "error_codes_tested": [404, 422, 401, 500]
+      },
+      {
+        "name": "End-to-End User Journey",
+        "description": "Simulation parcours utilisateur complet",
+        "command": "newman run ./WellWo-API.postman_collection.json --folder \"End-to-End Scenarios\" --environment ../../../../postman/environments/dev.postman_environment.json --delay-request 300",
+        "journey_steps": [
+          "Browse available programs",
+          "Select specific program",
+          "View program videos",
+          "Access video details",
+          "Validate streaming capability"
+        ]
+      },
+      {
+        "name": "Performance Testing",
+        "description": "Test de performance avec charge",
+        "command": "newman run ./WellWo-API.postman_collection.json --environment ../../../../postman/environments/production.postman_environment.json --iteration-count 10 --delay-request 100 --reporters cli,json --reporter-json-export reports/performance-test.json",
+        "metrics_captured": [
+          "Average response time",
+          "P95 response time",
+          "Error rate",
+          "Cache hit rate"
+        ]
+      },
+      {
+        "name": "Production Monitoring",
+        "description": "Monitoring continu production",
+        "command": "./scripts/run-tests.sh production",
+        "automation": "Cron job every hour",
+        "alerts": "Slack + Email on failures",
+        "reports": "HTML + JSON + JUnit"
+      },
+      {
+        "name": "CI/CD Integration",
+        "description": "Intégration dans pipeline CI/CD",
+        "github_actions": {
+          "step": "run: newman run ./app/Integrations/wellbeing/WellWo/postman/WellWo-API.postman_collection.json --environment ./postman/environments/staging.postman_environment.json --reporters cli,junit --reporter-junit-export ./reports/newman/junit-wellwo.xml"
+        },
+        "gitlab_ci": {
+          "script": "./app/Integrations/wellbeing/WellWo/postman/scripts/run-tests.sh staging",
+          "artifacts": "reports/newman/"
+        }
+      },
+      {
+        "name": "Custom Language Testing",
+        "description": "Test spécifique d'une langue",
+        "command": "newman run ./WellWo-API.postman_collection.json --environment ../../../../postman/environments/dev.postman_environment.json --env-var \"current_test_lang=fr\" --folder \"Multi-Language Tests\"",
+        "customization": "Override language via environment variable"
+      }
+    ],
+    "advanced_configurations": {
+      "custom_newman_config": {
+        "file": "./newman-config.json",
+        "usage": "newman run --config-file ./newman-config.json",
+        "benefits": [
+          "Centralized configuration",
+          "Consistent reporter settings",
+          "Environment-specific timeouts",
+          "Automated report exports"
+        ]
+      },
+      "environment_variables": {
+        "test_customization": {
+          "test_program_id": "Override default program ID",
+          "test_video_id": "Override default video ID",
+          "default_lang": "Change default language",
+          "current_test_lang": "Force specific language"
+        },
+        "monitoring": {
+          "SLACK_WEBHOOK_URL": "Slack notifications",
+          "DISCORD_WEBHOOK_URL": "Discord alerts",
+          "SMTP_SERVER": "Email notifications"
+        }
+      }
+    },
+    "troubleshooting_examples": {
+      "debug_failing_test": {
+        "command": "newman run ./WellWo-API.postman_collection.json --verbose --environment ../../../../postman/environments/dev.postman_environment.json --folder \"Programs\"",
+        "purpose": "Detailed output for debugging"
+      },
+      "timeout_issues": {
+        "command": "newman run ./WellWo-API.postman_collection.json --timeout 30000 --environment ../../../../postman/environments/dev.postman_environment.json",
+        "note": "Increase timeout for slow networks"
+      },
+      "ssl_issues": {
+        "command": "newman run ./WellWo-API.postman_collection.json --insecure --environment ../../../../postman/environments/dev.postman_environment.json",
+        "warning": "Only use for development/testing"
+      }
+    },
+    "reporting_examples": {
+      "html_report": {
+        "command": "newman run ./WellWo-API.postman_collection.json --reporters htmlextra --reporter-htmlextra-export reports/wellwo-report.html",
+        "output": "Visual HTML report with charts"
+      },
+      "json_analysis": {
+        "command": "newman run ./WellWo-API.postman_collection.json --reporters json --reporter-json-export reports/wellwo-data.json",
+        "post_processing": "jq '.run.stats' reports/wellwo-data.json"
+      },
+      "junit_ci": {
+        "command": "newman run ./WellWo-API.postman_collection.json --reporters junit --reporter-junit-export reports/junit-wellwo.xml",
+        "integration": "Jenkins, GitLab CI, GitHub Actions"
+      }
+    },
+    "monitoring_scenarios": {
+      "health_check_cron": {
+        "schedule": "*/5 * * * *",
+        "command": "./scripts/monitor-health.sh",
+        "purpose": "Continuous health monitoring"
+      },
+      "full_monitoring": {
+        "schedule": "0 * * * *",
+        "command": "./scripts/run-monitoring.sh production",
+        "purpose": "Comprehensive hourly check"
+      },
+      "daily_reports": {
+        "schedule": "0 8 * * *",
+        "command": "./scripts/generate-reports.sh",
+        "output": "Daily performance summary"
+      }
+    }
+  },
+  "usage_patterns": {
+    "development": {
+      "frequency": "On demand",
+      "environment": "dev",
+      "focus": "Feature validation, debugging",
+      "typical_command": "./app/Integrations/wellbeing/WellWo/postman/scripts/run-tests.sh dev"
+    },
+    "staging": {
+      "frequency": "Pre-deployment",
+      "environment": "staging",
+      "focus": "Integration validation",
+      "typical_command": "newman run ./app/Integrations/wellbeing/WellWo/postman/WellWo-API.postman_collection.json --environment ./postman/environments/staging.postman_environment.json --reporters cli,html"
+    },
+    "production": {
+      "frequency": "Continuous monitoring",
+      "environment": "production",
+      "focus": "Health, performance, alerting",
+      "automation": "Cron jobs + CI/CD integration"
+    }
+  },
+  "performance_benchmarks": {
+    "response_times": {
+      "health_check": "< 500ms",
+      "programs_list": "< 1000ms",
+      "program_details": "< 800ms",
+      "video_details": "< 1200ms"
+    },
+    "success_criteria": {
+      "availability": "> 99.5%",
+      "error_rate": "< 2%",
+      "cache_hit_rate": "> 80%"
+    }
+  },
+  "integration_examples": {
+    "docker": {
+      "dockerfile": "FROM postman/newman:alpine\nCOPY postman/ /postman/\nCMD newman run /postman/WellWo-API.postman_collection.json",
+      "run": "docker run --rm -v $(pwd)/reports:/reports wellwo-newman"
+    },
+    "kubernetes": {
+      "cronjob": "apiVersion: batch/v1\nkind: CronJob\nspec:\n  schedule: \"*/10 * * * *\"\n  jobTemplate:\n    spec:\n      template:\n        spec:\n          containers:\n          - name: wellwo-monitor\n            image: postman/newman\n            command: [\"newman\", \"run\", \"/postman/WellWo-API.postman_collection.json\"]"
+    },
+    "jenkins": {
+      "pipeline": "stage('WellWo API Tests') {\n  steps {\n    sh 'newman run ./postman/WellWo-API.postman_collection.json --reporters junit --reporter-junit-export reports/junit-wellwo.xml'\n  }\n  post {\n    always {\n      junit 'reports/junit-wellwo.xml'\n    }\n  }\n}"
+    }
+  }
+}

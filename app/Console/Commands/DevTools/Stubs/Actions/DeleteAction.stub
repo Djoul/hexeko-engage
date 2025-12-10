@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Actions\{$modelName};
+
+use App\Models\{$modelName};
+use App\Services\Models\{$modelName}Service;
+
+class Delete{$modelName}Action
+{
+    public function __construct(protected {$modelName}Service ${$modelVar}Service) {}
+
+    /**
+     * run action
+     *
+     * @return bool
+     */
+    public function handle({$modelName} ${$modelVar})
+    {
+        return $this->{$modelVar}Service->delete(${$modelVar});
+    }
+}

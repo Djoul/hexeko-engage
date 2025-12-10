@@ -1,0 +1,399 @@
+{
+  "info": {
+    "name": "Amilon API - Direct Third Party Calls",
+    "description": "Direct API calls to Amilon third-party service for testing and debugging",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api.amilon.com",
+      "type": "string"
+    },
+    {
+      "key": "token_url",
+      "value": "https://auth.amilon.com/oauth/token",
+      "type": "string"
+    },
+    {
+      "key": "api_version",
+      "value": "v1",
+      "type": "string"
+    },
+    {
+      "key": "client_id",
+      "value": "YOUR_CLIENT_ID",
+      "type": "string"
+    },
+    {
+      "key": "client_secret",
+      "value": "YOUR_CLIENT_SECRET",
+      "type": "string"
+    },
+    {
+      "key": "username",
+      "value": "YOUR_USERNAME",
+      "type": "string"
+    },
+    {
+      "key": "password",
+      "value": "YOUR_PASSWORD",
+      "type": "string"
+    },
+    {
+      "key": "contract_id",
+      "value": "YOUR_CONTRACT_ID",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "culture",
+      "value": "pt-PT",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Get Access Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    // Save to both environment and collection variables",
+                  "    pm.environment.set('access_token', response.access_token);",
+                  "    pm.collectionVariables.set('access_token', response.access_token);",
+                  "    console.log('✅ Access token saved:', response.access_token.substring(0, 50) + '...');",
+                  "    console.log('Token expires in:', response.expires_in, 'seconds');",
+                  "} else {",
+                  "    console.error('❌ Authentication failed:', pm.response.text());",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                },
+                {
+                  "key": "client_id",
+                  "value": "{{client_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "client_secret",
+                  "value": "{{client_secret}}",
+                  "type": "text"
+                },
+                {
+                  "key": "username",
+                  "value": "{{username}}",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{token_url}}",
+              "host": ["{{token_url}}"]
+            },
+            "description": "Authenticate with Amilon API using OAuth2 password grant.\nToken is valid for 5 minutes."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Contracts",
+      "item": [
+        {
+          "name": "Get Contract Details",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Auto-refresh token if not set",
+                  "if (!pm.collectionVariables.get('access_token')) {",
+                  "    console.log('No access token found. Please run \"Get Access Token\" first.');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/b2bwebapi/{{api_version}}/contracts/{{contract_id}}",
+              "host": ["{{base_url}}"],
+              "path": [
+                "b2bwebapi",
+                "{{api_version}}",
+                "contracts",
+                "{{contract_id}}"
+              ]
+            },
+            "description": "Get contract information including terms and conditions."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get Products Complete",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/b2bwebapi/{{api_version}}/contracts/{{contract_id}}/{{culture}}/products/complete",
+              "host": ["{{base_url}}"],
+              "path": [
+                "b2bwebapi",
+                "{{api_version}}",
+                "contracts",
+                "{{contract_id}}",
+                "{{culture}}",
+                "products",
+                "complete"
+              ]
+            },
+            "description": "Get complete list of products with all details for a specific contract and culture.\n\nAvailable cultures:\n- pt-PT (Portugal)\n- it-IT (Italy)\n- da-DK (Denmark)\n- en-GB (UK)\n- fr-FR (France)\n- es-ES (Spain)\n- de-DE (Germany)\n- nl-NL (Netherlands)\n- nn-NO (Norway)\n- pl-PL (Poland)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Merchants",
+      "item": [
+        {
+          "name": "Get Retailers (Merchants)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/b2bwebapi/{{api_version}}/contracts/{{contract_id}}/{{culture}}/retailers",
+              "host": ["{{base_url}}"],
+              "path": [
+                "b2bwebapi",
+                "{{api_version}}",
+                "contracts",
+                "{{contract_id}}",
+                "{{culture}}",
+                "retailers"
+              ]
+            },
+            "description": "Get list of available retailers (merchants) for a specific contract and culture.\n\nResponse includes:\n- Merchant ID\n- Merchant name\n- Description\n- Logo URL\n- Category information"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/b2bwebapi/{{api_version}}/retailers/categories",
+              "host": ["{{base_url}}"],
+              "path": [
+                "b2bwebapi",
+                "{{api_version}}",
+                "retailers",
+                "categories"
+              ]
+            },
+            "description": "Get list of all available merchant categories.\n\nResponse structure:\n[\n  {\n    \"CategoryId\": \"uuid\",\n    \"CategoryName\": \"string\"\n  }\n]"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('last_external_order_id', response.externalOrderId);",
+                  "    pm.collectionVariables.set('last_order_id', response.id);",
+                  "    console.log('Order created:', response);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"externalOrderId\": \"ENGAGE-2025-{{$randomUUID}}\",\n  \"orderRows\": [\n    {\n      \"productId\": \"PRODUCT_CODE_HERE\",\n      \"quantity\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/b2bwebapi/{{api_version}}/Orders/create/{{contract_id}}",
+              "host": ["{{base_url}}"],
+              "path": [
+                "b2bwebapi",
+                "{{api_version}}",
+                "Orders",
+                "create",
+                "{{contract_id}}"
+              ]
+            },
+            "description": "Create a new voucher order.\n\nRequest body:\n{\n  \"externalOrderId\": \"unique-external-id\",\n  \"orderRows\": [\n    {\n      \"productId\": \"product-code\",\n      \"quantity\": 1\n    }\n  ]\n}\n\nResponse includes:\n- Order ID\n- External Order ID\n- Order status\n- Order items with voucher codes (when available)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order Info (Complete)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/b2bwebapi/{{api_version}}/Orders/{{last_external_order_id}}/complete",
+              "host": ["{{base_url}}"],
+              "path": [
+                "b2bwebapi",
+                "{{api_version}}",
+                "Orders",
+                "{{last_external_order_id}}",
+                "complete"
+              ]
+            },
+            "description": "Get complete order information including voucher codes and URLs.\n\nUse the external order ID (ENGAGE-2025-xxx format) to retrieve order details.\n\nResponse includes:\n- Order status\n- Order items\n- Voucher codes and URLs\n- Expiration dates"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global pre-request script",
+          "// Check if we have a valid token",
+          "const token = pm.collectionVariables.get('access_token');",
+          "const url = pm.request.url ? pm.request.url.toString() : '';",
+          "if (!token && !url.includes('oauth') && !url.includes('token')) {",
+          "    console.warn('⚠️ No access token found. Run \"Get Access Token\" first.');",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global test script",
+          "if (pm.response.code === 401) {",
+          "    console.error('❌ Authentication failed. Token may be expired. Run \"Get Access Token\" again.');",
+          "}"
+        ]
+      }
+    }
+  ]
+}

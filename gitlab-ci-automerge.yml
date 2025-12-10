@@ -1,0 +1,111 @@
+# Pipeline de promotion progressive des branches
+# Workflow: feature → dev (deploy) → staging (deploy) → main (tests) → prod (deploy)
+#
+# DÉCLENCHEMENT: 100% MANUEL UNIQUEMENT
+#   - Via PhpStorm Run Configuration
+#   - Via GitLab Web UI (Run Pipeline)
+#   - Via curl (depuis votre machine)
+#
+# Configuration requise dans GitLab CI/CD Variables:
+# - CI_AUTOMATION_TOKEN: Personal Access Token avec scopes api, write_repository
+#
+# Déclenchement manuel depuis votre machine:
+# export AUTOMERGE_TRIGGER_TOKEN="votre-token"
+# export CI_PROJECT_ID="67270480"
+# curl -X POST \
+#   -F token=$AUTOMERGE_TRIGGER_TOKEN \
+#   -F ref=$(git branch --show-current) \
+#   -F "variables[START_PROMOTION]=true" \
+#   https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/trigger/pipeline
+
+stages:
+  - promote
+
+# Job de promotion progressive (MANUEL UNIQUEMENT)
+promote-to-prod:
+  stage: promote
+  image: alpine:3.19
+  rules:
+    # UNIQUEMENT déclenchement manuel via trigger avec START_PROMOTION=true
+    - if: '$CI_PIPELINE_SOURCE == "trigger" && $START_PROMOTION == "true"'
+      when: always
+    # UNIQUEMENT déclenchement manuel via Web UI avec START_PROMOTION=true
+    - if: '$CI_PIPELINE_SOURCE == "web" && $START_PROMOTION == "true"'
+      when: always
+  variables:
+    GIT_STRATEGY: clone
+  before_script:
+    - |
+      echo "╔═══════════════════════════════════════════════╗"
+      echo "║   🚀 PROMOTION PROGRESSIVE VERS PRODUCTION   ║"
+      echo "╚═══════════════════════════════════════════════╝"
+      echo ""
+
+    - |
+      echo "🔧 Installation des dépendances..."
+      apk add --no-cache curl jq bash git
+
+    - |
+      echo ""
+      echo "📋 Configuration:"
+      echo "  - Branche: $CI_COMMIT_BRANCH"
+      echo "  - Pipeline source: $CI_PIPELINE_SOURCE"
+      echo "  - Projet: $CI_PROJECT_PATH"
+      echo "  - Pipeline URL: $CI_PIPELINE_URL"
+      echo ""
+
+    - |
+      echo "🔐 Vérification des variables requises..."
+      if [ -z "$CI_AUTOMATION_TOKEN" ]; then
+        echo "❌ ERREUR: Variable CI_AUTOMATION_TOKEN non définie"
+        echo ""
+        echo "Configuration requise:"
+        echo "1. Aller dans Settings > Access Tokens"
+        echo "2. Créer un token avec:"
+        echo "   - Nom: ci-automation"
+        echo "   - Rôle: Maintainer"
+        echo "   - Scopes: api, write_repository"
+        echo "3. Copier le token"
+        echo "4. Ajouter dans Settings > CI/CD > Variables:"
+        echo "   - Clé: CI_AUTOMATION_TOKEN"
+        echo "   - Valeur: [votre token]"
+        echo "   - Protected: ✅"
+        echo "   - Masked: ✅"
+        exit 1
+      fi
+
+      if [ -z "$CI_PROJECT_ID" ]; then
+        echo "❌ ERREUR: Variable CI_PROJECT_ID non définie"
+        exit 1
+      fi
+
+      echo "✅ Toutes les variables sont définies"
+      echo ""
+
+    - chmod +x .gitlab/promote-to-prod.sh
+
+  script:
+    - |
+      echo "🚀 Lancement de la promotion progressive..."
+      echo ""
+      ./.gitlab/promote-to-prod.sh
+
+  after_script:
+    - |
+      echo ""
+      if [ "$CI_JOB_STATUS" = "success" ]; then
+        echo "╔═══════════════════════════════════════════════╗"
+        echo "║        ✅ PROMOTION TERMINÉE AVEC SUCCÈS      ║"
+        echo "╚═══════════════════════════════════════════════╝"
+      else
+        echo "╔═══════════════════════════════════════════════╗"
+        echo "║              ❌ PROMOTION ÉCHOUÉE             ║"
+        echo "╚═══════════════════════════════════════════════╝"
+        echo ""
+        echo "Vérifier les logs ci-dessus pour les détails"
+      fi
+
+  allow_failure: false
+
+  # Pas de retry pour éviter les MR dupliqués
+  timeout: 2h  # 2 heures max pour toute la chaîne de promotion

@@ -1,0 +1,118 @@
+services:
+  app_engage:
+    build:
+      context: ${MAIN_PROJECT_PATH:-.}
+      dockerfile: ${MAIN_PROJECT_PATH:-.}/docker/php/Dockerfile
+      args:
+        - UID=$UID
+        - GID=$GID
+    user: ${UID}:${GID}
+    container_name: app_engage
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      # Volume dynamique basé sur WORKTREE_PATH
+      - ${WORKTREE_PATH:-.}:/var/www/html
+      - ${MAIN_PROJECT_PATH:-.}/docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ~/.aws:/var/www/.aws
+      - psysh-config:/var/www/.config/psysh
+      - composer-cache:/var/www/.composer
+    environment:
+      - APP_ENV=${APP_ENV:-testing}
+      - APP_DEBUG=true
+      - APP_KEY=${APP_KEY}
+      - DB_CONNECTION=pgsql
+      - DB_HOST=${DB_HOST:-db_engage_testing}
+      - DB_PORT=5432
+      - DB_DATABASE=${DB_DATABASE:-db_engage_testing}
+      - DB_USERNAME=${DB_USERNAME:-root}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - AWS_PROFILE=${AWS_PROFILE}
+      - XDEBUG_MODE=coverage
+      - REDIS_URL=redis://:@redis-cluster:6379/0
+      # Variables spécifiques aux tests
+      - TESTING_DB_HOST=db_engage_testing
+      - TESTING_DB_PORT=5432
+      - TESTING_DB_DATABASE=db_engage_testing
+      - TESTING_DB_USERNAME=root
+      - TESTING_DB_PASSWORD=password
+    depends_on:
+      - db_engage
+      - db_engage_testing
+      - redis-cluster
+    networks:
+      - app_engage_network
+
+  webserver_engage:
+    image: nginx:alpine
+    container_name: webserver_engage
+    restart: unless-stopped
+    ports:
+      - "1310:80"
+    volumes:
+      # Volume dynamique pour le serveur web aussi
+      - ${WORKTREE_PATH:-.}:/var/www/html
+      - ${MAIN_PROJECT_PATH:-.}/docker/nginx/default.local.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - app_engage_network
+
+  db_engage:
+    image: postgres:15
+    container_name: db_engage
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - app_engage_network
+
+  db_engage_testing:
+    image: postgres:15
+    container_name: db_engage_testing
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: db_engage_testing
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=200"
+      - "-c"
+      - "shared_buffers=256MB"
+    ports:
+      - "5434:5432"
+    # Pas de volume persistant pour la DB de test
+    # Elle sera recréée à chaque redémarrage
+    networks:
+      - app_engage_network
+
+  redis-cluster:
+    image: docker.io/bitnami/redis-cluster:7.0
+    container_name: redis-cluster
+    restart: unless-stopped
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+      - 'REDIS_CLUSTER_REPLICAS=0'
+      - 'REDIS_NODES=redis-cluster redis-cluster redis-cluster'
+      - 'REDIS_CLUSTER_CREATOR=yes'
+      - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
+      - 'REDIS_CLUSTER_ANNOUNCE_IP=redis-cluster'
+    ports:
+      - "6379:6379"
+    networks:
+      - app_engage_network
+
+volumes:
+  dbdata:
+  psysh-config:
+  composer-cache:
+
+networks:
+  app_engage_network:
+    driver: bridge

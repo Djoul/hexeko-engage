@@ -1,0 +1,88 @@
+# Profile: Feature Standard
+# Description: Standard feature development with complete workflow
+
+name: feature-standard
+description: Standard feature with business logic and API endpoints
+complexity: standard
+
+phases:
+  - name: analysis
+    required: true
+    description: Technical analysis and approach definition
+
+  - name: design
+    required: false
+    description: Architecture and API design
+
+  - name: tdd
+    required: true
+    description: Test-driven development
+
+  - name: tasks
+    required: true
+    description: Generate resumable tasks list (planned_task.md) from profile todo_structure
+
+  - name: implementation
+    required: true
+    description: Code development
+
+  - name: validation
+    required: true
+    description: Quality checks and testing
+
+  - name: documentation
+    required: true
+    description: API documentation and guides
+
+validation:
+  coverage_minimum: 80
+  phpstan_level: max
+  performance_target: 500ms
+  documentation_required: true
+
+templates:
+  - story-analysis-template.md
+  - tdd-strategy-template.md
+  - api-documentation-template.md
+
+mcp_services:
+  jira:
+    - fetch_story
+    - create_subtasks
+    - update_status
+  context7:
+    - library_docs
+    - best_practices
+  confluence:
+    - publish_docs
+
+todo_structure: |
+  ## Feature Development: [KEY]
+
+  ### Analysis Phase
+  - [ ] Review requirements
+  - [ ] Analyze existing code
+  - [ ] Identify dependencies
+  - [ ] Document approach
+
+  ### TDD Phase
+  - [ ] Write unit tests
+  - [ ] Write integration tests
+  - [ ] Define test data
+
+  ### Implementation Phase
+  - [ ] Create services
+  - [ ] Create actions
+  - [ ] Create controllers
+  - [ ] Implement cache
+
+  ### Validation Phase
+  - [ ] Run tests
+  - [ ] Check coverage
+  - [ ] Run quality checks
+  - [ ] Performance testing
+
+  ### Documentation Phase
+  - [ ] API documentation
+  - [ ] Frontend guide
+  - [ ] Publish to Confluence

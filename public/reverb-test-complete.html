@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Complet Laravel Reverb - Canaux Publics & Privés</title>
+    <script src="https://cdn.jsdelivr.net/npm/pusher-js@8.4.0-rc2/dist/web/pusher.min.js"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f2f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+        }
+        .panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .status.connected {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #495057;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.15s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.15s;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        .btn.danger {
+            background: #dc3545;
+        }
+        .btn.danger:hover {
+            background: #c82333;
+        }
+        .btn.success {
+            background: #28a745;
+        }
+        .btn.success:hover {
+            background: #218838;
+        }
+        .btn.sm {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+        .channels-section {
+            margin-top: 20px;
+        }
+        .channel-group {
+            margin-bottom: 20px;
+        }
+        .channel-group h4 {
+            margin: 0 0 10px 0;
+            color: #495057;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .channel-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .channel-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            background: #e9ecef;
+            border-radius: 20px;
+            font-size: 13px;
+            position: relative;
+        }
+        .channel-item.subscribed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .channel-item button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            padding: 0;
+            margin-left: 5px;
+        }
+        .events-panel {
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+        .event {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 10px;
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .event-channel {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #007bff;
+            color: white;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .event-time {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .event-name {
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 5px;
+        }
+        .event-data {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .quick-tests {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        .quick-tests h4 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+        }
+        .test-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .auth-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+        }
+        .auth-section h4 {
+            margin: 0 0 10px 0;
+            color: #856404;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .icon {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        code {
+            background: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Test Complet Laravel Reverb</h1>
+
+        <div class="grid">
+            <!-- Configuration Panel -->
+            <div class="panel">
+                <h3>Configuration</h3>
+
+                <div class="status-bar">
+                    <span class="status disconnected" id="status">
+                        <span class="icon">⚫</span> Déconnecté
+                    </span>
+                    <div id="stats" style="display: none;">
+                        <small>Canaux: <span id="channelCount">0</span> | Events: <span id="eventCount">0</span></small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>App Key</label>
+                    <input type="text" id="appKey" value="qvou8nwiyg3h4rjbp3q7">
+                </div>
+
+                <div class="form-group">
+                    <label>Host</label>
+                    <input type="text" id="host" value="localhost">
+                </div>
+
+                <div class="form-group">
+                    <label>Port</label>
+                    <input type="text" id="port" value="8080">
+                </div>
+
+                <!-- Authentification pour les canaux privés -->
+                <div class="form-group" style="border-top: 1px solid #dee2e6; margin-top: 15px; padding-top: 15px;">
+                    <label>Authentification Bearer Token (Obligatoire pour canaux privés)</label>
+
+                    <!-- Bearer Token -->
+                    <div class="form-group">
+                        <label style="font-size: 12px;">Token JWT Cognito</label>
+                        <textarea id="bearerToken" placeholder="Collez votre token JWT Cognito ici..." style="height: 80px; font-size: 11px; font-family: monospace;"></textarea>
+                        <div style="margin-top: 5px; font-size: 11px; color: #6c757d;">
+                            ⚠️ Utilisez un token JWT valide depuis AWS Cognito
+                        </div>
+                    </div>
+
+                    <div id="authStatus" style="font-size: 12px; padding: 8px; border-radius: 4px; background: #f8f9fa;">
+                        <span style="color: #6c757d;">⚫ Aucun token configuré</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" onclick="connect()">Se connecter</button>
+                    <button class="btn danger" onclick="disconnect()">Déconnecter</button>
+                </div>
+
+                <!-- Channels Section -->
+                <div class="channels-section">
+                    <h3>Canaux</h3>
+
+                    <!-- Public Channels -->
+                    <div class="channel-group">
+                        <h4>📢 Canaux Publics</h4>
+                        <div class="channel-list" id="publicChannels">
+                            <div class="channel-item" data-channel="notifications">
+                                notifications
+                                <button onclick="toggleChannel('notifications')" title="S'abonner">+</button>
+                            </div>
+                            <div class="channel-item" data-channel="public-messages">
+                                public-messages
+                                <button onclick="toggleChannel('public-messages')" title="S'abonner">+</button>
+                            </div>
+                            <div class="channel-item" data-channel="public-stats">
+                                public-stats
+                                <button onclick="toggleChannel('public-stats')" title="S'abonner">+</button>
+                            </div>
+                            <div class="channel-item" data-channel="dashboard">
+                                dashboard
+                                <button onclick="toggleChannel('dashboard')" title="S'abonner">+</button>
+                            </div>
+                            <div class="channel-item" data-channel="apideck-sync">
+                                apideck-sync
+                                <button onclick="toggleChannel('apideck-sync')" title="S'abonner">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Private Channels -->
+                    <div class="channel-group">
+                        <h4>🔒 Canaux Privés</h4>
+                        <div class="form-group">
+                            <input type="text" id="privateChannelInput" placeholder="Ex: user.123">
+                            <button class="btn sm" onclick="addPrivateChannel()" style="margin-top: 5px;">Ajouter</button>
+                        </div>
+                        <div class="channel-list" id="privateChannels"></div>
+                    </div>
+                </div>
+
+                <!-- Quick Tests -->
+                <div class="quick-tests">
+                    <h4>Tests Rapides</h4>
+                    <div class="test-buttons">
+                        <button class="btn sm success" onclick="testPublicMessage()">Message Public</button>
+                        <button class="btn sm success" onclick="testStats()">Stats</button>
+                        <button class="btn sm success" onclick="testApideck()">Apideck Sync</button>
+                    </div>
+                </div>
+
+                <!-- Auth Section -->
+                <div class="auth-section">
+                    <h4>⚠️ Authentification</h4>
+                    <p style="margin: 0; font-size: 13px;">
+                        Les canaux privés nécessitent une authentification JWT.
+                        Utilisez un token valide pour tester les canaux <code>private-*</code>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Events Panel -->
+            <div class="panel events-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>Événements en temps réel</h3>
+                    <button class="btn sm" onclick="clearEvents()">Effacer</button>
+                </div>
+
+                <div id="events">
+                    <div class="empty-state">
+                        <p>En attente d'événements...</p>
+                        <small>Abonnez-vous à des canaux et lancez des tests</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let pusher = null;
+        let channels = {};
+        let eventCount = 0;
+
+        // Enable Pusher logging
+        Pusher.logToConsole = true;
+
+        function connect() {
+            const appKey = document.getElementById('appKey').value;
+            const host = document.getElementById('host').value;
+            const port = document.getElementById('port').value;
+            const bearerToken = document.getElementById('bearerToken').value.trim();
+
+            if (!appKey) {
+                alert('App Key requise');
+                return;
+            }
+
+            if (pusher) {
+                pusher.disconnect();
+            }
+
+            // Déterminer quel endpoint utiliser selon la présence d'un token
+            const authEndpoint = bearerToken
+                ? 'http://localhost:1310/api/v1/broadcasting/auth'  // Endpoint API avec Cognito auth
+                : 'http://localhost:1310/test-broadcasting/auth'; // Notre endpoint de test avec session
+
+            const authHeaders = {
+                'X-Requested-With': 'XMLHttpRequest', // Nécessaire pour Laravel
+            };
+
+            // Ajouter le Bearer token si disponible
+            if (bearerToken) {
+                authHeaders['Authorization'] = 'Bearer ' + bearerToken;
+            }
+
+            const options = {
+                wsHost: host,
+                wsPort: port,
+                forceTLS: false,
+                encrypted: false,
+                enabledTransports: ['ws', 'wss'],
+                cluster: 'mt1',
+                authEndpoint: authEndpoint,
+                auth: {
+                    headers: authHeaders,
+                    // Envoyer les cookies de session avec la requête
+                    params: {},
+                    // Important: pour que les headers soient envoyés avec fetch/XMLHttpRequest
+                    withCredentials: true
+                }
+            };
+
+            // Log pour debug
+            console.log('Auth configuration:', {
+                endpoint: authEndpoint,
+                headers: authHeaders,
+                hasToken: !!bearerToken
+            });
+
+            pusher = new Pusher(appKey, options);
+
+            pusher.connection.bind('connected', function() {
+                updateStatus('connected');
+                document.getElementById('stats').style.display = 'block';
+                log('system', null, 'Connecté à Reverb');
+            });
+
+            pusher.connection.bind('disconnected', function() {
+                updateStatus('disconnected');
+                document.getElementById('stats').style.display = 'none';
+                log('system', null, 'Déconnecté de Reverb');
+            });
+
+            pusher.connection.bind('error', function(err) {
+                log('error', null, 'Erreur: ' + JSON.stringify(err));
+            });
+        }
+
+        function disconnect() {
+            if (pusher) {
+                // Unsubscribe from all channels
+                Object.keys(channels).forEach(channelName => {
+                    pusher.unsubscribe(channelName);
+                });
+                channels = {};
+                pusher.disconnect();
+                updateChannelUI();
+            }
+        }
+
+        function toggleChannel(channelName) {
+            if (!pusher || pusher.connection.state !== 'connected') {
+                alert('Connectez-vous d\'abord à Reverb');
+                return;
+            }
+
+            if (channels[channelName]) {
+                // Unsubscribe
+                pusher.unsubscribe(channelName);
+                delete channels[channelName];
+                log('system', channelName, 'Désabonné du canal');
+            } else {
+                // Subscribe
+                subscribeToChannel(channelName);
+            }
+            updateChannelUI();
+        }
+
+        function subscribeToChannel(channelName) {
+            const isPrivate = channelName.startsWith('private-');
+            let channel;
+
+            if (isPrivate) {
+                channel = pusher.subscribe(channelName);
+            } else {
+                channel = pusher.subscribe(channelName);
+            }
+
+            channels[channelName] = channel;
+
+            // Listen for all events on this channel
+            channel.bind_global(function(eventName, data) {
+                if (!eventName.startsWith('pusher:')) {
+                    log('event', channelName, eventName, data);
+                    eventCount++;
+                    updateStats();
+                }
+            });
+
+            channel.bind('pusher:subscription_succeeded', function() {
+                log('system', channelName, 'Abonné au canal' + (isPrivate ? ' (privé)' : ''));
+            });
+
+            channel.bind('pusher:subscription_error', function(error) {
+                log('error', channelName, 'Erreur d\'abonnement: ' + JSON.stringify(error));
+                delete channels[channelName];
+                updateChannelUI();
+            });
+        }
+
+        function addPrivateChannel() {
+            const input = document.getElementById('privateChannelInput');
+            const channelName = input.value.trim();
+
+            if (!channelName) return;
+
+            // Add 'private-' prefix if not present
+            const fullChannelName = channelName.startsWith('private-') ? channelName : 'private-' + channelName;
+
+            // Add to UI
+            const channelsList = document.getElementById('privateChannels');
+            const existingChannel = channelsList.querySelector(`[data-channel="${fullChannelName}"]`);
+
+            if (!existingChannel) {
+                const channelItem = document.createElement('div');
+                channelItem.className = 'channel-item';
+                channelItem.setAttribute('data-channel', fullChannelName);
+                channelItem.innerHTML = `
+                    ${fullChannelName}
+                    <button onclick="toggleChannel('${fullChannelName}')" title="S'abonner">+</button>
+                `;
+                channelsList.appendChild(channelItem);
+            }
+
+            input.value = '';
+
+            // Auto-subscribe if connected
+            if (pusher && pusher.connection.state === 'connected' && !channels[fullChannelName]) {
+                toggleChannel(fullChannelName);
+            }
+        }
+
+        function updateChannelUI() {
+            // Update all channel items
+            document.querySelectorAll('.channel-item').forEach(item => {
+                const channelName = item.getAttribute('data-channel');
+                const button = item.querySelector('button');
+
+                if (channels[channelName]) {
+                    item.classList.add('subscribed');
+                    button.textContent = '×';
+                    button.title = 'Se désabonner';
+                } else {
+                    item.classList.remove('subscribed');
+                    button.textContent = '+';
+                    button.title = 'S\'abonner';
+                }
+            });
+
+            updateStats();
+        }
+
+        function updateStatus(status) {
+            const statusEl = document.getElementById('status');
+            statusEl.className = 'status ' + status;
+            statusEl.innerHTML = status === 'connected'
+                ? '<span class="icon">🟢</span> Connecté'
+                : '<span class="icon">⚫</span> Déconnecté';
+        }
+
+        function updateStats() {
+            document.getElementById('channelCount').textContent = Object.keys(channels).length;
+            document.getElementById('eventCount').textContent = eventCount;
+        }
+
+        function log(type, channel, message, data = null) {
+            const eventsContainer = document.getElementById('events');
+            const emptyState = eventsContainer.querySelector('.empty-state');
+
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            const event = document.createElement('div');
+            event.className = 'event';
+
+            const time = new Date().toLocaleTimeString();
+            let channelBadge = '';
+
+            if (channel) {
+                const badgeColor = channel.startsWith('private-') ? '#dc3545' : '#007bff';
+                channelBadge = `<span class="event-channel" style="background: ${badgeColor}">${channel}</span>`;
+            }
+
+            let content = `
+                <div class="event-header">
+                    <div>
+                        ${channelBadge}
+                        <span class="event-name">${message}</span>
+                    </div>
+                    <span class="event-time">${time}</span>
+                </div>
+            `;
+
+            if (data) {
+                content += `<div class="event-data">${JSON.stringify(data, null, 2)}</div>`;
+            }
+
+            event.innerHTML = content;
+            eventsContainer.insertBefore(event, eventsContainer.firstChild);
+
+            // Keep only last 100 events
+            while (eventsContainer.children.length > 100) {
+                eventsContainer.removeChild(eventsContainer.lastChild);
+            }
+        }
+
+        function clearEvents() {
+            const eventsContainer = document.getElementById('events');
+            eventsContainer.innerHTML = `
+                <div class="empty-state">
+                    <p>En attente d'événements...</p>
+                    <small>Abonnez-vous à des canaux et lancez des tests</small>
+                </div>
+            `;
+            eventCount = 0;
+            updateStats();
+        }
+
+        // Monitor Bearer token changes
+        document.getElementById('bearerToken').addEventListener('input', function() {
+            const token = this.value.trim();
+            const authStatus = document.getElementById('authStatus');
+
+            if (token) {
+                // Try to decode JWT to show user info (just for display)
+                try {
+                    const parts = token.split('.');
+                    if (parts.length === 3) {
+                        const payload = JSON.parse(atob(parts[1]));
+                        authStatus.innerHTML = `
+                            <span style="color: #28a745;">✅ Token configuré</span>
+                            ${payload.email ? `<br><small>Email: ${payload.email}</small>` : ''}
+                            ${payload.sub ? `<br><small>ID: ${payload.sub}</small>` : ''}
+                        `;
+                    } else {
+                        authStatus.innerHTML = '<span style="color: #ffc107;">⚠️ Format de token invalide</span>';
+                    }
+                } catch (e) {
+                    authStatus.innerHTML = '<span style="color: #ffc107;">⚠️ Token configuré (impossible de décoder)</span>';
+                }
+            } else {
+                authStatus.innerHTML = '<span style="color: #6c757d;">⚫ Aucun token configuré</span>';
+            }
+        });
+
+        // Quick test functions
+        async function testPublicMessage() {
+            const response = await fetch('http://localhost:1310/test-reverb-public-message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: 'Test Message',
+                    message: 'Message de test depuis le dashboard',
+                    type: 'info'
+                })
+            });
+            if (response.ok) {
+                log('system', null, 'Test message envoyé');
+            }
+        }
+
+        async function testStats() {
+            const response = await fetch('http://localhost:1310/test-reverb-stats', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    stats: {
+                        users_online: Math.floor(Math.random() * 100),
+                        revenue: Math.floor(Math.random() * 10000)
+                    }
+                })
+            });
+            if (response.ok) {
+                log('system', null, 'Test stats envoyé');
+            }
+        }
+
+        async function testApideck() {
+            const response = await fetch('http://localhost:1310/test-reverb-apideck', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    financerId: '123',
+                    syncData: { created: 5, updated: 3 }
+                })
+            });
+            if (response.ok) {
+                log('system', null, 'Test Apideck envoyé');
+            }
+        }
+
+        // Handle Enter key in private channel input
+        document.getElementById('privateChannelInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addPrivateChannel();
+            }
+        });
+    </script>
+</body>
+</html>

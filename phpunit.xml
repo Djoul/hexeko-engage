@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="tests/bootstrap_paratest.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory>tests/Feature</directory>
+        </testsuite>
+        <testsuite name="E2E">
+            <directory>tests/E2E</directory>
+            <exclude>tests/E2E/Invoicing</exclude>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>app</directory>
+            <directory>app/Integrations</directory>
+        </include>
+    </source>
+    <php>
+        <server name="APP_ENV" value="testing" force="true"/>
+        <server name="DB_CONNECTION" value="pgsql" force="true"/>
+        <server name="DB_HOST" value="db_engage_testing" force="true"/>
+        <server name="DB_PORT" value="5432" force="true"/>
+        <server name="DB_DATABASE" value="db_engage_testing" force="true"/>
+        <server name="DB_USERNAME" value="root" force="true"/>
+        <server name="DB_PASSWORD" value="password" force="true"/>
+        <server name="DB_SCHEMA" value="public" force="true"/>
+        <server name="APP_ENV_FILE" value=".env.testing" force="true"/>
+        <server name="LOG_CHANNEL" value="null"/>
+        <server name="LOG_DEPRECATIONS_CHANNEL" value="null"/>
+        <server name="LOG_DEPRECATIONS_CHANNEL" value="null"/>
+        <server name="DB_DUMP_COMMAND" value="false" force="true"/>
+        <server name="CACHE_STORE" value="array" force="true"/>
+        <server name="QUEUE_CONNECTION" value="sync" force="true"/>
+        <server name="SESSION_DRIVER" value="array" force="true"/>
+        <server name="INVOICE_PDF_STORAGE" value="s3-local" force="true"/>
+        <ini name="memory_limit" value="-1"/>
+    </php>
+</phpunit>

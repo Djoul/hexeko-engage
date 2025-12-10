@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Http\Resources\{$modelName};
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Collection;
+
+/** @see \App\Models\{$modelName} */
+class {$modelName}ResourceCollection extends ResourceCollection
+{
+    /**
+     * @return array<string, Collection<int, \App\Http\Resources\{$modelName}\{$modelName}Resource>>
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'data' => $this->collection,
+        ];
+    }
+}

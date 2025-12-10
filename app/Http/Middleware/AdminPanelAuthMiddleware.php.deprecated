@@ -1,0 +1,176 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use App\Enums\IDP\RoleDefaults;
+use App\Models\User;
+use App\Services\AdminPanel\JwtSessionBridge;
+use Closure;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Log;
+use Symfony\Component\HttpFoundation\Response;
+
+class AdminPanelAuthMiddleware
+{
+    public function __construct(
+        private JwtSessionBridge $jwtBridge
+    ) {}
+
+    public function handle(Request $request, Closure $next): Response
+    {
+
+        // Check if public route first
+        if ($this->isPublicRoute($request)) {
+            return $next($request);
+        }
+
+        // Debug logging
+        Log::info('AdminPanelAuth middleware check', [
+            'route' => $request->route()?->getName(),
+            'web_check' => Auth::guard('web')->check(),
+            'api_check' => Auth::guard('api')->check(),
+            'user_web' => Auth::guard('web')->user()?->email,
+            'user_api' => Auth::guard('api')->user()?->email,
+            'session_id' => session()->getId(),
+            'session_user_id' => session('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d'),
+        ]);
+
+        // Already authenticated via session
+        if (Auth::guard('web')->check() || Auth::guard('api')->check()) {
+            $user = Auth::guard('web')->user() ?? Auth::guard('api')->user();
+            if ($user !== null) {
+                $user->load('roles');
+            }
+            //            if (! $this->hasGodRole($user)) {
+            //                Auth::guard('web')->logout();
+            //                Auth::guard('api')->logout();
+            //
+            //                return redirect()->route('admin.auth.login')
+            //                    ->with('error', 'Access denied. Admin panel is restricted to GOD users only.');
+            //            }
+
+            return $next($request);
+        }
+
+        // Try JWT authentication
+        if (($token = $this->extractToken($request)) !== null && ($token = $this->extractToken($request)) !== '' && ($token = $this->extractToken($request)) !== '0') {
+            try {
+                $user = $this->jwtBridge->validateAndGetUser($token);
+
+                if (! $this->hasGodRole($user)) {
+                    return redirect()->route('admin.auth.login')
+                        ->with('error', 'Access denied. Admin panel is restricted to GOD users only.');
+                }
+
+                $this->jwtBridge->createSession($user, $token, time() + 3600);
+
+                // Set the user on the request
+                $request->setUserResolver(function () use ($user): User {
+                    return $user;
+                });
+
+                // Also login the user for the current request
+                Auth::guard('web')->login($user);
+
+                return $next($request);
+            } catch (Exception $e) {
+                logger()->warning('Invalid JWT in admin-panel', [
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        // Store intended URL and redirect to login
+        session(['intended' => $request->fullUrl()]);
+
+        return redirect()->route('admin.auth.login');
+    }
+
+    private function extractToken(Request $request): ?string
+    {
+        // From Authorization header
+        if ($bearer = $request->bearerToken()) {
+            return $bearer;
+        }
+
+        // From query parameter
+        if ($token = $request->query('token')) {
+            return $token;
+        }
+
+        // From session (previous auth)
+        $token = session('jwt_token');
+
+        return is_string($token) ? $token : null;
+    }
+
+    private function isPublicRoute(Request $request): bool
+    {
+        $publicPatterns = [
+            'admin.auth.*',
+        ];
+
+        $routeName = $request->route()?->getName();
+
+        if (! $routeName) {
+            return false;
+        }
+
+        foreach ($publicPatterns as $pattern) {
+            if (fnmatch($pattern, $routeName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function hasGodRole(?User $user): bool
+    {
+        if (! $user instanceof User) {
+            Log::info('hasGodRole: No user provided');
+
+            return false;
+        }
+
+        // Load roles relationship if not loaded
+        if (! $user->relationLoaded('roles')) {
+            $user->load('roles');
+        }
+
+        // Debug: Log user roles
+        Log::info('hasGodRole check', [
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'user_team_id' => $user->team_id,
+            'roles_count' => $user->roles->count(),
+            'roles' => $user->roles->pluck('name', 'guard_name')->toArray(),
+            'has_god_role_default' => $user->hasRole(RoleDefaults::GOD),
+            'has_god_role_web' => $user->hasRole(RoleDefaults::GOD, 'web'),
+            'has_god_role_api' => $user->hasRole(RoleDefaults::GOD, 'api'),
+        ]);
+
+        // Check if user has the GOD role for any guard
+        // First check with the web guard explicitly
+        if ($user->hasRole(RoleDefaults::GOD, 'web')) {
+            Log::info('User has GOD role for web guard');
+
+            return true;
+        }
+
+        // Also check with the api guard
+        if ($user->hasRole(RoleDefaults::GOD, 'api')) {
+            Log::info('User has GOD role for api guard');
+
+            return true;
+        }
+        Log::debug('User roles:', $user->roles->pluck('name', 'guard_name')->toArray());
+        // Fallback to default check
+        $hasRole = $user->hasRole(RoleDefaults::GOD);
+        Log::info('Fallback GOD role check: '.($hasRole ? 'true' : 'false'));
+
+        return $hasRole;
+    }
+}

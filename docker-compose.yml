@@ -1,0 +1,207 @@
+services:
+  app_engage:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+      args:
+        - UID=$UID
+        - GID=$GID
+    user: ${UID}:${GID}
+    container_name: app_engage
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ~/.aws:/var/www/.aws
+      - psysh-config:/var/www/.config/psysh
+      - composer-cache:/var/www/.composer
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_DEBUG=true
+      - APP_KEY=${APP_KEY}
+      - DB_CONNECTION=pgsql
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=5432
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      # AWS Cognito credentials (keep original AWS vars)
+      - AWS_PROFILE=${AWS_PROFILE}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - AWS_COGNITO_REGION=${AWS_COGNITO_REGION}
+      - AWS_COGNITO_USER_POOL_ID=${AWS_COGNITO_USER_POOL_ID}
+      - AWS_COGNITO_CLIENT_ID=${AWS_COGNITO_CLIENT_ID}
+      - AWS_COGNITO_CLIENT_SECRET=${AWS_COGNITO_CLIENT_SECRET}
+      # MinIO-specific variables for S3 storage
+      - MINIO_ACCESS_KEY_ID=${MINIO_ACCESS_KEY_ID:-minio}
+      - MINIO_SECRET_ACCESS_KEY=${MINIO_SECRET_ACCESS_KEY:-minio123}
+      - MINIO_BUCKET=${MINIO_BUCKET:-upengage}
+      - MINIO_ENDPOINT=${MINIO_ENDPOINT:-http://minio:9000}
+      - MINIO_URL=${MINIO_URL:-http://localhost:9100/upengage}
+      - S3_USE_PATH_STYLE_ENDPOINT=${S3_USE_PATH_STYLE_ENDPOINT:-true}
+      - XDEBUG_MODE=coverage
+      - REDIS_URL=redis://:@redis-cluster:6379/0
+    depends_on:
+      - db_engage
+      - db_engage_testing
+      - redis-cluster
+    networks:
+      - app_engage_network
+
+  webserver_engage:
+    image: nginx:alpine
+    container_name: webserver_engage
+    restart: unless-stopped
+    ports:
+      - "1310:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.local.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - app_engage_network
+
+  db_engage:
+    image: postgres:15
+    container_name: db_engage
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - app_engage_network
+
+  db_engage_testing:
+    image: postgres:15
+    container_name: db_engage_testing
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${TEST_DB_DATABASE}
+      POSTGRES_USER: ${TEST_DB_USERNAME}
+      POSTGRES_PASSWORD: ${TEST_DB_PASSWORD}
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=200"
+      - "-c"
+      - "shared_buffers=256MB"
+    ports:
+      - "5434:5432"  # Different port for testing DB
+    networks:
+      - app_engage_network
+
+  redis-cluster:
+    image: docker.io/bitnami/redis-cluster:7.0
+    container_name: redis-cluster
+    restart: unless-stopped
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+      - 'REDIS_CLUSTER_REPLICAS=0'
+      - 'REDIS_NODES=redis-cluster redis-cluster redis-cluster'
+      - 'REDIS_CLUSTER_CREATOR=yes'
+      - 'REDIS_CLUSTER_DYNAMIC_IPS=no'
+      - 'REDIS_CLUSTER_ANNOUNCE_IP=redis-cluster'
+    ports:
+      - "6379:6379"
+    networks:
+      - app_engage_network
+
+  reverb_engage:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+      args:
+        - UID=$UID
+        - GID=$GID
+    user: ${UID}:${GID}
+    container_name: reverb_engage
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: php artisan reverb:start --host=0.0.0.0 --port=8080 --debug
+    volumes:
+      - .:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_DEBUG=true
+      - APP_KEY=${APP_KEY}
+      - DB_CONNECTION=pgsql
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=5432
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - REVERB_HOST=0.0.0.0
+      - REVERB_PORT=8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db_engage
+      - redis-cluster
+    networks:
+      - app_engage_network
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio_engage
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minio}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-minio123}
+    ports:
+      - "9100:9000"
+      - "9101:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - app_engage_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  createbuckets:
+    image: minio/mc:latest
+    container_name: minio_client_engage
+    depends_on:
+      minio:
+        condition: service_healthy
+    volumes:
+      - ./docker/minio:/config
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://minio:9000 $${MINIO_ROOT_USER:-minio} $${MINIO_ROOT_PASSWORD:-minio123};
+      /usr/bin/mc mb --ignore-existing myminio/$${MINIO_BUCKET:-upengage};
+      /usr/bin/mc mb --ignore-existing myminio/$${MINIO_SECOND_BUCKET:-localization-repository};
+      /usr/bin/mc anonymous set public myminio/$${MINIO_BUCKET:-upengage}/public;
+      /usr/bin/mc anonymous set public myminio/$${MINIO_SECOND_BUCKET:-localization-repository}/public;
+      /usr/bin/mc cors set-json /config/cors.json myminio/$${MINIO_BUCKET:-upengage};
+      /usr/bin/mc cors set-json /config/cors.json myminio/$${MINIO_SECOND_BUCKET:-localization-repository};
+      echo 'Buckets and CORS policies applied successfully';
+      exit 0;
+      "
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minio}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-minio123}
+      - MINIO_BUCKET=${MINIO_BUCKET:-upengage}
+      - MINIO_SECOND_BUCKET=${MINIO_SECOND_BUCKET:-localization-repository}
+    networks:
+      - app_engage_network
+volumes:
+  dbdata:
+  psysh-config:
+  composer-cache:
+  minio_data:
+
+networks:
+  app_engage_network:
+    driver: bridge

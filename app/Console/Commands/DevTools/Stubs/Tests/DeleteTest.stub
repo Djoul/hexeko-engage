@@ -1,0 +1,27 @@
+<?php
+
+namespace Tests\Feature\ModelsCRUD\{$modelName};
+
+use App\Models\{$modelName};
+
+use PHPUnit\Framework\Attributes\Test;
+use Tests\ProtectedRouteTestCase;
+
+class Delete{$modelName}Test extends ProtectedRouteTestCase
+{
+
+
+    #[Test]
+    public function it_can_delete_{$modelVar}(): void
+    {
+        ${$modelVar} = {$modelName}::factory()->create();
+
+        $this->assertDatabasehas('{$modelVar}s', ['id' => ${$modelVar}['id'], 'deleted_at' => null]);
+
+        $response = $this->delete("/api/v1/{$modelVar}s/{${$modelVar}->id}");
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('{$modelVar}s', ['id' => ${$modelVar}['id'], 'deleted_at' => null]);
+    }
+}

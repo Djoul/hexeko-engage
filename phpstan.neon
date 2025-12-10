@@ -1,0 +1,40 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+    - vendor/ergebnis/phpstan-rules/rules.neon
+    - phpstan-baseline.neon
+
+
+
+parameters:
+
+    paths:
+        - app
+
+    level: 9
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        - '#return type with generic class .* does not specify its types#'
+        - '#Method App\\Repositories\\Models\\RoleRepository::create\(\) should return App\\Models\\Role but returns Spatie\\Permission\\Contracts\\Role#'
+        - '#Method App\\Repositories\\Models\\PermissionRepository::create\(\) should return App\\Models\\Permission but returns Spatie\\Permission\\Contracts\\Permission#'
+        - '#Class .* uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types: TFactory#'
+        - identifier: function.alreadyNarrowedType
+
+    ergebnis:
+        declareStrictTypes:
+            enabled: false
+        final:
+            enabled: false
+        noExtends:
+            enabled: false
+        noNullableReturnTypeDeclaration:
+            enabled: false
+        noParameterWithNullableTypeDeclaration :
+            enabled: false
+        noConstructorParameterWithDefaultValue:
+            enabled: false
+        noParameterWithNullDefaultValue:
+            enabled: false
+        noNamedArgument:
+            enabled: false

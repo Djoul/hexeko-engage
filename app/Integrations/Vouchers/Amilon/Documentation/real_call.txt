@@ -1,0 +1,71 @@
+GET https://b2bsales-api.amilon.eu/b2bwebapi/v1/retailers/categories: {
+  "Network": {
+    "addresses": {
+      "local": {
+        "address": "192.168.0.27",
+        "family": "IPv4",
+        "port": 58788
+      },
+      "remote": {
+        "address": "45.87.64.115",
+        "family": "IPv4",
+        "port": 443
+      }
+    },
+    "tls": {
+      "reused": false,
+      "authorized": true,
+      "authorizationError": null,
+      "cipher": {
+        "name": "TLS_AES_256_GCM_SHA384",
+        "standardName": "TLS_AES_256_GCM_SHA384",
+        "version": "TLSv1/SSLv3"
+      },
+      "protocol": "TLSv1.3",
+      "ephemeralKeyInfo": {},
+      "peerCertificate": {
+        "subject": {
+          "country": "IT",
+          "stateOrProvince": "Milano",
+          "locality": null,
+          "organization": "Amilon Srl",
+          "organizationalUnit": null,
+          "commonName": "*.amilon.eu",
+          "alternativeNames": "DNS:*.amilon.eu, DNS:amilon.eu"
+        },
+        "issuer": {
+          "country": "GB",
+          "stateOrProvince": "Greater Manchester",
+          "locality": "Salford",
+          "organization": "Sectigo Limited",
+          "organizationalUnit": null,
+          "commonName": "Sectigo RSA Organization Validation Secure Server CA"
+        },
+        "validFrom": "Dec 26 00:00:00 2024 GMT",
+        "validTo": "Jan 24 23:59:59 2026 GMT",
+        "fingerprint": "25:5E:FA:73:CE:52:44:3B:63:0C:68:1E:92:EC:D0:97:DD:76:AE:C3",
+        "serialNumber": "743938a6759d886460c0dc4c648cc81e"
+      }
+    }
+  },
+  "Request Headers": {
+    "accept": "application/json",
+    "content-type": "application/json",
+    "authorization": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjBBRDNBMDE0OTQ5MTdEOTIxOTEwMkQzODhFQ0Q2NjczRTc3QTVDMzlSUzI1NiIsIng1dCI6IkN0T2dGSlNSZlpJWkVDMDRqczFtYy1kNlhEayIsInR5cCI6ImF0K2p3dCJ9.eyJpc3MiOiJodHRwczovL2IyYnNhbGVzLXNzby5hbWlsb24uZXUiLCJuYmYiOjE3NjI5NDI3MDQsImlhdCI6MTc2Mjk0MjcwNCwiZXhwIjoxNzYyOTQzMDA0LCJhdWQiOlsiYjJiLndlYmFwaSIsImN2LmV4dHdlYmFwaSIsImh0dHBzOi8vYjJic2FsZXMtc3NvLmFtaWxvbi5ldS9yZXNvdXJjZXMiXSwic2NvcGUiOlsiYjJiLndlYmFwaSIsImN2LmV4dHdlYmFwaSIsIm9wZW5pZCIsInByb2ZpbGUiLCJvZmZsaW5lX2FjY2VzcyJdLCJhbXIiOlsicHdkIl0sImNsaWVudF9pZCI6ImIyYndzdXNlcndlYmFwaSIsInN1YiI6IjM5ZDFjMWVhLTNlOTUtZjAxMS1iODIwLTAwNTA1NmE1OTA0MCIsImF1dGhfdGltZSI6MTc2Mjk0MjcwNCwiaWRwIjoibG9jYWwiLCJsb2NhbGUiOiJpdC1JVCIsImIyYl9jdXN0b21lcl9pZCI6IjA0NTczMjM4LTNiOTUtZjAxMS1iODIwLTAwNTA1NmE1OTA0MCIsImVtYWlsIjoiY2hhcmxlc0BoZXhla28uY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInJvbGUiOiJXUyBVc2VyIn0.GBlOEZsbdGotkunNckWQU_uo87rBautEgEv6_otpOiy3GlQu_zyPKT93Z8pIpDALkplogky34SqtgxrmZGDPAWuWVdSX2VQNyqU8uoPFLEp8PT343CdpzK3eWKoLnQrjgPmJyytcCc_d3Dx7uEAvbM5sqg4_ryYn7Y92mCQevM-PYl2PFs-j6EVM_2xqnjIFcYrrPg5a_U-2bb7hZUNteBHAuYq0iTQxLOQ6p8Yl5v4RjrVm6Kot4-PbWHVil3JlMF_fDzVY4PSDJxTJuGVqmbQYW009Zx61pPGFHlS1N91qGAVCHRtfNFPhfouiQm_iBpUUQ7OMQlDAYxss7AmKvg",
+    "user-agent": "PostmanRuntime/7.50.0",
+    "cache-control": "no-cache",
+    "postman-token": "3bba1d1c-0969-4e23-9a82-18daf646bc4c",
+    "host": "b2bsales-api.amilon.eu",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "cookie": "SERVERID=AMLWEB01|aRRgU|aRRa3"
+  },
+  "Response Headers": {
+    "content-length": "1849",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Wed, 12 Nov 2025 10:24:23 GMT",
+    "set-cookie": "SERVERID=AMLWEB01|aRRgW|aRRa3; path=/; Secure; SameSite=None; HttpOnly",
+    "cache-control": "private"
+  },
+  "Response Body": "[{\"CategoryId\":\"26c9eda2-32b8-4c57-921c-05c2baf4e93f\",\"CategoryName\":\"Beauty care\"},{\"CategoryId\":\"ace6e2c4-8aa1-40b1-8703-07e540dd253c\",\"CategoryName\":\"Beneficenza\"},{\"CategoryId\":\"26fc3c4a-0e5e-4400-a552-12370bcbaec8\",\"CategoryName\":\"Benzina e mobilità\"},{\"CategoryId\":\"3399d2bd-c11f-4281-bb7e-12e71d8bcd34\",\"CategoryName\":\"Casa e manutenzione\"},{\"CategoryId\":\"814cf294-73af-4e2b-b204-2b7086fbcbd1\",\"CategoryName\":\"Centri commerciali e Outlet\"},{\"CategoryId\":\"bb9dc999-3bd7-4129-a2a0-31dfa1c7c5ee\",\"CategoryName\":\"Coupon, offerte e sconti\"},{\"CategoryId\":\"98a7a818-3dd4-4a26-a894-483ac276c49e\",\"CategoryName\":\"Multibrand & marketplace\"},{\"CategoryId\":\"19e4c6ed-730f-4df3-bd60-49486ca4fbbd\",\"CategoryName\":\"Elettronica\"},{\"CategoryId\":\"da77759f-118d-4d45-aae8-5588284291c8\",\"CategoryName\":\"Intrattenimento e tempo libero\"},{\"CategoryId\":\"fc14d92b-e60b-4885-8d07-6088f429a278\",\"CategoryName\":\"Libri e riviste\"},{\"CategoryId\":\"b787bed2-b1df-41d8-8456-63af1a1ffb41\",\"CategoryName\":\"Moda e accessori\"},{\"CategoryId\":\"bda7b640-2031-4f8b-8241-64d2c0b4b9ef\",\"CategoryName\":\"Multibrand\"},{\"CategoryId\":\"52e84dca-13a0-4480-a40f-7ef8b77346ac\",\"CategoryName\":\"Ottica\"},{\"CategoryId\":\"9429e0d0-2a87-497a-87b3-88aef9b7d397\",\"CategoryName\":\"Prodotti per animali\"},{\"CategoryId\":\"9b539288-aa28-4cc9-8d1c-8c7aa95eee1f\",\"CategoryName\":\"Prodotti per l' infanzia\"},{\"CategoryId\":\"fd208fe2-a945-44e9-b894-cbec6fa58278\",\"CategoryName\":\"Prodotti per lo sport\"},{\"CategoryId\":\"54999601-91ae-4e54-9630-d0125baa873d\",\"CategoryName\":\"Ristorazione\"},{\"CategoryId\":\"e9bbdbfb-6a35-4388-b2a5-d8b1640cca5b\",\"CategoryName\":\"Salute\"},{\"CategoryId\":\"8fd66100-4585-43e5-90ac-fa7f9e241f08\",\"CategoryName\":\"Spesa\"},{\"CategoryId\":\"9b441615-556a-4751-8018-fd3f18626d83\",\"CategoryName\":\"Telefonia\"},{\"CategoryId\":\"a6815198-97fc-4363-9e81-fe3fac499973\",\"CategoryName\":\"Viaggi e turismo\"}]"
+}

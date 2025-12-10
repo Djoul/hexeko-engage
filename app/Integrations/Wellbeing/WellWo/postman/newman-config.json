@@ -1,0 +1,81 @@
+{
+  "collection": "./WellWo-API.postman_collection.json",
+  "environment": "./environments/local.postman_environment.json",
+  "reporters": ["cli", "json", "htmlextra"],
+  "reporterJunitExport": "./reports/newman/junit-wellwo.xml",
+  "reporterJsonExport": "./reports/newman/newman-wellwo-report.json",
+  "reporterHtmlextraExport": "./reports/newman/newman-wellwo-report.html",
+  "iterationCount": 1,
+  "timeout": 10000,
+  "timeoutRequest": 5000,
+  "delayRequest": 100,
+  "bail": true,
+  "color": "auto",
+  "verbose": false,
+  "folder": [
+    "Health Check",
+    "Programs",
+    "Videos",
+    "Error Scenarios",
+    "End-to-End Scenarios"
+  ],
+  "skipFolder": [],
+  "globalVar": [],
+  "envVar": [
+    {
+      "key": "newman_test_run",
+      "value": "true"
+    }
+  ],
+  "exportGlobals": "./reports/newman/newman-wellwo-globals.json",
+  "exportEnvironment": "./reports/newman/newman-wellwo-environment.json",
+  "postman": {
+    "version": "latest"
+  },
+  "suppressExitCode": false,
+  "ignoreRedirects": false,
+  "insecure": false,
+  "sslExtraCaCerts": null,
+  "sslClientCert": null,
+  "sslClientKey": null,
+  "sslClientPassphrase": null,
+  "cookieJar": null,
+  "requestAgents": null,
+  "working-dir": "./",
+  "description": "Configuration Newman spécialisée pour l'API WellWo - Tests automatisés des endpoints de bien-être et contenus wellness",
+  "metadata": {
+    "api": "WellWo Wellbeing",
+    "version": "v1",
+    "integration": "wellbeing",
+    "provider": "WellWo",
+    "maintainer": "UP Engage Team",
+    "created": "2025-08-08",
+    "tags": ["wellbeing", "wellness", "videos", "programs", "health", "multilang"],
+    "endpoints_coverage": [
+      "GET /api/v1/wellbeing/wellwo/health",
+      "GET /api/v1/wellbeing/wellwo/programs",
+      "GET /api/v1/wellbeing/wellwo/programs/{id}",
+      "GET /api/v1/wellbeing/wellwo/programs/{id}/videos",
+      "GET /api/v1/wellbeing/wellwo/videos/{id}"
+    ],
+    "test_scenarios": [
+      "Health monitoring",
+      "Program listing and details",
+      "Video content retrieval",
+      "Multi-language support",
+      "Error handling (404, 422, 401, 500)",
+      "End-to-end user journeys",
+      "Cache behavior validation",
+      "CDN URL verification"
+    ],
+    "supported_languages": ["es", "en", "fr", "it", "pt", "ca", "mx"],
+    "ci_integration": true,
+    "monitoring_ready": true
+  },
+  "hooks": {
+    "prerequest": [],
+    "test": []
+  },
+  "certificates": [],
+  "clientCertificates": []
+}

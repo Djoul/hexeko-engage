@@ -1,0 +1,1595 @@
+[
+    {
+        "slug": "manager_feedback_timing",
+        "theme_slug": "relations_with_management",
+        "text": {
+            "fr-BE": "À quand remonte la dernière fois où vous avez reçu un retour utile de votre manager ?",
+            "nl-BE": "Wanneer hebt u voor het laatst nuttige feedback van uw manager ontvangen?",
+            "fr-FR": "À quand remonte la dernière fois où vous avez reçu un retour utile de votre manager ?",
+            "nl-NL": "Wanneer hebt u voor het laatst nuttige feedback van uw manager ontvangen?",
+            "en-GB": "When was the last time you received useful feedback from your manager?",
+            "de-DE": "Wann haben Sie das letzte Mal nützliches Feedback von Ihrem Vorgesetzten erhalten?",
+            "es-ES": "¿Cuándo fue la última vez que recibió comentarios útiles de su gerente?",
+            "it-IT": "Quando è stata l'ultima volta che hai ricevuto un feedback utile dal tuo manager?",
+            "pt-PT": "Quando foi a última vez que recebeu feedback útil do seu gestor?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Cette semaine",
+                    "nl-BE": "Deze week",
+                    "fr-FR": "Cette semaine",
+                    "nl-NL": "Deze week",
+                    "en-GB": "This week",
+                    "de-DE": "Diese Woche",
+                    "es-ES": "Esta semana",
+                    "it-IT": "Questa settimana",
+                    "pt-PT": "Esta semana"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "Ce mois-ci",
+                    "nl-BE": "Deze maand",
+                    "fr-FR": "Ce mois-ci",
+                    "nl-NL": "Deze maand",
+                    "en-GB": "This month",
+                    "de-DE": "Diesen Monat",
+                    "es-ES": "Este mes",
+                    "it-IT": "Questo mese",
+                    "pt-PT": "Este mês"
+                },
+                "position": 2
+            },
+            {
+                "text": {
+                    "fr-BE": "Il y a plusieurs mois",
+                    "nl-BE": "Meerdere maanden geleden",
+                    "fr-FR": "Il y a plusieurs mois",
+                    "nl-NL": "Meerdere maanden geleden",
+                    "en-GB": "A long time ago",
+                    "de-DE": "Vor langer Zeit",
+                    "es-ES": "Hace mucho tiempo",
+                    "it-IT": "Molto tempo fa",
+                    "pt-PT": "Há muito tempo"
+                },
+                "position": 3
+            },
+            {
+                "text": {
+                    "fr-BE": "Je n'ai jamais reçu de retour utile",
+                    "nl-BE": "Ik heb nooit nuttige feedback ontvangen",
+                    "fr-FR": "Je n'ai jamais reçu de retour utile",
+                    "nl-NL": "Ik heb nooit nuttige feedback ontvangen",
+                    "en-GB": "Never",
+                    "de-DE": "Nie",
+                    "es-ES": "Nunca",
+                    "it-IT": "Mai",
+                    "pt-PT": "Nunca"
+                },
+                "position": 4
+            },
+            {
+                "text": {
+                    "fr-BE": "Je ne sais pas",
+                    "nl-BE": "Ik weet het niet",
+                    "fr-FR": "Je ne sais pas",
+                    "nl-NL": "Ik weet het niet",
+                    "en-GB": "I don't know",
+                    "de-DE": "Ich weiß nicht",
+                    "es-ES": "No lo sé",
+                    "it-IT": "Non lo so",
+                    "pt-PT": "Não sei"
+                },
+                "position": 5
+            }
+        ]
+    },
+    {
+        "slug": "manager_safe_environment",
+        "theme_slug": "relations_with_management",
+        "text": {
+            "fr-BE": "Mon manager crée un environnement où je peux exprimer mes désaccords sans crainte de conséquences négatives.",
+            "nl-BE": "Mijn manager creëert een omgeving waarin ik mijn onenigheid kan uiten zonder bang te zijn voor negatieve gevolgen.",
+            "fr-FR": "Mon manager crée un environnement où je peux exprimer mes désaccords sans crainte de conséquences négatives.",
+            "nl-NL": "Mijn manager creëert een omgeving waarin ik mijn onenigheid kan uiten zonder bang te zijn voor negatieve gevolgen.",
+            "en-GB": "My manager creates an environment where I can express disagreements without fear of negative consequences.",
+            "de-DE": "Mein Vorgesetzter schafft ein Umfeld, in dem ich Meinungsverschiedenheiten äußern kann, ohne negative Konsequenzen zu befürchten.",
+            "es-ES": "Mi gerente crea un entorno en el que puedo expresar desacuerdos sin temor a consecuencias negativas.",
+            "it-IT": "Il mio manager crea un ambiente in cui posso esprimere disaccordi senza timore di conseguenze negative.",
+            "pt-PT": "O meu gestor cria um ambiente onde posso expressar desacordos sem medo de consequências negativas."
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "manager_if_disappeared",
+        "theme_slug": "relations_with_management",
+        "text": {
+            "fr-BE": "Si votre manager devait disparaître une semaine, que se passerait-il ?",
+            "nl-BE": "Als uw manager een week zou verdwijnen, wat zou er dan gebeuren?",
+            "fr-FR": "Si votre manager devait disparaître une semaine, que se passerait-il ?",
+            "nl-NL": "Als uw manager een week zou verdwijnen, wat zou er dan gebeuren?",
+            "en-GB": "If your manager were to disappear for a week, what would happen?",
+            "de-DE": "Wenn Ihr Vorgesetzter für eine Woche verschwinden würde, was würde passieren?",
+            "es-ES": "Si su gerente desapareciera durante una semana, ¿qué pasaría?",
+            "it-IT": "Se il tuo manager dovesse sparire per una settimana, cosa succederebbe?",
+            "pt-PT": "Se o seu gestor desaparecesse por uma semana, o que aconteceria?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "team_support_daily",
+        "theme_slug": "relations_with_management",
+        "text": {
+            "fr-BE": "Dans votre équipe, qui joue réellement le rôle de soutien au quotidien ?",
+            "nl-BE": "Wie speelt in uw team echt de dagelijkse ondersteuningsrol?",
+            "fr-FR": "Dans votre équipe, qui joue réellement le rôle de soutien au quotidien ?",
+            "nl-NL": "Wie speelt in uw team echt de dagelijkse ondersteuningsrol?",
+            "en-GB": "In your team, who really plays the daily support role?",
+            "de-DE": "Wer übernimmt in Ihrem Team wirklich die tägliche Unterstützungsrolle?",
+            "es-ES": "¿Quién desempeña realmente el papel de apoyo diario en su equipo?",
+            "it-IT": "Nel tuo team, chi svolge realmente il ruolo di supporto quotidiano?",
+            "pt-PT": "Na sua equipa, quem desempenha realmente o papel de apoio diário?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "could_change_alone",
+        "theme_slug": "relations_with_management",
+        "text": {
+            "fr-BE": "Si vous pouviez modifier une seule chose dans la posture de votre manager, que changeriez-vous ?",
+            "nl-BE": "Als u één ding zou kunnen veranderen in de houding van uw manager, wat zou u dan veranderen?",
+            "fr-FR": "Si vous pouviez modifier une seule chose dans la posture de votre manager, que changeriez-vous ?",
+            "nl-NL": "Als u één ding zou kunnen veranderen in de houding van uw manager, wat zou u dan veranderen?",
+            "en-GB": "If you could change one thing about your manager's attitude, what would you change?",
+            "de-DE": "Wenn Sie eine Sache an der Haltung Ihres Vorgesetzten ändern könnten, was würden Sie ändern?",
+            "es-ES": "Si pudiera cambiar una cosa en la actitud de su gerente, ¿qué cambiaría?",
+            "it-IT": "Se potessi modificare una sola cosa nell'atteggiamento del tuo manager, cosa cambieresti?",
+            "pt-PT": "Se pudesse modificar uma única coisa na postura do seu gestor, o que mudaria?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "recognition_last_time",
+        "theme_slug": "recognition_and_appreciation",
+        "text": {
+            "fr-BE": "Quelle est la dernière fois où tu t'es senti vraiment reconnu pour ton travail ?",
+            "nl-BE": "Wanneer voelde je je voor het laatst echt erkend voor je werk?",
+            "fr-FR": "Quelle est la dernière fois où tu t'es senti vraiment reconnu pour ton travail ?",
+            "nl-NL": "Wanneer voelde je je voor het laatst echt erkend voor je werk?",
+            "en-GB": "When was the last time you felt truly recognized for your work?",
+            "de-DE": "Wann haben Sie sich das letzte Mal wirklich für Ihre Arbeit anerkannt gefühlt?",
+            "es-ES": "¿Cuándo fue la última vez que se sintió realmente reconocido por su trabajo?",
+            "it-IT": "Quando è stata l'ultima volta che ti sei sentito veramente riconosciuto per il tuo lavoro?",
+            "pt-PT": "Quando foi a última vez que se sentiu verdadeiramente reconhecido pelo seu trabalho?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "when_feels_good",
+        "theme_slug": "recognition_and_appreciation",
+        "text": {
+            "fr-BE": "Quand tu fais un bon boulot, comment ça se voit dans ton équipe ou auprès de ton manager ?",
+            "nl-BE": "Als je goed werk levert, hoe zie je dat dan in je team of bij je manager?",
+            "fr-FR": "Quand tu fais un bon boulot, comment ça se voit dans ton équipe ou auprès de ton manager ?",
+            "nl-NL": "Als je goed werk levert, hoe zie je dat dan in je team of bij je manager?",
+            "en-GB": "When you do a good job, how does it show in your team or with your manager?",
+            "de-DE": "Wenn Sie gute Arbeit leisten, wie zeigt sich das in Ihrem Team oder bei Ihrem Vorgesetzten?",
+            "es-ES": "Cuando hace un buen trabajo, ¿cómo se ve en su equipo o con su gerente?",
+            "it-IT": "Quando fai un buon lavoro, come si vede nel tuo team o con il tuo manager?",
+            "pt-PT": "Quando faz um bom trabalho, como é que isso se vê na sua equipa ou junto do seu gestor?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "scale_how_happy",
+        "theme_slug": "recognition_and_appreciation",
+        "text": {
+            "fr-BE": "Sur une échelle de 1 à 5, à quel point tu trouves que tes efforts sont visibles ?",
+            "nl-BE": "Op een schaal van 1 tot 5, hoe zichtbaar vind je dat je inspanningen zijn?",
+            "fr-FR": "Sur une échelle de 1 à 5, à quel point tu trouves que tes efforts sont visibles ?",
+            "nl-NL": "Op een schaal van 1 tot 5, hoe zichtbaar vind je dat je inspanningen zijn?",
+            "en-GB": "On a scale of 1 to 5, how visible do you find your efforts are?",
+            "de-DE": "Auf einer Skala von 1 bis 5, wie sichtbar finden Sie Ihre Bemühungen?",
+            "es-ES": "En una escala del 1 al 5, ¿qué tan visibles son sus esfuerzos?",
+            "it-IT": "Su una scala da 1 a 5, quanto pensi che i tuoi sforzi siano visibili?",
+            "pt-PT": "Numa escala de 1 a 5, até que ponto acha que os seus esforços são visíveis?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "work_daily_gives_you",
+        "theme_slug": "recognition_and_appreciation",
+        "text": {
+            "fr-BE": "Qui, dans ton quotidien pro, te donne envie de te dépasser ?",
+            "nl-BE": "Wie, in je dagelijkse professionele leven, inspireert je om jezelf te overtreffen?",
+            "fr-FR": "Qui, dans ton quotidien pro, te donne envie de te dépasser ?",
+            "nl-NL": "Wie, in je dagelijkse professionele leven, inspireert je om jezelf te overtreffen?",
+            "en-GB": "Who, in your professional daily life, makes you want to exceed yourself?",
+            "de-DE": "Wer gibt Ihnen in Ihrem beruflichen Alltag den Antrieb, über sich hinauszuwachsen?",
+            "es-ES": "¿Quién, en su vida profesional diaria, le hace querer superarse?",
+            "it-IT": "Chi, nella tua vita professionale quotidiana, ti fa venire voglia di superare te stesso?",
+            "pt-PT": "Quem, no seu quotidiano profissional, o faz querer superar-se?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "enough_feedback_received",
+        "theme_slug": "recognition_and_appreciation",
+        "text": {
+            "fr-BE": "Reçois-tu assez de retours positifs pour rester motivé(e) ?",
+            "nl-BE": "Krijg je genoeg positieve feedback om gemotiveerd te blijven?",
+            "fr-FR": "Reçois-tu assez de retours positifs pour rester motivé(e) ?",
+            "nl-NL": "Krijg je genoeg positieve feedback om gemotiveerd te blijven?",
+            "en-GB": "Do you receive enough positive feedback to stay motivated?",
+            "de-DE": "Erhalten Sie genug positives Feedback, um motiviert zu bleiben?",
+            "es-ES": "¿Recibe suficientes comentarios positivos para mantenerse motivado?",
+            "it-IT": "Ricevi abbastanza feedback positivi per rimanere motivato?",
+            "pt-PT": "Recebe feedback positivo suficiente para se manter motivado?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Oui",
+                    "nl-BE": "Ja",
+                    "fr-FR": "Oui",
+                    "nl-NL": "Ja",
+                    "en-GB": "Yes",
+                    "de-DE": "Ja",
+                    "es-ES": "Sí",
+                    "it-IT": "Sì",
+                    "pt-PT": "Sim"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "Non",
+                    "nl-BE": "Nee",
+                    "fr-FR": "Non",
+                    "nl-NL": "Nee",
+                    "en-GB": "No",
+                    "de-DE": "Nein",
+                    "es-ES": "No",
+                    "it-IT": "No",
+                    "pt-PT": "Não"
+                },
+                "position": 2
+            }
+        ]
+    },
+    {
+        "slug": "what_motivates_you",
+        "theme_slug": "meaning_of_work",
+        "text": {
+            "fr-BE": "Qu'est-ce qui te donne envie de te lever pour venir travailler ici, les bons jours ?",
+            "nl-BE": "Wat geeft je de motivatie om op goede dagen naar het werk te komen?",
+            "fr-FR": "Qu'est-ce qui te donne envie de te lever pour venir travailler ici, les bons jours ?",
+            "nl-NL": "Wat geeft je de motivatie om op goede dagen naar het werk te komen?",
+            "en-GB": "What makes you want to get up and come to work here, on good days?",
+            "de-DE": "Was gibt Ihnen an guten Tagen die Motivation, zur Arbeit zu kommen?",
+            "es-ES": "¿Qué le hace querer levantarse e ir a trabajar aquí, en los buenos días?",
+            "it-IT": "Cosa ti fa venire voglia di alzarti e venire a lavorare qui, nei giorni buoni?",
+            "pt-PT": "O que o faz querer levantar-se e vir trabalhar aqui, nos bons dias?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "when_feel_impression",
+        "theme_slug": "meaning_of_work",
+        "text": {
+            "fr-BE": "Quand as-tu eu l'impression de faire une vraie différence dans ton travail ?",
+            "nl-BE": "Wanneer had je het gevoel dat je echt een verschil maakte in je werk?",
+            "fr-FR": "Quand as-tu eu l'impression de faire une vraie différence dans ton travail ?",
+            "nl-NL": "Wanneer had je het gevoel dat je echt een verschil maakte in je werk?",
+            "en-GB": "When did you feel you were making a real difference in your work?",
+            "de-DE": "Wann hatten Sie das Gefühl, dass Sie in Ihrer Arbeit einen echten Unterschied machen?",
+            "es-ES": "¿Cuándo tuvo la sensación de estar marcando una verdadera diferencia en su trabajo?",
+            "it-IT": "Quando hai avuto l'impressione di fare davvero la differenza nel tuo lavoro?",
+            "pt-PT": "Quando teve a impressão de fazer uma verdadeira diferença no seu trabalho?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "meaning_work_importance",
+        "theme_slug": "meaning_of_work",
+        "text": {
+            "fr-BE": "À quel point comprends-tu pourquoi ton travail compte dans l'ensemble de l'entreprise ?",
+            "nl-BE": "In hoeverre begrijp je waarom je werk belangrijk is voor het bedrijf als geheel?",
+            "fr-FR": "À quel point comprends-tu pourquoi ton travail compte dans l'ensemble de l'entreprise ?",
+            "nl-NL": "In hoeverre begrijp je waarom je werk belangrijk is voor het bedrijf als geheel?",
+            "en-GB": "To what extent do you understand why your work matters in the company as a whole?",
+            "de-DE": "Inwieweit verstehen Sie, warum Ihre Arbeit für das Unternehmen als Ganzes wichtig ist?",
+            "es-ES": "¿Hasta qué punto comprende por qué su trabajo importa en el conjunto de la empresa?",
+            "it-IT": "In che misura capisci perché il tuo lavoro conta nell'insieme dell'azienda?",
+            "pt-PT": "Até que ponto compreende porque é que o seu trabalho é importante para a empresa como um todo?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "if_explain_your_job",
+        "theme_slug": "meaning_of_work",
+        "text": {
+            "fr-BE": "Si vous deviez expliquer en quoi consiste réellement votre travail, que diriez-vous ?",
+            "nl-BE": "Als u moest uitleggen waar uw werk echt uit bestaat, wat zou u dan zeggen?",
+            "fr-FR": "Si vous deviez expliquer en quoi consiste réellement votre travail, que diriez-vous ?",
+            "nl-NL": "Als u moest uitleggen waar uw werk echt uit bestaat, wat zou u dan zeggen?",
+            "en-GB": "If you had to explain what your work really consists of, what would you say?",
+            "de-DE": "Wenn Sie erklären müssten, worin Ihre Arbeit wirklich besteht, was würden Sie sagen?",
+            "es-ES": "Si tuviera que explicar en qué consiste realmente su trabajo, ¿qué diría?",
+            "it-IT": "Se dovessi spiegare in cosa consiste realmente il tuo lavoro, cosa diresti?",
+            "pt-PT": "Se tivesse de explicar em que consiste realmente o seu trabalho, o que diria?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "have_you_thought",
+        "theme_slug": "meaning_of_work",
+        "text": {
+            "fr-BE": "As-tu déjà pensé que ton poste n'avait plus vraiment de sens ?",
+            "nl-BE": "Heb je ooit gedacht dat je functie niet meer echt zinvol was?",
+            "fr-FR": "As-tu déjà pensé que ton poste n'avait plus vraiment de sens ?",
+            "nl-NL": "Heb je ooit gedacht dat je functie niet meer echt zinvol was?",
+            "en-GB": "Have you ever thought that your position no longer really made sense?",
+            "de-DE": "Haben Sie jemals gedacht, dass Ihre Position keinen Sinn mehr macht?",
+            "es-ES": "¿Alguna vez ha pensado que su puesto ya no tenía sentido?",
+            "it-IT": "Hai mai pensato che la tua posizione non avesse più veramente senso?",
+            "pt-PT": "Já pensou que a sua posição já não fazia realmente sentido?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Oui",
+                    "nl-BE": "Ja",
+                    "fr-FR": "Oui",
+                    "nl-NL": "Ja",
+                    "en-GB": "Yes",
+                    "de-DE": "Ja",
+                    "es-ES": "Sí",
+                    "it-IT": "Sì",
+                    "pt-PT": "Sim"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "Non",
+                    "nl-BE": "Nee",
+                    "fr-FR": "Non",
+                    "nl-NL": "Nee",
+                    "en-GB": "No",
+                    "de-DE": "Nein",
+                    "es-ES": "No",
+                    "it-IT": "No",
+                    "pt-PT": "Não"
+                },
+                "position": 2
+            }
+        ]
+    },
+    {
+        "slug": "development_learning_progress",
+        "theme_slug": "development_opportunities",
+        "text": {
+            "fr-BE": "Avez-vous le sentiment d'apprendre ou de progresser dans votre poste actuel ?",
+            "nl-BE": "Heeft u het gevoel dat u leert of vooruitgaat in uw huidige functie?",
+            "fr-FR": "Avez-vous le sentiment d'apprendre ou de progresser dans votre poste actuel ?",
+            "nl-NL": "Heeft u het gevoel dat u leert of vooruitgaat in uw huidige functie?",
+            "en-GB": "Do you feel you are learning or progressing in your current position?",
+            "de-DE": "Haben Sie das Gefühl, in Ihrer aktuellen Position zu lernen oder Fortschritte zu machen?",
+            "es-ES": "¿Siente que está aprendiendo o progresando en su puesto actual?",
+            "it-IT": "Senti di imparare o progredire nella tua posizione attuale?",
+            "pt-PT": "Sente que está a aprender ou a progredir na sua posição atual?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "development_future_learning",
+        "theme_slug": "development_opportunities",
+        "text": {
+            "fr-BE": "Qu'aimeriez-vous apprendre ou développer dans les mois à venir, si vous en aviez la possibilité ?",
+            "nl-BE": "Wat zou u graag leren of ontwikkelen in de komende maanden, als u de mogelijkheid had?",
+            "fr-FR": "Qu'aimeriez-vous apprendre ou développer dans les mois à venir, si vous en aviez la possibilité ?",
+            "nl-NL": "Wat zou u graag leren of ontwikkelen in de komende maanden, als u de mogelijkheid had?",
+            "en-GB": "What would you like to learn or develop in the coming months, if you had the opportunity?",
+            "de-DE": "Was würden Sie in den kommenden Monaten gerne lernen oder entwickeln, wenn Sie die Möglichkeit hätten?",
+            "es-ES": "¿Qué le gustaría aprender o desarrollar en los próximos meses, si tuviera la oportunidad?",
+            "it-IT": "Cosa vorresti imparare o sviluppare nei prossimi mesi, se ne avessi l'opportunità?",
+            "pt-PT": "O que gostaria de aprender ou desenvolver nos próximos meses, se tivesse a oportunidade?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "have_you_expressed",
+        "theme_slug": "development_opportunities",
+        "text": {
+            "fr-BE": "Avez-vous déjà exprimé un souhait de formation ou de mobilité interne ?",
+            "nl-BE": "Heeft u al een wens voor training of interne mobiliteit geuit?",
+            "fr-FR": "Avez-vous déjà exprimé un souhait de formation ou de mobilité interne ?",
+            "nl-NL": "Heeft u al een wens voor training of interne mobiliteit geuit?",
+            "en-GB": "Have you already expressed a desire for training or internal mobility?",
+            "de-DE": "Haben Sie bereits den Wunsch nach Schulung oder interner Mobilität geäußert?",
+            "es-ES": "¿Ya ha expresado el deseo de formación o movilidad interna?",
+            "it-IT": "Hai già espresso il desiderio di formazione o mobilità interna?",
+            "pt-PT": "Já expressou o desejo de formação ou mobilidade interna?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Oui",
+                    "nl-BE": "Ja",
+                    "fr-FR": "Oui",
+                    "nl-NL": "Ja",
+                    "en-GB": "Yes",
+                    "de-DE": "Ja",
+                    "es-ES": "Sí",
+                    "it-IT": "Sì",
+                    "pt-PT": "Sim"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "Non",
+                    "nl-BE": "Nee",
+                    "fr-FR": "Non",
+                    "nl-NL": "Nee",
+                    "en-GB": "No",
+                    "de-DE": "Nein",
+                    "es-ES": "No",
+                    "it-IT": "No",
+                    "pt-PT": "Não"
+                },
+                "position": 2
+            }
+        ]
+    },
+    {
+        "slug": "what_hinders_development",
+        "theme_slug": "development_opportunities",
+        "text": {
+            "fr-BE": "Selon vous, qu'est-ce qui freine le plus votre développement professionnel aujourd'hui ?",
+            "nl-BE": "Wat remt volgens u momenteel het meest uw professionele ontwikkeling?",
+            "fr-FR": "Selon vous, qu'est-ce qui freine le plus votre développement professionnel aujourd'hui ?",
+            "nl-NL": "Wat remt volgens u momenteel het meest uw professionele ontwikkeling?",
+            "en-GB": "In your opinion, what is the biggest obstacle to your professional development today?",
+            "de-DE": "Was bremst Ihrer Meinung nach Ihre berufliche Entwicklung heute am meisten?",
+            "es-ES": "En su opinión, ¿qué es lo que más frena su desarrollo profesional hoy?",
+            "it-IT": "Secondo te, cosa frena di più il tuo sviluppo professionale oggi?",
+            "pt-PT": "Na sua opinião, o que mais trava o seu desenvolvimento profissional hoje?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "visibility_on_opportunities",
+        "theme_slug": "development_opportunities",
+        "text": {
+            "fr-BE": "Avez-vous de la visibilité sur les possibilités d'évolution dans votre structure ?",
+            "nl-BE": "Heeft u zicht op de ontwikkelingsmogelijkheden binnen uw organisatie?",
+            "fr-FR": "Avez-vous de la visibilité sur les possibilités d'évolution dans votre structure ?",
+            "nl-NL": "Heeft u zicht op de ontwikkelingsmogelijkheden binnen uw organisatie?",
+            "en-GB": "Do you have visibility on the development opportunities within your organization?",
+            "de-DE": "Haben Sie Transparenz über die Entwicklungsmöglichkeiten in Ihrer Organisation?",
+            "es-ES": "¿Tiene visibilidad sobre las oportunidades de desarrollo en su organización?",
+            "it-IT": "Hai visibilità sulle opportunità di sviluppo nella tua organizzazione?",
+            "pt-PT": "Tem visibilidade sobre as oportunidades de desenvolvimento na sua organização?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "workplace_concentration",
+        "theme_slug": "working_conditions",
+        "text": {
+            "fr-BE": "Votre environnement de travail vous permet-il de vous concentrer efficacement sur vos tâches ?",
+            "nl-BE": "Stelt uw werkomgeving u in staat om effectief te concentreren op uw taken?",
+            "fr-FR": "Votre environnement de travail vous permet-il de vous concentrer efficacement sur vos tâches ?",
+            "nl-NL": "Stelt uw werkomgeving u in staat om effectief te concentreren op uw taken?",
+            "en-GB": "Does your work environment allow you to focus effectively on your tasks?",
+            "de-DE": "Ermöglicht Ihnen Ihre Arbeitsumgebung, sich effektiv auf Ihre Aufgaben zu konzentrieren?",
+            "es-ES": "¿Su entorno de trabajo le permite concentrarse eficazmente en sus tareas?",
+            "it-IT": "Il tuo ambiente di lavoro ti permette di concentrarti efficacemente sui tuoi compiti?",
+            "pt-PT": "O seu ambiente de trabalho permite-lhe concentrar-se eficazmente nas suas tarefas?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "workplace_equipment_adequate",
+        "theme_slug": "working_conditions",
+        "text": {
+            "fr-BE": "Avez-vous l'équipement ou les outils nécessaires pour travailler dans de bonnes conditions ?",
+            "nl-BE": "Heeft u de apparatuur of hulpmiddelen die nodig zijn om in goede omstandigheden te werken?",
+            "fr-FR": "Avez-vous l'équipement ou les outils nécessaires pour travailler dans de bonnes conditions ?",
+            "nl-NL": "Heeft u de apparatuur of hulpmiddelen die nodig zijn om in goede omstandigheden te werken?",
+            "en-GB": "Do you have the equipment or tools necessary to work in good conditions?",
+            "de-DE": "Haben Sie die Ausrüstung oder Werkzeuge, die für gute Arbeitsbedingungen erforderlich sind?",
+            "es-ES": "¿Tiene el equipo o las herramientas necesarias para trabajar en buenas condiciones?",
+            "it-IT": "Hai l'attrezzatura o gli strumenti necessari per lavorare in buone condizioni?",
+            "pt-PT": "Tem o equipamento ou as ferramentas necessárias para trabalhar em boas condições?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Oui",
+                    "nl-BE": "Ja",
+                    "fr-FR": "Oui",
+                    "nl-NL": "Ja",
+                    "en-GB": "Yes",
+                    "de-DE": "Ja",
+                    "es-ES": "Sí",
+                    "it-IT": "Sì",
+                    "pt-PT": "Sim"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "Non",
+                    "nl-BE": "Nee",
+                    "fr-FR": "Non",
+                    "nl-NL": "Nee",
+                    "en-GB": "No",
+                    "de-DE": "Nein",
+                    "es-ES": "No",
+                    "it-IT": "No",
+                    "pt-PT": "Não"
+                },
+                "position": 2
+            }
+        ]
+    },
+    {
+        "slug": "workload_sustainable",
+        "theme_slug": "working_conditions",
+        "text": {
+            "fr-BE": "Dans quelle mesure votre charge de travail est-elle soutenable ?",
+            "nl-BE": "In welke mate is uw werklast houdbaar?",
+            "fr-FR": "Dans quelle mesure votre charge de travail est-elle soutenable ?",
+            "nl-NL": "In welke mate is uw werklast houdbaar?",
+            "en-GB": "To what extent is your workload sustainable?",
+            "de-DE": "Inwieweit ist Ihre Arbeitsbelastung tragbar?",
+            "es-ES": "¿En qué medida es sostenible su carga de trabajo?",
+            "it-IT": "In che misura il tuo carico di lavoro è sostenibile?",
+            "pt-PT": "Em que medida a sua carga de trabalho é sustentável?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "wellbeing_physical_hindrances",
+        "theme_slug": "working_conditions",
+        "text": {
+            "fr-BE": "Y a-t-il des éléments dans votre quotidien professionnel qui nuisent à votre bien-être physique ?",
+            "nl-BE": "Zijn er elementen in uw dagelijkse werkomgeving die uw fysiek welzijn schaden?",
+            "fr-FR": "Y a-t-il des éléments dans votre quotidien professionnel qui nuisent à votre bien-être physique ?",
+            "nl-NL": "Zijn er elementen in uw dagelijkse werkomgeving die uw fysiek welzijn schaden?",
+            "en-GB": "Are there elements in your professional daily life that harm your physical well-being?",
+            "de-DE": "Gibt es Elemente in Ihrem beruflichen Alltag, die Ihr körperliches Wohlbefinden beeinträchtigen?",
+            "es-ES": "¿Hay elementos en su vida profesional diaria que perjudican su bienestar físico?",
+            "it-IT": "Ci sono elementi nella tua vita professionale quotidiana che danneggiano il tuo benessere fisico?",
+            "pt-PT": "Há elementos no seu quotidiano profissional que prejudicam o seu bem-estar físico?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "workplace_change_one_thing",
+        "theme_slug": "working_conditions",
+        "text": {
+            "fr-BE": "Si vous pouviez changer une chose dans votre cadre de travail immédiat, que choisiriez-vous ?",
+            "nl-BE": "Als u één ding zou kunnen veranderen in uw directe werkomgeving, wat zou u dan kiezen?",
+            "fr-FR": "Si vous pouviez changer une chose dans votre cadre de travail immédiat, que choisiriez-vous ?",
+            "nl-NL": "Als u één ding zou kunnen veranderen in uw directe werkomgeving, wat zou u dan kiezen?",
+            "en-GB": "If you could change one thing in your immediate work environment, what would you choose?",
+            "de-DE": "Wenn Sie eine Sache in Ihrer unmittelbaren Arbeitsumgebung ändern könnten, was würden Sie wählen?",
+            "es-ES": "Si pudiera cambiar una cosa en su entorno de trabajo inmediato, ¿qué elegiría?",
+            "it-IT": "Se potessi cambiare una cosa nel tuo ambiente di lavoro immediato, cosa sceglieresti?",
+            "pt-PT": "Se pudesse mudar uma coisa no seu ambiente de trabalho imediato, o que escolheria?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "how_many_colleagues_feel_close",
+        "theme_slug": "relationships_between_colleagues",
+        "text": {
+            "fr-BE": "Avec combien de collègues vous sentez-vous réellement à l'aise pour échanger librement ?",
+            "nl-BE": "Met hoeveel collega's voelt u zich echt op uw gemak om vrijuit te praten?",
+            "fr-FR": "Avec combien de collègues vous sentez-vous réellement à l'aise pour échanger librement ?",
+            "nl-NL": "Met hoeveel collega's voelt u zich echt op uw gemak om vrijuit te praten?",
+            "en-GB": "How many colleagues do you really feel comfortable exchanging freely with?",
+            "de-DE": "Mit wie vielen Kollegen fühlen Sie sich wirklich wohl, um sich frei auszutauschen?",
+            "es-ES": "¿Con cuántos colegas se siente realmente cómodo intercambiando libremente?",
+            "it-IT": "Con quanti colleghi ti senti davvero a tuo agio per scambiare liberamente?",
+            "pt-PT": "Com quantos colegas se sente realmente à vontade para trocar livremente?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Aucun",
+                    "nl-BE": "Geen",
+                    "fr-FR": "Aucun",
+                    "nl-NL": "Geen",
+                    "en-GB": "None",
+                    "de-DE": "Keiner",
+                    "es-ES": "Ninguno",
+                    "it-IT": "Nessuno",
+                    "pt-PT": "Nenhum"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "1 ou 2",
+                    "nl-BE": "1 of 2",
+                    "fr-FR": "1 ou 2",
+                    "nl-NL": "1 of 2",
+                    "en-GB": "1 or 2",
+                    "de-DE": "1 oder 2",
+                    "es-ES": "1 o 2",
+                    "it-IT": "1 o 2",
+                    "pt-PT": "1 ou 2"
+                },
+                "position": 2
+            },
+            {
+                "text": {
+                    "fr-BE": "Un petit groupe",
+                    "nl-BE": "Een kleine groep",
+                    "fr-FR": "Un petit groupe",
+                    "nl-NL": "Een kleine groep",
+                    "en-GB": "A small group",
+                    "de-DE": "Eine kleine Gruppe",
+                    "es-ES": "Un pequeño grupo",
+                    "it-IT": "Un piccolo gruppo",
+                    "pt-PT": "Um pequeno grupo"
+                },
+                "position": 3
+            },
+            {
+                "text": {
+                    "fr-BE": "La majorité",
+                    "nl-BE": "De meerderheid",
+                    "fr-FR": "La majorité",
+                    "nl-NL": "De meerderheid",
+                    "en-GB": "The majority",
+                    "de-DE": "Die Mehrheit",
+                    "es-ES": "La mayoría",
+                    "it-IT": "La maggioranza",
+                    "pt-PT": "A maioria"
+                },
+                "position": 4
+            },
+            {
+                "text": {
+                    "fr-BE": "Presque tout le monde",
+                    "nl-BE": "Bijna iedereen",
+                    "fr-FR": "Presque tout le monde",
+                    "nl-NL": "Bijna iedereen",
+                    "en-GB": "Almost everyone",
+                    "de-DE": "Fast alle",
+                    "es-ES": "Casi todos",
+                    "it-IT": "Quasi tutti",
+                    "pt-PT": "Quase todos"
+                },
+                "position": 5
+            }
+        ]
+    },
+    {
+        "slug": "when_was_last_time",
+        "theme_slug": "relationships_between_colleagues",
+        "text": {
+            "fr-BE": "À quand remonte la dernière fois où un collègue vous a apporté un vrai soutien ?",
+            "nl-BE": "Wanneer heeft een collega u voor het laatst echte steun geboden?",
+            "fr-FR": "À quand remonte la dernière fois où un collègue vous a apporté un vrai soutien ?",
+            "nl-NL": "Wanneer heeft een collega u voor het laatst echte steun geboden?",
+            "en-GB": "When was the last time a colleague provided you with real support?",
+            "de-DE": "Wann hat Ihnen das letzte Mal ein Kollege echte Unterstützung geboten?",
+            "es-ES": "¿Cuándo fue la última vez que un colega le brindó un apoyo real?",
+            "it-IT": "Quando è stata l'ultima volta che un collega ti ha fornito un vero supporto?",
+            "pt-PT": "Quando foi a última vez que um colega lhe proporcionou um verdadeiro apoio?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Cette semaine",
+                    "nl-BE": "Deze week",
+                    "fr-FR": "Cette semaine",
+                    "nl-NL": "Deze week",
+                    "en-GB": "This week",
+                    "de-DE": "Diese Woche",
+                    "es-ES": "Esta semana",
+                    "it-IT": "Questa settimana",
+                    "pt-PT": "Esta semana"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "Ce mois-ci",
+                    "nl-BE": "Deze maand",
+                    "fr-FR": "Ce mois-ci",
+                    "nl-NL": "Deze maand",
+                    "en-GB": "This month",
+                    "de-DE": "Diesen Monat",
+                    "es-ES": "Este mes",
+                    "it-IT": "Questo mese",
+                    "pt-PT": "Este mês"
+                },
+                "position": 2
+            },
+            {
+                "text": {
+                    "fr-BE": "Il y a plus longtemps",
+                    "nl-BE": "Langer geleden",
+                    "fr-FR": "Il y a plus longtemps",
+                    "nl-NL": "Langer geleden",
+                    "en-GB": "Longer ago",
+                    "de-DE": "Länger her",
+                    "es-ES": "Hace más tiempo",
+                    "it-IT": "Più tempo fa",
+                    "pt-PT": "Há mais tempo"
+                },
+                "position": 3
+            },
+            {
+                "text": {
+                    "fr-BE": "Jamais",
+                    "nl-BE": "Nooit",
+                    "fr-FR": "Jamais",
+                    "nl-NL": "Nooit",
+                    "en-GB": "Never",
+                    "de-DE": "Nie",
+                    "es-ES": "Nunca",
+                    "it-IT": "Mai",
+                    "pt-PT": "Nunca"
+                },
+                "position": 4
+            },
+            {
+                "text": {
+                    "fr-BE": "Je ne sais pas",
+                    "nl-BE": "Ik weet het niet",
+                    "fr-FR": "Je ne sais pas",
+                    "nl-NL": "Ik weet het niet",
+                    "en-GB": "I don't know",
+                    "de-DE": "Ich weiß nicht",
+                    "es-ES": "No lo sé",
+                    "it-IT": "Non lo so",
+                    "pt-PT": "Não sei"
+                },
+                "position": 5
+            }
+        ]
+    },
+    {
+        "slug": "colleagues_atmosphere_general",
+        "theme_slug": "relationships_between_colleagues",
+        "text": {
+            "fr-BE": "Comment décririez-vous l'ambiance générale entre collègues dans votre environnement de travail ?",
+            "nl-BE": "Hoe zou u de algemene sfeer tussen collega's in uw werkomgeving beschrijven?",
+            "fr-FR": "Comment décririez-vous l'ambiance générale entre collègues dans votre environnement de travail ?",
+            "nl-NL": "Hoe zou u de algemene sfeer tussen collega's in uw werkomgeving beschrijven?",
+            "en-GB": "How would you describe the general atmosphere between colleagues in your work environment?",
+            "de-DE": "Wie würden Sie die allgemeine Atmosphäre zwischen Kollegen in Ihrem Arbeitsumfeld beschreiben?",
+            "es-ES": "¿Cómo describiría el ambiente general entre colegas en su entorno laboral?",
+            "it-IT": "Come descriveresti l'atmosfera generale tra colleghi nel tuo ambiente di lavoro?",
+            "pt-PT": "Como descreveria o ambiente geral entre colegas no seu ambiente de trabalho?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "colleagues_support_difficulty",
+        "theme_slug": "relationships_between_colleagues",
+        "text": {
+            "fr-BE": "En cas de difficulté, pouvez-vous compter sur vos collègues pour vous aider ou vous relayer ?",
+            "nl-BE": "In geval van moeilijkheden, kunt u op uw collega's rekenen om u te helpen of te vervangen?",
+            "fr-FR": "En cas de difficulté, pouvez-vous compter sur vos collègues pour vous aider ou vous relayer ?",
+            "nl-NL": "In geval van moeilijkheden, kunt u op uw collega's rekenen om u te helpen of te vervangen?",
+            "en-GB": "In case of difficulty, can you count on your colleagues to help or cover for you?",
+            "de-DE": "Können Sie bei Schwierigkeiten auf Ihre Kollegen zählen, die Ihnen helfen oder Sie vertreten?",
+            "es-ES": "¿Puede contar con sus colegas para ayudarle o cubrirle en caso de dificultad?",
+            "it-IT": "In caso di difficoltà, puoi contare sui tuoi colleghi per aiutarti o coprirti?",
+            "pt-PT": "Em caso de dificuldade, pode contar com os seus colegas para o ajudar ou substituir?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "if_thank_colleague",
+        "theme_slug": "relationships_between_colleagues",
+        "text": {
+            "fr-BE": "Si vous deviez remercier un collègue pour quelque chose récemment, ce serait pour quoi ?",
+            "nl-BE": "Als u onlangs een collega zou moeten bedanken voor iets, waarvoor zou dat dan zijn?",
+            "fr-FR": "Si vous deviez remercier un collègue pour quelque chose récemment, ce serait pour quoi ?",
+            "nl-NL": "Als u onlangs een collega zou moeten bedanken voor iets, waarvoor zou dat dan zijn?",
+            "en-GB": "If you had to thank a colleague for something recently, what would it be for?",
+            "de-DE": "Wenn Sie einem Kollegen kürzlich für etwas danken müssten, wofür wäre es?",
+            "es-ES": "Si tuviera que agradecer a un colega por algo recientemente, ¿por qué sería?",
+            "it-IT": "Se dovessi ringraziare un collega per qualcosa di recente, per cosa sarebbe?",
+            "pt-PT": "Se tivesse de agradecer a um colega por algo recentemente, por que seria?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "autonomy_daily_decisions",
+        "theme_slug": "autonomy_and_empowerment",
+        "text": {
+            "fr-BE": "Dans votre travail quotidien, jusqu'où sentez-vous que vous pouvez décider par vous-même ?",
+            "nl-BE": "In uw dagelijks werk, in hoeverre voelt u dat u zelf kunt beslissen?",
+            "fr-FR": "Dans votre travail quotidien, jusqu'où sentez-vous que vous pouvez décider par vous-même ?",
+            "nl-NL": "In uw dagelijks werk, in hoeverre voelt u dat u zelf kunt beslissen?",
+            "en-GB": "In your daily work, how far do you feel you can decide for yourself?",
+            "de-DE": "Inwieweit haben Sie das Gefühl, in Ihrer täglichen Arbeit selbst entscheiden zu können?",
+            "es-ES": "¿Hasta qué punto siente que puede decidir por sí mismo en su trabajo diario?",
+            "it-IT": "Nel tuo lavoro quotidiano, fino a che punto senti di poter decidere da solo?",
+            "pt-PT": "No seu trabalho diário, até que ponto sente que pode decidir por si mesmo?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "when_difficulty_arises",
+        "theme_slug": "autonomy_and_empowerment",
+        "text": {
+            "fr-BE": "Quand une difficulté se présente, sentez-vous que vous avez les moyens d'agir directement ?",
+            "nl-BE": "Als er zich een moeilijkheid voordoet, heeft u dan het gevoel dat u direct kunt handelen?",
+            "fr-FR": "Quand une difficulté se présente, sentez-vous que vous avez les moyens d'agir directement ?",
+            "nl-NL": "Als er zich een moeilijkheid voordoet, heeft u dan het gevoel dat u direct kunt handelen?",
+            "en-GB": "When a difficulty arises, do you feel you have the means to act directly?",
+            "de-DE": "Wenn eine Schwierigkeit auftritt, haben Sie das Gefühl, dass Sie direkt handeln können?",
+            "es-ES": "Cuando surge una dificultad, ¿siente que tiene los medios para actuar directamente?",
+            "it-IT": "Quando si presenta una difficoltà, senti di avere i mezzi per agire direttamente?",
+            "pt-PT": "Quando surge uma dificuldade, sente que tem os meios para agir diretamente?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "decisions_would_like_make",
+        "theme_slug": "autonomy_and_empowerment",
+        "text": {
+            "fr-BE": "Quelles décisions aimeriez-vous pouvoir prendre sans devoir passer par un supérieur ?",
+            "nl-BE": "Welke beslissingen zou u graag kunnen nemen zonder tussenkomst van een leidinggevende?",
+            "fr-FR": "Quelles décisions aimeriez-vous pouvoir prendre sans devoir passer par un supérieur ?",
+            "nl-NL": "Welke beslissingen zou u graag kunnen nemen zonder tussenkomst van een leidinggevende?",
+            "en-GB": "What decisions would you like to be able to make without having to go through a superior?",
+            "de-DE": "Welche Entscheidungen würden Sie gerne treffen können, ohne einen Vorgesetzten einzubeziehen?",
+            "es-ES": "¿Qué decisiones le gustaría poder tomar sin tener que pasar por un superior?",
+            "it-IT": "Quali decisioni vorresti poter prendere senza dover passare per un superiore?",
+            "pt-PT": "Que decisões gostaria de poder tomar sem ter de passar por um superior?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "autonomy_responsibilities_clarity",
+        "theme_slug": "autonomy_and_empowerment",
+        "text": {
+            "fr-BE": "Avez-vous clairement connaissance des responsabilités qui vous incombent ?",
+            "nl-BE": "Bent u duidelijk op de hoogte van uw verantwoordelijkheden?",
+            "fr-FR": "Avez-vous clairement connaissance des responsabilités qui vous incombent ?",
+            "nl-NL": "Bent u duidelijk op de hoogte van uw verantwoordelijkheden?",
+            "en-GB": "Are you clearly aware of the responsibilities you have?",
+            "de-DE": "Sind Sie sich über Ihre Verantwortlichkeiten im Klaren?",
+            "es-ES": "¿Es claramente consciente de las responsabilidades que tiene?",
+            "it-IT": "Sei chiaramente consapevole delle responsabilità che hai?",
+            "pt-PT": "Tem claramente consciência das responsabilidades que tem?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Oui",
+                    "nl-BE": "Ja",
+                    "fr-FR": "Oui",
+                    "nl-NL": "Ja",
+                    "en-GB": "Yes",
+                    "de-DE": "Ja",
+                    "es-ES": "Sí",
+                    "it-IT": "Sì",
+                    "pt-PT": "Sim"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "Non",
+                    "nl-BE": "Nee",
+                    "fr-FR": "Non",
+                    "nl-NL": "Nee",
+                    "en-GB": "No",
+                    "de-DE": "Nein",
+                    "es-ES": "No",
+                    "it-IT": "No",
+                    "pt-PT": "Não"
+                },
+                "position": 2
+            }
+        ]
+    },
+    {
+        "slug": "mission_aspect_gives_you",
+        "theme_slug": "autonomy_and_empowerment",
+        "text": {
+            "fr-BE": "Quel aspect de votre mission vous donne vraiment le sentiment d'avoir un impact concret ?",
+            "nl-BE": "Welk aspect van uw opdracht geeft u echt het gevoel dat u een concrete impact heeft?",
+            "fr-FR": "Quel aspect de votre mission vous donne vraiment le sentiment d'avoir un impact concret ?",
+            "nl-NL": "Welk aspect van uw opdracht geeft u echt het gevoel dat u een concrete impact heeft?",
+            "en-GB": "What aspect of your mission really gives you the feeling of having a concrete impact?",
+            "de-DE": "Welcher Aspekt Ihrer Aufgabe gibt Ihnen wirklich das Gefühl, eine konkrete Auswirkung zu haben?",
+            "es-ES": "¿Qué aspecto de su misión le da realmente la sensación de tener un impacto concreto?",
+            "it-IT": "Quale aspetto della tua missione ti dà davvero la sensazione di avere un impatto concreto?",
+            "pt-PT": "Que aspeto da sua missão lhe dá realmente a sensação de ter um impacto concreto?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "balance_work_schedule",
+        "theme_slug": "work_life_balance",
+        "text": {
+            "fr-BE": "Vos horaires de travail vous permettent-ils de préserver du temps pour votre vie personnelle ?",
+            "nl-BE": "Stellen uw werkuren u in staat om tijd te behouden voor uw persoonlijk leven?",
+            "fr-FR": "Vos horaires de travail vous permettent-ils de préserver du temps pour votre vie personnelle ?",
+            "nl-NL": "Stellen uw werkuren u in staat om tijd te behouden voor uw persoonlijk leven?",
+            "en-GB": "Do your working hours allow you to preserve time for your personal life?",
+            "de-DE": "Ermöglichen Ihnen Ihre Arbeitszeiten, Zeit für Ihr Privatleben zu bewahren?",
+            "es-ES": "¿Sus horarios de trabajo le permiten preservar tiempo para su vida personal?",
+            "it-IT": "I tuoi orari di lavoro ti permettono di preservare tempo per la tua vita personale?",
+            "pt-PT": "Os seus horários de trabalho permitem-lhe preservar tempo para a sua vida pessoal?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "time_day_week",
+        "theme_slug": "work_life_balance",
+        "text": {
+            "fr-BE": "À quel moment de la journée ou de la semaine ressentez-vous le plus la pression du travail ?",
+            "nl-BE": "Op welk moment van de dag of week voelt u de meeste druk van het werk?",
+            "fr-FR": "À quel moment de la journée ou de la semaine ressentez-vous le plus la pression du travail ?",
+            "nl-NL": "Op welk moment van de dag of week voelt u de meeste druk van het werk?",
+            "en-GB": "At what time of day or week do you feel the most work pressure?",
+            "de-DE": "Zu welcher Tages- oder Wochenzeit verspüren Sie den größten Arbeitsdruck?",
+            "es-ES": "¿En qué momento del día o de la semana siente más presión laboral?",
+            "it-IT": "In quale momento della giornata o della settimana senti di più la pressione del lavoro?",
+            "pt-PT": "Em que momento do dia ou da semana sente mais a pressão do trabalho?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "have_you_given_up",
+        "theme_slug": "work_life_balance",
+        "text": {
+            "fr-BE": "Avez-vous déjà dû renoncer à un engagement personnel à cause d'une contrainte professionnelle ?",
+            "nl-BE": "Heeft u ooit een persoonlijke verplichting moeten opgeven vanwege een professionele beperking?",
+            "fr-FR": "Avez-vous déjà dû renoncer à un engagement personnel à cause d'une contrainte professionnelle ?",
+            "nl-NL": "Heeft u ooit een persoonlijke verplichting moeten opgeven vanwege een professionele beperking?",
+            "en-GB": "Have you ever had to give up a personal commitment because of a professional constraint?",
+            "de-DE": "Mussten Sie schon einmal auf eine persönliche Verpflichtung wegen einer beruflichen Einschränkung verzichten?",
+            "es-ES": "¿Alguna vez ha tenido que renunciar a un compromiso personal debido a una restricción profesional?",
+            "it-IT": "Hai mai dovuto rinunciare a un impegno personale a causa di un vincolo professionale?",
+            "pt-PT": "Já teve de renunciar a um compromisso pessoal devido a uma restrição profissional?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Oui",
+                    "nl-BE": "Ja",
+                    "fr-FR": "Oui",
+                    "nl-NL": "Ja",
+                    "en-GB": "Yes",
+                    "de-DE": "Ja",
+                    "es-ES": "Sí",
+                    "it-IT": "Sì",
+                    "pt-PT": "Sim"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "Non",
+                    "nl-BE": "Nee",
+                    "fr-FR": "Non",
+                    "nl-NL": "Nee",
+                    "en-GB": "No",
+                    "de-DE": "Nein",
+                    "es-ES": "No",
+                    "it-IT": "No",
+                    "pt-PT": "Não"
+                },
+                "position": 2
+            }
+        ]
+    },
+    {
+        "slug": "what_do_outside_work",
+        "theme_slug": "work_life_balance",
+        "text": {
+            "fr-BE": "Que faites-vous en dehors du travail pour vous ressourcer, et trouvez-vous suffisamment de temps pour cela ?",
+            "nl-BE": "Wat doet u buiten het werk om nieuwe energie op te doen, en vindt u daar voldoende tijd voor?",
+            "fr-FR": "Que faites-vous en dehors du travail pour vous ressourcer, et trouvez-vous suffisamment de temps pour cela ?",
+            "nl-NL": "Wat doet u buiten het werk om nieuwe energie op te doen, en vindt u daar voldoende tijd voor?",
+            "en-GB": "What do you do outside of work to recharge, and do you find enough time for it?",
+            "de-DE": "Was machen Sie außerhalb der Arbeit, um neue Energie zu tanken, und finden Sie genug Zeit dafür?",
+            "es-ES": "¿Qué hace fuera del trabajo para recargarse y encuentra suficiente tiempo para ello?",
+            "it-IT": "Cosa fai al di fuori del lavoro per ricaricarti, e trovi abbastanza tempo per farlo?",
+            "pt-PT": "O que faz fora do trabalho para se recarregar, e encontra tempo suficiente para isso?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "manager_support_balance",
+        "theme_slug": "work_life_balance",
+        "text": {
+            "fr-BE": "Vous sentez-vous soutenu(e) par votre manager lorsqu'il s'agit de concilier impératifs pro et perso ?",
+            "nl-BE": "Voelt u zich gesteund door uw manager als het gaat om het combineren van professionele en persoonlijke verplichtingen?",
+            "fr-FR": "Vous sentez-vous soutenu(e) par votre manager lorsqu'il s'agit de concilier impératifs pro et perso ?",
+            "nl-NL": "Voelt u zich gesteund door uw manager als het gaat om het combineren van professionele en persoonlijke verplichtingen?",
+            "en-GB": "Do you feel supported by your manager when it comes to balancing professional and personal demands?",
+            "de-DE": "Fühlen Sie sich von Ihrem Vorgesetzten unterstützt, wenn es darum geht, berufliche und private Anforderungen in Einklang zu bringen?",
+            "es-ES": "¿Se siente apoyado por su gerente cuando se trata de conciliar las demandas profesionales y personales?",
+            "it-IT": "Ti senti supportato dal tuo manager quando si tratta di conciliare esigenze professionali e personali?",
+            "pt-PT": "Sente-se apoiado pelo seu gestor quando se trata de conciliar exigências profissionais e pessoais?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "speak_positively_company",
+        "theme_slug": "pride_of_belonging",
+        "text": {
+            "fr-BE": "Parlez-vous positivement de votre entreprise en dehors du travail ?",
+            "nl-BE": "Spreekt u positief over uw bedrijf buiten het werk?",
+            "fr-FR": "Parlez-vous positivement de votre entreprise en dehors du travail ?",
+            "nl-NL": "Spreekt u positief over uw bedrijf buiten het werk?",
+            "en-GB": "Do you speak positively about your company outside of work?",
+            "de-DE": "Sprechen Sie außerhalb der Arbeit positiv über Ihr Unternehmen?",
+            "es-ES": "¿Habla positivamente de su empresa fuera del trabajo?",
+            "it-IT": "Parli positivamente della tua azienda al di fuori del lavoro?",
+            "pt-PT": "Fala positivamente da sua empresa fora do trabalho?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "company_strength_particularity",
+        "theme_slug": "pride_of_belonging",
+        "text": {
+            "fr-BE": "Qu'est-ce qui, selon vous, fait la force ou la particularité de votre entreprise ?",
+            "nl-BE": "Wat maakt volgens u de kracht of het bijzondere van uw bedrijf uit?",
+            "fr-FR": "Qu'est-ce qui, selon vous, fait la force ou la particularité de votre entreprise ?",
+            "nl-NL": "Wat maakt volgens u de kracht of het bijzondere van uw bedrijf uit?",
+            "en-GB": "What, in your opinion, makes your company strong or unique?",
+            "de-DE": "Was macht Ihrer Meinung nach die Stärke oder Besonderheit Ihres Unternehmens aus?",
+            "es-ES": "¿Qué, en su opinión, hace que su empresa sea fuerte o única?",
+            "it-IT": "Cosa, secondo te, fa la forza o la particolarità della tua azienda?",
+            "pt-PT": "O que, na sua opinião, faz a força ou a particularidade da sua empresa?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "belonging_feel_place",
+        "theme_slug": "pride_of_belonging",
+        "text": {
+            "fr-BE": "Vous sentez-vous à votre place dans cette organisation ?",
+            "nl-BE": "Voelt u zich op uw plaats in deze organisatie?",
+            "fr-FR": "Vous sentez-vous à votre place dans cette organisation ?",
+            "nl-NL": "Voelt u zich op uw plaats in deze organisatie?",
+            "en-GB": "Do you feel you belong in this organization?",
+            "de-DE": "Fühlen Sie sich in dieser Organisation zugehörig?",
+            "es-ES": "¿Siente que pertenece a esta organización?",
+            "it-IT": "Ti senti al posto giusto in questa organizzazione?",
+            "pt-PT": "Sente que pertence a esta organização?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "company_pride_moment",
+        "theme_slug": "pride_of_belonging",
+        "text": {
+            "fr-BE": "Si vous deviez parler d'un moment où vous avez été fier(e) de votre entreprise, lequel serait-ce ?",
+            "nl-BE": "Als u zou moeten spreken over een moment waarop u trots was op uw bedrijf, welk zou dat dan zijn?",
+            "fr-FR": "Si vous deviez parler d'un moment où vous avez été fier(e) de votre entreprise, lequel serait-ce ?",
+            "nl-NL": "Als u zou moeten spreken over een moment waarop u trots was op uw bedrijf, welk zou dat dan zijn?",
+            "en-GB": "If you had to talk about a moment when you were proud of your company, what would it be?",
+            "de-DE": "Wenn Sie über einen Moment sprechen müssten, in dem Sie stolz auf Ihr Unternehmen waren, welcher wäre das?",
+            "es-ES": "Si tuviera que hablar de un momento en el que se sintió orgulloso de su empresa, ¿cuál sería?",
+            "it-IT": "Se dovessi parlare di un momento in cui sei stato orgoglioso della tua azienda, quale sarebbe?",
+            "pt-PT": "Se tivesse de falar de um momento em que teve orgulho da sua empresa, qual seria?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "values_company_alignment",
+        "theme_slug": "pride_of_belonging",
+        "text": {
+            "fr-BE": "Pensez-vous que votre entreprise porte des valeurs en cohérence avec les vôtres ?",
+            "nl-BE": "Denkt u dat uw bedrijf waarden draagt die in lijn liggen met de uwe?",
+            "fr-FR": "Pensez-vous que votre entreprise porte des valeurs en cohérence avec les vôtres ?",
+            "nl-NL": "Denkt u dat uw bedrijf waarden draagt die in lijn liggen met de uwe?",
+            "en-GB": "Do you think your company holds values that are consistent with yours?",
+            "de-DE": "Denken Sie, dass Ihr Unternehmen Werte vertritt, die mit Ihren eigenen übereinstimmen?",
+            "es-ES": "¿Cree que su empresa tiene valores coherentes con los suyos?",
+            "it-IT": "Pensi che la tua azienda porti valori coerenti con i tuoi?",
+            "pt-PT": "Acha que a sua empresa tem valores coerentes com os seus?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "strategy_company_priorities",
+        "theme_slug": "strategic_clarity_and_communication",
+        "text": {
+            "fr-BE": "Comprenez-vous les grandes priorités de votre entreprise en ce moment ?",
+            "nl-BE": "Begrijpt u de belangrijkste prioriteiten van uw bedrijf op dit moment?",
+            "fr-FR": "Comprenez-vous les grandes priorités de votre entreprise en ce moment ?",
+            "nl-NL": "Begrijpt u de belangrijkste prioriteiten van uw bedrijf op dit moment?",
+            "en-GB": "Do you understand your company's main priorities at the moment?",
+            "de-DE": "Verstehen Sie die wichtigsten Prioritäten Ihres Unternehmens im Moment?",
+            "es-ES": "¿Comprende las principales prioridades de su empresa en este momento?",
+            "it-IT": "Capisci le principali priorità della tua azienda in questo momento?",
+            "pt-PT": "Compreende as principais prioridades da sua empresa neste momento?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "strategy_team_direction",
+        "theme_slug": "strategic_clarity_and_communication",
+        "text": {
+            "fr-BE": "Avez-vous une idée claire de la direction que prend votre équipe dans les prochains mois ?",
+            "nl-BE": "Heeft u een duidelijk idee van de richting die uw team de komende maanden uitgaat?",
+            "fr-FR": "Avez-vous une idée claire de la direction que prend votre équipe dans les prochains mois ?",
+            "nl-NL": "Heeft u een duidelijk idee van de richting die uw team de komende maanden uitgaat?",
+            "en-GB": "Do you have a clear idea of the direction your team is taking in the coming months?",
+            "de-DE": "Haben Sie eine klare Vorstellung davon, in welche Richtung Ihr Team in den kommenden Monaten geht?",
+            "es-ES": "¿Tiene una idea clara de la dirección que tomará su equipo en los próximos meses?",
+            "it-IT": "Hai un'idea chiara della direzione che sta prendendo il tuo team nei prossimi mesi?",
+            "pt-PT": "Tem uma ideia clara da direção que a sua equipa está a tomar nos próximos meses?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "communication_helper_understanding",
+        "theme_slug": "strategic_clarity_and_communication",
+        "text": {
+            "fr-BE": "Qui, dans votre quotidien, vous aide à mieux comprendre ce qui se passe dans l'entreprise ?",
+            "nl-BE": "Wie helpt u in uw dagelijks leven om beter te begrijpen wat er gebeurt in het bedrijf?",
+            "fr-FR": "Qui, dans votre quotidien, vous aide à mieux comprendre ce qui se passe dans l'entreprise ?",
+            "nl-NL": "Wie helpt u in uw dagelijks leven om beter te begrijpen wat er gebeurt in het bedrijf?",
+            "en-GB": "Who, in your daily life, helps you better understand what's happening in the company?",
+            "de-DE": "Wer hilft Ihnen in Ihrem Alltag, besser zu verstehen, was im Unternehmen passiert?",
+            "es-ES": "¿Quién, en su vida diaria, le ayuda a comprender mejor lo que sucede en la empresa?",
+            "it-IT": "Chi, nella tua vita quotidiana, ti aiuta a capire meglio cosa sta succedendo nell'azienda?",
+            "pt-PT": "Quem, no seu quotidiano, o ajuda a compreender melhor o que se passa na empresa?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "communication_info_flow",
+        "theme_slug": "strategic_clarity_and_communication",
+        "text": {
+            "fr-BE": "Est-ce que les informations importantes circulent facilement dans votre environnement de travail ?",
+            "nl-BE": "Circuleren belangrijke informatie gemakkelijk in uw werkomgeving?",
+            "fr-FR": "Est-ce que les informations importantes circulent facilement dans votre environnement de travail ?",
+            "nl-NL": "Circuleren belangrijke informatie gemakkelijk in uw werkomgeving?",
+            "en-GB": "Does important information flow easily in your work environment?",
+            "de-DE": "Fließen wichtige Informationen leicht in Ihrem Arbeitsumfeld?",
+            "es-ES": "¿Circula fácilmente la información importante en su entorno de trabajo?",
+            "it-IT": "Le informazioni importanti circolano facilmente nel tuo ambiente di lavoro?",
+            "pt-PT": "As informações importantes circulam facilmente no seu ambiente de trabalho?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "communication_decision_timing",
+        "theme_slug": "strategic_clarity_and_communication",
+        "text": {
+            "fr-BE": "Si une décision importante est prise, à quel moment en êtes-vous généralement informé(e) ?",
+            "nl-BE": "Als er een belangrijke beslissing wordt genomen, wanneer wordt u daar doorgaans van op de hoogte gesteld?",
+            "fr-FR": "Si une décision importante est prise, à quel moment en êtes-vous généralement informé(e) ?",
+            "nl-NL": "Als er een belangrijke beslissing wordt genomen, wanneer wordt u daar doorgaans van op de hoogte gesteld?",
+            "en-GB": "When an important decision is made, when are you usually informed?",
+            "de-DE": "Wenn eine wichtige Entscheidung getroffen wird, wann werden Sie normalerweise informiert?",
+            "es-ES": "Cuando se toma una decisión importante, ¿cuándo se le informa normalmente?",
+            "it-IT": "Quando viene presa una decisione importante, quando vieni solitamente informato?",
+            "pt-PT": "Quando é tomada uma decisão importante, quando é normalmente informado?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Avant qu'elle soit appliquée",
+                    "nl-BE": "Voordat het wordt toegepast",
+                    "fr-FR": "Avant qu'elle soit appliquée",
+                    "nl-NL": "Voordat het wordt toegepast",
+                    "en-GB": "Before",
+                    "de-DE": "Vorher",
+                    "es-ES": "Antes",
+                    "it-IT": "Prima",
+                    "pt-PT": "Antes"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "Au moment de l'application",
+                    "nl-BE": "Op het moment van toepassing",
+                    "fr-FR": "Au moment de l'application",
+                    "nl-NL": "Op het moment van toepassing",
+                    "en-GB": "During",
+                    "de-DE": "Während",
+                    "es-ES": "Durante",
+                    "it-IT": "Durante",
+                    "pt-PT": "Durante"
+                },
+                "position": 2
+            },
+            {
+                "text": {
+                    "fr-BE": "Après coup",
+                    "nl-BE": "Achteraf",
+                    "fr-FR": "Après coup",
+                    "nl-NL": "Achteraf",
+                    "en-GB": "After",
+                    "de-DE": "Nachher",
+                    "es-ES": "Después",
+                    "it-IT": "Dopo",
+                    "pt-PT": "Depois"
+                },
+                "position": 3
+            },
+            {
+                "text": {
+                    "fr-BE": "Parfois jamais",
+                    "nl-BE": "Soms nooit",
+                    "fr-FR": "Parfois jamais",
+                    "nl-NL": "Soms nooit",
+                    "en-GB": "It depends",
+                    "de-DE": "Es hängt davon ab",
+                    "es-ES": "Depende",
+                    "it-IT": "Dipende",
+                    "pt-PT": "Depende"
+                },
+                "position": 4
+            }
+        ]
+    },
+    {
+        "slug": "salary_covers_needs",
+        "theme_slug": "satisfaction_purchasing_power",
+        "text": {
+            "fr-BE": "Votre rémunération vous permet-elle de couvrir vos besoins essentiels sans difficulté ?",
+            "nl-BE": "Stelt uw beloning u in staat om uw basisbehoeften zonder moeite te dekken?",
+            "fr-FR": "Votre rémunération vous permet-elle de couvrir vos besoins essentiels sans difficulté ?",
+            "nl-NL": "Stelt uw beloning u in staat om uw basisbehoeften zonder moeite te dekken?",
+            "en-GB": "Does your remuneration allow you to cover your essential needs without difficulty?",
+            "de-DE": "Ermöglicht Ihnen Ihre Vergütung, Ihre wesentlichen Bedürfnisse ohne Schwierigkeiten zu decken?",
+            "es-ES": "¿Su remuneración le permite cubrir sus necesidades esenciales sin dificultad?",
+            "it-IT": "La tua retribuzione ti permette di coprire i tuoi bisogni essenziali senza difficoltà?",
+            "pt-PT": "A sua remuneração permite-lhe cobrir as suas necessidades essenciais sem dificuldade?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "have_you_renounced",
+        "theme_slug": "satisfaction_purchasing_power",
+        "text": {
+            "fr-BE": "Avez-vous déjà renoncé à une dépense importante à cause d'un reste à vivre trop faible ?",
+            "nl-BE": "Heeft u al eens afgezien van een belangrijke uitgave vanwege een te laag restinkomen?",
+            "fr-FR": "Avez-vous déjà renoncé à une dépense importante à cause d'un reste à vivre trop faible ?",
+            "nl-NL": "Heeft u al eens afgezien van een belangrijke uitgave vanwege een te laag restinkomen?",
+            "en-GB": "Have you ever given up an important expense because of too little money left to live on?",
+            "de-DE": "Haben Sie schon einmal auf eine wichtige Ausgabe verzichtet, weil zu wenig Geld zum Leben übrig blieb?",
+            "es-ES": "¿Alguna vez ha renunciado a un gasto importante debido a que le quedaba muy poco dinero para vivir?",
+            "it-IT": "Hai mai rinunciato a una spesa importante a causa di un resto da vivere troppo basso?",
+            "pt-PT": "Já renunciou a uma despesa importante devido a demasiado pouco dinheiro restante para viver?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Oui",
+                    "nl-BE": "Ja",
+                    "fr-FR": "Oui",
+                    "nl-NL": "Ja",
+                    "en-GB": "Yes",
+                    "de-DE": "Ja",
+                    "es-ES": "Sí",
+                    "it-IT": "Sì",
+                    "pt-PT": "Sim"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "Non",
+                    "nl-BE": "Nee",
+                    "fr-FR": "Non",
+                    "nl-NL": "Nee",
+                    "en-GB": "No",
+                    "de-DE": "Nein",
+                    "es-ES": "No",
+                    "it-IT": "No",
+                    "pt-PT": "Não"
+                },
+                "position": 2
+            }
+        ]
+    },
+    {
+        "slug": "feel_comfortable_discussing",
+        "theme_slug": "satisfaction_purchasing_power",
+        "text": {
+            "fr-BE": "Vous sentez-vous à l'aise pour parler de vos préoccupations financières au travail, si besoin ?",
+            "nl-BE": "Voelt u zich op uw gemak om over uw financiële zorgen op het werk te praten, indien nodig?",
+            "fr-FR": "Vous sentez-vous à l'aise pour parler de vos préoccupations financières au travail, si besoin ?",
+            "nl-NL": "Voelt u zich op uw gemak om over uw financiële zorgen op het werk te praten, indien nodig?",
+            "en-GB": "Do you feel comfortable talking about your financial concerns at work?",
+            "de-DE": "Fühlen Sie sich wohl dabei, über Ihre finanziellen Sorgen bei der Arbeit zu sprechen?",
+            "es-ES": "¿Se siente cómodo hablando de sus preocupaciones financieras en el trabajo?",
+            "it-IT": "Ti senti a tuo agio a parlare delle tue preoccupazioni finanziarie al lavoro?",
+            "pt-PT": "Sente-se à vontade para falar das suas preocupações financeiras no trabalho?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "benefits_offered_by",
+        "theme_slug": "satisfaction_purchasing_power",
+        "text": {
+            "fr-BE": "Les avantages proposés par votre entreprise améliorent-ils concrètement votre pouvoir d'achat ?",
+            "nl-BE": "Verbeteren de voordelen die uw bedrijf aanbiedt daadwerkelijk uw koopkracht?",
+            "fr-FR": "Les avantages proposés par votre entreprise améliorent-ils concrètement votre pouvoir d'achat ?",
+            "nl-NL": "Verbeteren de voordelen die uw bedrijf aanbiedt daadwerkelijk uw koopkracht?",
+            "en-GB": "Do the benefits offered by your company concretely improve your purchasing power?",
+            "de-DE": "Verbessern die von Ihrem Unternehmen angebotenen Vorteile konkret Ihre Kaufkraft?",
+            "es-ES": "¿Los beneficios ofrecidos por su empresa mejoran concretamente su poder adquisitivo?",
+            "it-IT": "I vantaggi offerti dalla tua azienda migliorano concretamente il tuo potere d'acquisto?",
+            "pt-PT": "Os benefícios oferecidos pela sua empresa melhoram concretamente o seu poder de compra?"
+        },
+        "type": "scale",
+        "options": null
+    },
+    {
+        "slug": "if_choose_lever",
+        "theme_slug": "satisfaction_purchasing_power",
+        "text": {
+            "fr-BE": "Si vous deviez choisir un levier pour mieux vivre financièrement, lequel serait prioritaire ?",
+            "nl-BE": "Als u een hefboom zou moeten kiezen om financieel beter te leven, welke zou dan prioriteit hebben?",
+            "fr-FR": "Si vous deviez choisir un levier pour mieux vivre financièrement, lequel serait prioritaire ?",
+            "nl-NL": "Als u een hefboom zou moeten kiezen om financieel beter te leven, welke zou dan prioriteit hebben?",
+            "en-GB": "If you had to choose a lever to live better financially, which would be a priority?",
+            "de-DE": "Wenn Sie einen Hebel wählen müssten, um finanziell besser zu leben, welcher wäre prioritär?",
+            "es-ES": "Si tuviera que elegir una palanca para vivir mejor financieramente, ¿cuál sería prioritaria?",
+            "it-IT": "Se dovessi scegliere una leva per vivere meglio finanziariamente, quale sarebbe prioritaria?",
+            "pt-PT": "Se tivesse de escolher uma alavanca para viver melhor financeiramente, qual seria prioritária?"
+        },
+        "type": "text",
+        "options": null
+    },
+    {
+        "slug": "if_summarize_state",
+        "text": {
+            "fr-BE": "Si vous deviez résumer votre état général au travail en un mot aujourd'hui, lequel choisiriez-vous ?",
+            "nl-BE": "Als u uw algemene toestand op het werk vandaag in één woord zou moeten samenvatten, welk zou u dan kiezen?",
+            "fr-FR": "Si vous deviez résumer votre état général au travail en un mot aujourd'hui, lequel choisiriez-vous ?",
+            "nl-NL": "Als u uw algemene toestand op het werk vandaag in één woord zou moeten samenvatten, welk zou u dan kiezen?",
+            "en-GB": "If you had to summarize your general state at work in one word today, which would you choose?",
+            "de-DE": "Wenn Sie Ihren allgemeinen Zustand bei der Arbeit heute in einem Wort zusammenfassen müssten, welches würden Sie wählen?",
+            "es-ES": "Si tuviera que resumir su estado general en el trabajo en una palabra hoy, ¿cuál elegiría?",
+            "it-IT": "Se dovessi riassumere il tuo stato generale al lavoro in una parola oggi, quale sceglieresti?",
+            "pt-PT": "Se tivesse de resumir o seu estado geral no trabalho numa palavra hoje, qual escolheria?"
+        },
+        "type": "text",
+        "options": null,
+        "theme_slug": "overall_wellbeing_self_assessment"
+    },
+    {
+        "slug": "wellbeing_self_care",
+        "text": {
+            "fr-BE": "En ce moment, avez-vous l'impression de prendre soin de vous malgré les exigences professionnelles ?",
+            "nl-BE": "Heeft u op dit moment het gevoel dat u voor uzelf zorgt ondanks de professionele eisen?",
+            "fr-FR": "En ce moment, avez-vous l'impression de prendre soin de vous malgré les exigences professionnelles ?",
+            "nl-NL": "Heeft u op dit moment het gevoel dat u voor uzelf zorgt ondanks de professionele eisen?",
+            "en-GB": "At the moment, do you feel you are taking care of yourself despite professional demands?",
+            "de-DE": "Haben Sie im Moment das Gefühl, sich trotz beruflicher Anforderungen um sich selbst zu kümmern?",
+            "es-ES": "¿Siente que está cuidando de sí mismo a pesar de las exigencias profesionales?",
+            "it-IT": "Al momento, hai l'impressione di prenderti cura di te nonostante le esigenze professionali?",
+            "pt-PT": "Neste momento, sente que está a cuidar de si apesar das exigências profissionais?"
+        },
+        "type": "scale",
+        "options": null,
+        "theme_slug": "overall_wellbeing_self_assessment"
+    },
+    {
+        "slug": "wellbeing_good_days_week",
+        "text": {
+            "fr-BE": "Sur une semaine type, combien de jours vous sentez-vous vraiment bien au travail ?",
+            "nl-BE": "Hoeveel dagen voelt u zich in een typische week echt goed op het werk?",
+            "fr-FR": "Sur une semaine type, combien de jours vous sentez-vous vraiment bien au travail ?",
+            "nl-NL": "Hoeveel dagen voelt u zich in een typische week echt goed op het werk?",
+            "en-GB": "In a typical week, how many days do you feel really good at work?",
+            "de-DE": "An wie vielen Tagen pro Woche fühlen Sie sich wirklich gut bei der Arbeit?",
+            "es-ES": "¿Cuántos días a la semana se siente realmente bien en el trabajo?",
+            "it-IT": "In una settimana tipica, quanti giorni ti senti davvero bene al lavoro?",
+            "pt-PT": "Numa semana típica, quantos dias se sente realmente bem no trabalho?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Aucun",
+                    "nl-BE": "Geen",
+                    "fr-FR": "Aucun",
+                    "nl-NL": "Geen",
+                    "en-GB": "None",
+                    "de-DE": "Keiner",
+                    "es-ES": "Ninguno",
+                    "it-IT": "Nessuno",
+                    "pt-PT": "Nenhum"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "1-2 jours",
+                    "nl-BE": "1-2 dagen",
+                    "fr-FR": "1-2 jours",
+                    "nl-NL": "1-2 dagen",
+                    "en-GB": "1-2",
+                    "de-DE": "1-2",
+                    "es-ES": "1-2",
+                    "it-IT": "1-2",
+                    "pt-PT": "1-2"
+                },
+                "position": 2
+            },
+            {
+                "text": {
+                    "fr-BE": "3-4 jours",
+                    "nl-BE": "3-4 dagen",
+                    "fr-FR": "3-4 jours",
+                    "nl-NL": "3-4 dagen",
+                    "en-GB": "3-4",
+                    "de-DE": "3-4",
+                    "es-ES": "3-4",
+                    "it-IT": "3-4",
+                    "pt-PT": "3-4"
+                },
+                "position": 3
+            },
+            {
+                "text": {
+                    "fr-BE": "Presque tous",
+                    "nl-BE": "Bijna allemaal",
+                    "fr-FR": "Presque tous",
+                    "nl-NL": "Bijna allemaal",
+                    "en-GB": "Almost all",
+                    "de-DE": "Fast alle",
+                    "es-ES": "Casi todos",
+                    "it-IT": "Quasi tutti",
+                    "pt-PT": "Quase todos"
+                },
+                "position": 4
+            },
+            {
+                "text": {
+                    "fr-BE": "Tous",
+                    "nl-BE": "Allemaal",
+                    "fr-FR": "Tous",
+                    "nl-NL": "Allemaal",
+                    "en-GB": "All",
+                    "de-DE": "Alle",
+                    "es-ES": "Todos",
+                    "it-IT": "Tutti",
+                    "pt-PT": "Todos"
+                },
+                "position": 5
+            }
+        ],
+        "theme_slug": "overall_wellbeing_self_assessment"
+    },
+    {
+        "slug": "wellbeing_health_alert",
+        "text": {
+            "fr-BE": "Avez-vous récemment ressenti un signal d'alerte concernant votre santé physique ou mentale ?",
+            "nl-BE": "Heeft u onlangs een alarmsignaal gevoeld met betrekking tot uw fysieke of mentale gezondheid?",
+            "fr-FR": "Avez-vous récemment ressenti un signal d'alerte concernant votre santé physique ou mentale ?",
+            "nl-NL": "Heeft u onlangs een alarmsignaal gevoeld met betrekking tot uw fysieke of mentale gezondheid?",
+            "en-GB": "Have you recently felt a warning signal concerning your physical or mental health?",
+            "de-DE": "Haben Sie kürzlich ein Warnsignal bezüglich Ihrer körperlichen oder geistigen Gesundheit verspürt?",
+            "es-ES": "¿Ha sentido recientemente una señal de alerta sobre su salud física o mental?",
+            "it-IT": "Hai recentemente avvertito un segnale di allarme riguardo alla tua salute fisica o mentale?",
+            "pt-PT": "Sentiu recentemente um sinal de alerta relativo à sua saúde física ou mental?"
+        },
+        "type": "single_choice",
+        "options": [
+            {
+                "text": {
+                    "fr-BE": "Oui",
+                    "nl-BE": "Ja",
+                    "fr-FR": "Oui",
+                    "nl-NL": "Ja",
+                    "en-GB": "Yes",
+                    "de-DE": "Ja",
+                    "es-ES": "Sí",
+                    "it-IT": "Sì",
+                    "pt-PT": "Sim"
+                },
+                "position": 1
+            },
+            {
+                "text": {
+                    "fr-BE": "Non",
+                    "nl-BE": "Nee",
+                    "fr-FR": "Non",
+                    "nl-NL": "Nee",
+                    "en-GB": "No",
+                    "de-DE": "Nein",
+                    "es-ES": "No",
+                    "it-IT": "No",
+                    "pt-PT": "Não"
+                },
+                "position": 2
+            }
+        ],
+        "theme_slug": "overall_wellbeing_self_assessment"
+    },
+    {
+        "slug": "what_contributes_most",
+        "text": {
+            "fr-BE": "Qu'est-ce qui contribue le plus à votre bien-être actuel dans votre contexte professionnel ?",
+            "nl-BE": "Wat draagt het meest bij aan uw huidige welzijn in uw professionele context?",
+            "fr-FR": "Qu'est-ce qui contribue le plus à votre bien-être actuel dans votre contexte professionnel ?",
+            "nl-NL": "Wat draagt het meest bij aan uw huidige welzijn in uw professionele context?",
+            "en-GB": "What contributes most to your current well-being at work?",
+            "de-DE": "Was trägt am meisten zu Ihrem aktuellen Wohlbefinden bei der Arbeit bei?",
+            "es-ES": "¿Qué contribuye más a su bienestar actual en el trabajo?",
+            "it-IT": "Cosa contribuisce di più al tuo benessere attuale al lavoro?",
+            "pt-PT": "O que contribui mais para o seu bem-estar atual no trabalho?"
+        },
+        "type": "text",
+        "options": null,
+        "theme_slug": "overall_wellbeing_self_assessment"
+    }
+]

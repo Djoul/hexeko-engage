@@ -1,0 +1,59 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Services\Models;
+
+use App\Models\{$modelName};
+use App\Repositories\Models\{$modelName}Repository;
+use Illuminate\Support\Collection;
+
+class {$modelName}Service
+{
+    public function __construct(protected {$modelName}Repository ${$modelVar}Repository) {}
+
+    /**
+     * @param  array<string>  $relations
+     * @return Collection<int, {$modelName}>
+     */
+    public function all(array $relations = [])
+    {
+        return $this->{$modelVar}Repository->all( $relations);
+    }
+
+    /**
+     * @param  string  $id
+     * @param  array<string>  $relations
+     * @return {$modelName}
+     */
+    public function find($id, array $relations = [])
+    {
+        return $this->{$modelVar}Repository->find($id, $relations);
+    }
+
+    /**
+     * @param  array<string,mixed>  $data
+     * @return {$modelName}
+     */
+    public function create(array $data)
+    {
+        return $this->{$modelVar}Repository->create($data);
+    }
+
+    /**
+     * @param  array<string,mixed>  $data
+     * @return {$modelName}
+     */
+    public function update({$modelName} ${$modelVar}, array $data)
+    {
+        return $this->{$modelVar}Repository->update(${$modelVar}, $data);
+    }
+
+    /**
+     * @return bool
+     */
+    public function delete({$modelName} ${$modelVar})
+    {
+        return $this->{$modelVar}Repository->delete(${$modelVar});
+    }
+}

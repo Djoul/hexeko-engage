@@ -1,0 +1,227 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Panel Three-Pillar Navigation Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This configuration defines the three-pillar navigation structure for the
+    | admin panel: Dashboard (monitoring), Manager (administration), and
+    | Documentation (organized content).
+    |
+    */
+
+    'pillars' => [
+        'dashboard' => [
+            'label' => 'Dashboard',
+            'icon' => 'heroicon-o-chart-bar',
+            'route' => 'admin-panel.dashboard',
+            'permission' => 'admin.dashboard.view',
+            'sections' => [
+                'overview' => [
+                    'label' => 'Overview',
+                    'route' => 'admin-panel.dashboard.overview',
+                    'icon' => 'heroicon-o-home',
+                ],
+                'metrics' => [
+                    'label' => 'Metrics',
+                    'route' => 'admin-panel.dashboard.metrics',
+                    'icon' => 'heroicon-o-chart-pie',
+                ],
+                'health' => [
+                    'label' => 'System Health',
+                    'route' => 'admin-panel.dashboard.health',
+                    'icon' => 'heroicon-o-shield-check',
+                ],
+                'queue' => [
+                    'label' => 'Queue Status',
+                    'route' => 'admin-panel.dashboard.queue',
+                    'icon' => 'heroicon-o-queue-list',
+                ],
+                'services' => [
+                    'label' => 'Service Status',
+                    'route' => 'admin-panel.dashboard.services',
+                    'icon' => 'heroicon-o-server',
+                ],
+            ],
+        ],
+
+        'manager' => [
+            'label' => 'Manager',
+            'icon' => 'heroicon-o-cog',
+            'route' => 'admin-panel.manager',
+            'permission' => 'admin.manager.view',
+            'sections' => [
+                'translations' => [
+                    'label' => 'Translations',
+                    'route' => 'admin.manager.translations.index',
+                    'icon' => 'heroicon-o-language',
+                    'subsections' => [
+                        'list' => [
+                            'label' => 'All Translations',
+                            'route' => 'admin-panel.manager.translations.index',
+                        ],
+                        'import' => [
+                            'label' => 'Import',
+                            'route' => 'admin-panel.manager.translations.import',
+                            'permission' => 'admin.translations.import',
+                        ],
+                        'export' => [
+                            'label' => 'Export',
+                            'route' => 'admin-panel.manager.translations.export',
+                            'permission' => 'admin.translations.export',
+                        ],
+                    ],
+                ],
+                'migrations' => [
+                    'label' => 'Migration Manager',
+                    'route' => 'admin-panel.manager.migrations',
+                    'icon' => 'heroicon-o-arrow-path',
+                    'permission' => 'admin.migrations.manage',
+                ],
+                'roles' => [
+                    'label' => 'Roles & Permissions',
+                    'route' => 'admin-panel.manager.roles',
+                    'icon' => 'heroicon-o-user-group',
+                    'permission' => 'admin.roles.manage',
+                    'subsections' => [
+                        'roles' => [
+                            'label' => 'Roles',
+                            'route' => 'admin-panel.manager.roles.index',
+                        ],
+                        'permissions' => [
+                            'label' => 'Permissions',
+                            'route' => 'admin-panel.manager.permissions.index',
+                        ],
+                    ],
+                ],
+                'audit' => [
+                    'label' => 'Audit Logs',
+                    'route' => 'admin-panel.manager.audit',
+                    'icon' => 'heroicon-o-document-text',
+                    'permission' => 'admin.audit.view',
+                ],
+            ],
+        ],
+
+        'docs' => [
+            'label' => 'Documentation',
+            'icon' => 'heroicon-o-book-open',
+            'route' => 'admin-panel.docs',
+            'permission' => 'admin.docs.view',
+            'sections' => [
+                'getting-started' => [
+                    'label' => 'Getting Started',
+                    'route' => 'admin-panel.docs.getting-started',
+                    'icon' => 'heroicon-o-academic-cap',
+                ],
+                'api' => [
+                    'label' => 'API Reference',
+                    'route' => 'admin-panel.docs.api',
+                    'icon' => 'heroicon-o-code-bracket',
+                ],
+                'development' => [
+                    'label' => 'Development Guide',
+                    'route' => 'admin-panel.docs.development',
+                    'icon' => 'heroicon-o-command-line',
+                    'subsections' => [
+                        'backend' => [
+                            'label' => 'Backend',
+                            'route' => 'admin-panel.docs.development.backend',
+                        ],
+                        'frontend' => [
+                            'label' => 'Frontend',
+                            'route' => 'admin-panel.docs.development.frontend',
+                        ],
+                        'testing' => [
+                            'label' => 'Testing',
+                            'route' => 'admin-panel.docs.development.testing',
+                        ],
+                    ],
+                ],
+                'integrations' => [
+                    'label' => 'Integration Guide',
+                    'route' => 'admin-panel.docs.integrations',
+                    'icon' => 'heroicon-o-puzzle-piece',
+                ],
+                'reference' => [
+                    'label' => 'Reference',
+                    'route' => 'admin-panel.docs.reference',
+                    'icon' => 'heroicon-o-document-duplicate',
+                ],
+            ],
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Settings
+    |--------------------------------------------------------------------------
+    */
+
+    'defaults' => [
+        'pillar' => 'dashboard',
+        'section' => 'overview',
+        'theme' => 'light',
+        'sidebar_collapsed' => false,
+        'refresh_interval' => 30, // seconds
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Real-time Update Settings
+    |--------------------------------------------------------------------------
+    */
+
+    'realtime' => [
+        'enabled' => env('ADMIN_PANEL_REALTIME', true),
+        'polling_interval' => 5000, // milliseconds
+        'websocket' => [
+            'enabled' => env('ADMIN_PANEL_WEBSOCKET', false),
+            'channel' => 'admin-panel-updates',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Performance Settings
+    |--------------------------------------------------------------------------
+    */
+
+    'performance' => [
+        'cache_ttl' => 300, // 5 minutes
+        'max_metrics_age' => 86400, // 24 hours
+        'dashboard_refresh' => 30, // seconds
+        'lazy_load_docs' => true,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Security Settings
+    |--------------------------------------------------------------------------
+    */
+
+    'security' => [
+        'require_god_role' => env('ADMIN_PANEL_REQUIRE_GOD', true),
+        'audit_enabled' => true,
+        'session_timeout' => 3600, // 1 hour
+        'ip_whitelist' => env('ADMIN_PANEL_IP_WHITELIST', ''),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | UI Settings
+    |--------------------------------------------------------------------------
+    */
+
+    'ui' => [
+        'show_breadcrumbs' => true,
+        'enable_search' => true,
+        'enable_notifications' => true,
+        'sidebar_width' => 256, // pixels
+        'sidebar_collapsed_width' => 64, // pixels
+    ],
+];

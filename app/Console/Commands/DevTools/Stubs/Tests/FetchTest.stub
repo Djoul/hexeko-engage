@@ -1,0 +1,35 @@
+<?php
+
+namespace Tests\Feature\ModelsCRUD\{$modelName};
+
+use App\Models\{$modelName};
+
+use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\ProtectedRouteTestCase;
+
+class Fetch{$modelName}Test extends use ProtectedRouteTestCase
+{
+    use  WithFaker;
+
+    const URI = '/api/v1/{$modelVar}s';
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
+    #[Test]
+    public function it_can_fetch_all_{$modelVar}(): void
+    {
+
+        {$modelName}::factory()->count(10)->create();
+
+        $response = $this->get(self::URI);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseCount('{$modelVar}s', 10);
+
+    }
+}

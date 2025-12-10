@@ -1,0 +1,31 @@
+<?php
+
+namespace Tests\Feature\ModelsCRUD\{$modelName};
+
+use App\Models\{$modelName};
+
+use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\ProtectedRouteTestCase;
+
+class Fetch{$modelName}ByIdTest extends ProtectedRouteTestCase
+{
+    use  WithFaker;
+
+    protected $create{$modelName}Action;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
+    #[Test]
+    public function it_can_fetch_a_single_{$modelVar}(): void
+    {
+        ${$modelVar} = {$modelName}::factory()->create(['name' => '{$modelName} Test']);
+
+        $response = $this->get('/api/v1/{$modelVar}s/'.${$modelVar}->id);
+
+        $response->assertStatus(200);
+    }
+}

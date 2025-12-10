@@ -1,0 +1,386 @@
+[
+    {
+        "slug": "relations_with_management",
+        "name": {
+            "fr-BE": "Relations avec le management",
+            "fr-FR": "Relations avec le management",
+            "nl-BE": "Relaties met het management",
+            "nl-NL": "Relaties met het management",
+            "en-GB": "Relations with management",
+            "de-DE": "Beziehungen zum Management",
+            "es-ES": "Relaciones con la dirección",
+            "it-IT": "Relazioni con il management",
+            "pt-PT": "Relações com a gestão"
+        },
+        "description": {
+            "fr-BE": "Qualité perçue des interactions entre les salariés et leur hiérarchie directe.",
+            "fr-FR": "Qualité perçue des interactions entre les salariés et leur hiérarchie directe.",
+            "nl-BE": "Waargenomen kwaliteit van interacties tussen werknemers en hun directe hiërarchie.",
+            "nl-NL": "Waargenomen kwaliteit van interacties tussen werknemers en hun directe hiërarchie.",
+            "en-GB": "Perceived quality of interactions between employees and their direct hierarchy.",
+            "de-DE": "Wahrgenommene Qualität der Interaktionen zwischen Mitarbeitern und ihrer direkten Hierarchie.",
+            "es-ES": "Calidad percibida de las interacciones entre empleados y su jerarquía directa.",
+            "it-IT": "Qualità percepita delle interazioni tra dipendenti e la loro gerarchia diretta.",
+            "pt-PT": "Qualidade percebida das interações entre funcionários e a sua hierarquia direta."
+        },
+        "question_slugs": [
+            "manager_feedback_timing",
+            "manager_safe_environment",
+            "manager_if_disappeared",
+            "team_support_daily",
+            "could_change_alone"
+        ]
+    },
+    {
+        "slug": "recognition_and_appreciation",
+        "name": {
+            "fr-BE": "Reconnaissance et valorisation",
+            "fr-FR": "Reconnaissance et valorisation",
+            "nl-BE": "Erkenning en waardering",
+            "nl-NL": "Erkenning en waardering",
+            "en-GB": "Recognition and appreciation",
+            "de-DE": "Anerkennung und Wertschätzung",
+            "es-ES": "Reconocimiento y valoración",
+            "it-IT": "Riconoscimento e valorizzazione",
+            "pt-PT": "Reconhecimento e valorização"
+        },
+        "description": {
+            "fr-BE": "Perception de la reconnaissance des efforts et réussites.",
+            "fr-FR": "Perception de la reconnaissance des efforts et réussites.",
+            "nl-BE": "Perceptie van de erkenning van inspanningen en successen.",
+            "nl-NL": "Perceptie van de erkenning van inspanningen en successen.",
+            "en-GB": "Perception of recognition of efforts and achievements.",
+            "de-DE": "Wahrnehmung der Anerkennung von Bemühungen und Erfolgen.",
+            "es-ES": "Percepción del reconocimiento de esfuerzos y logros.",
+            "it-IT": "Percezione del riconoscimento degli sforzi e dei successi.",
+            "pt-PT": "Perceção do reconhecimento dos esforços e sucessos."
+        },
+        "question_slugs": [
+            "recognition_last_time",
+            "when_feels_good",
+            "scale_how_happy",
+            "work_daily_gives_you",
+            "enough_feedback_received"
+        ]
+    },
+    {
+        "slug": "meaning_of_work",
+        "name": {
+            "fr-BE": "Sens du travail",
+            "fr-FR": "Sens du travail",
+            "nl-BE": "Betekenis van het werk",
+            "nl-NL": "Betekenis van het werk",
+            "en-GB": "Meaning of work",
+            "de-DE": "Sinn der Arbeit",
+            "es-ES": "Sentido del trabajo",
+            "it-IT": "Senso del lavoro",
+            "pt-PT": "Sentido do trabalho"
+        },
+        "description": {
+            "fr-BE": "Cohérence perçue entre les missions et les valeurs personnelles.",
+            "fr-FR": "Cohérence perçue entre les missions et les valeurs personnelles.",
+            "nl-BE": "Waargenomen coherentie tussen missies en persoonlijke waarden.",
+            "nl-NL": "Waargenomen coherentie tussen missies en persoonlijke waarden.",
+            "en-GB": "Perceived coherence between missions and personal values.",
+            "de-DE": "Wahrgenommene Kohärenz zwischen Aufgaben und persönlichen Werten.",
+            "es-ES": "Coherencia percibida entre misiones y valores personales.",
+            "it-IT": "Coerenza percepita tra missioni e valori personali.",
+            "pt-PT": "Coerência percebida entre missões e valores pessoais."
+        },
+        "question_slugs": [
+            "what_motivates_you",
+            "when_feel_impression",
+            "meaning_work_importance",
+            "if_explain_your_job",
+            "have_you_thought"
+        ]
+    },
+    {
+        "slug": "development_opportunities",
+        "name": {
+            "fr-BE": "Opportunités de développement",
+            "fr-FR": "Opportunités de développement",
+            "nl-BE": "Ontwikkelingsmogelijkheden",
+            "nl-NL": "Ontwikkelingsmogelijkheden",
+            "en-GB": "Development opportunities",
+            "de-DE": "Entwicklungsmöglichkeiten",
+            "es-ES": "Oportunidades de desarrollo",
+            "it-IT": "Opportunità di sviluppo",
+            "pt-PT": "Oportunidades de desenvolvimento"
+        },
+        "description": {
+            "fr-BE": "Perception des possibilités de progression et d'apprentissage.",
+            "fr-FR": "Perception des possibilités de progression et d'apprentissage.",
+            "nl-BE": "Perceptie van mogelijkheden voor vooruitgang en leren.",
+            "nl-NL": "Perceptie van mogelijkheden voor vooruitgang en leren.",
+            "en-GB": "Perception of opportunities for progression and learning.",
+            "de-DE": "Wahrnehmung von Möglichkeiten für Fortschritt und Lernen.",
+            "es-ES": "Percepción de las posibilidades de progresión y aprendizaje.",
+            "it-IT": "Percezione delle possibilità di progressione e apprendimento.",
+            "pt-PT": "Perceção das possibilidades de progressão e aprendizagem."
+        },
+        "question_slugs": [
+            "development_learning_progress",
+            "development_future_learning",
+            "have_you_expressed",
+            "what_hinders_development",
+            "visibility_on_opportunities"
+        ]
+    },
+    {
+        "slug": "working_conditions",
+        "name": {
+            "fr-BE": "Conditions de travail",
+            "fr-FR": "Conditions de travail",
+            "nl-BE": "Werkomstandigheden",
+            "nl-NL": "Werkomstandigheden",
+            "en-GB": "Working conditions",
+            "de-DE": "Arbeitsbedingungen",
+            "es-ES": "Condiciones de trabajo",
+            "it-IT": "Condizioni di lavoro",
+            "pt-PT": "Condições de trabalho"
+        },
+        "description": {
+            "fr-BE": "Appréciation des moyens, du cadre physique et organisationnel.",
+            "fr-FR": "Appréciation des moyens, du cadre physique et organisationnel.",
+            "nl-BE": "Waardering van de middelen, fysieke en organisatorische omgeving.",
+            "nl-NL": "Waardering van de middelen, fysieke en organisatorische omgeving.",
+            "en-GB": "Appreciation of resources, physical and organizational environment.",
+            "de-DE": "Wertschätzung der Mittel, des physischen und organisatorischen Rahmens.",
+            "es-ES": "Apreciación de los medios, el marco físico y organizativo.",
+            "it-IT": "Apprezzamento dei mezzi, del contesto fisico e organizzativo.",
+            "pt-PT": "Apreciação dos meios, do quadro físico e organizacional."
+        },
+        "question_slugs": [
+            "workplace_concentration",
+            "workplace_equipment_adequate",
+            "workload_sustainable",
+            "wellbeing_physical_hindrances",
+            "workplace_change_one_thing"
+        ]
+    },
+    {
+        "slug": "relationships_between_colleagues",
+        "name": {
+            "fr-BE": "Relations entre collègues",
+            "fr-FR": "Relations entre collègues",
+            "nl-BE": "Relaties tussen collega's",
+            "nl-NL": "Relaties tussen collega's",
+            "en-GB": "Relationships between colleagues",
+            "de-DE": "Beziehungen zwischen Kollegen",
+            "es-ES": "Relaciones entre colegas",
+            "it-IT": "Relazioni tra colleghi",
+            "pt-PT": "Relações entre colegas"
+        },
+        "description": {
+            "fr-BE": "Qualité des interactions et du climat d'équipe.",
+            "fr-FR": "Qualité des interactions et du climat d'équipe.",
+            "nl-BE": "Kwaliteit van interacties en teamklimaat.",
+            "nl-NL": "Kwaliteit van interacties en teamklimaat.",
+            "en-GB": "Quality of interactions and team climate.",
+            "de-DE": "Qualität der Interaktionen und des Teamklimas.",
+            "es-ES": "Calidad de las interacciones y del clima del equipo.",
+            "it-IT": "Qualità delle interazioni e del clima di squadra.",
+            "pt-PT": "Qualidade das interações e do clima de equipa."
+        },
+        "question_slugs": [
+            "how_many_colleagues_feel_close",
+            "when_was_last_time",
+            "colleagues_atmosphere_general",
+            "colleagues_support_difficulty",
+            "if_thank_colleague"
+        ]
+    },
+    {
+        "slug": "autonomy_and_empowerment",
+        "name": {
+            "fr-BE": "Autonomie et responsabilisation",
+            "fr-FR": "Autonomie et responsabilisation",
+            "nl-BE": "Autonomie en verantwoordelijkheid",
+            "nl-NL": "Autonomie en verantwoordelijkheid",
+            "en-GB": "Autonomy and empowerment",
+            "de-DE": "Autonomie und Verantwortung",
+            "es-ES": "Autonomía y empoderamiento",
+            "it-IT": "Autonomia e responsabilizzazione",
+            "pt-PT": "Autonomia e responsabilização"
+        },
+        "description": {
+            "fr-BE": "Degré de liberté dans l'organisation et les décisions.",
+            "fr-FR": "Degré de liberté dans l'organisation et les décisions.",
+            "nl-BE": "Mate van vrijheid in organisatie en beslissingen.",
+            "nl-NL": "Mate van vrijheid in organisatie en beslissingen.",
+            "en-GB": "Degree of freedom in organization and decisions.",
+            "de-DE": "Grad der Freiheit in Organisation und Entscheidungen.",
+            "es-ES": "Grado de libertad en la organización y las decisiones.",
+            "it-IT": "Grado di libertà nell'organizzazione e nelle decisioni.",
+            "pt-PT": "Grau de liberdade na organização e nas decisões."
+        },
+        "question_slugs": [
+            "autonomy_daily_decisions",
+            "when_difficulty_arises",
+            "decisions_would_like_make",
+            "autonomy_responsibilities_clarity",
+            "mission_aspect_gives_you"
+        ]
+    },
+    {
+        "slug": "work_life_balance",
+        "name": {
+            "fr-BE": "Équilibre vie pro / vie perso",
+            "fr-FR": "Équilibre vie pro / vie perso",
+            "nl-BE": "Evenwicht tussen werk en privéleven",
+            "nl-NL": "Evenwicht tussen werk en privéleven",
+            "en-GB": "Work-life balance",
+            "de-DE": "Work-Life-Balance",
+            "es-ES": "Equilibrio vida profesional / vida personal",
+            "it-IT": "Equilibrio vita professionale / vita personale",
+            "pt-PT": "Equilíbrio vida profissional / vida pessoal"
+        },
+        "description": {
+            "fr-BE": "Capacité perçue à concilier exigences professionnelles et personnelles.",
+            "fr-FR": "Capacité perçue à concilier exigences professionnelles et personnelles.",
+            "nl-BE": "Waargenomen vermogen om professionele en persoonlijke eisen te combineren.",
+            "nl-NL": "Waargenomen vermogen om professionele en persoonlijke eisen te combineren.",
+            "en-GB": "Perceived ability to reconcile professional and personal demands.",
+            "de-DE": "Wahrgenommene Fähigkeit, berufliche und persönliche Anforderungen in Einklang zu bringen.",
+            "es-ES": "Capacidad percibida para conciliar exigencias profesionales y personales.",
+            "it-IT": "Capacità percepita di conciliare esigenze professionali e personali.",
+            "pt-PT": "Capacidade percebida de conciliar exigências profissionais e pessoais."
+        },
+        "question_slugs": [
+            "balance_work_schedule",
+            "time_day_week",
+            "have_you_given_up",
+            "what_do_outside_work",
+            "manager_support_balance"
+        ]
+    },
+    {
+        "slug": "pride_of_belonging",
+        "name": {
+            "fr-BE": "Fierté d'appartenance",
+            "fr-FR": "Fierté d'appartenance",
+            "nl-BE": "Trots op verbondenheid",
+            "nl-NL": "Trots op verbondenheid",
+            "en-GB": "Pride of belonging",
+            "de-DE": "Zugehörigkeitsstolz",
+            "es-ES": "Orgullo de pertenencia",
+            "it-IT": "Orgoglio di appartenenza",
+            "pt-PT": "Orgulho de pertença"
+        },
+        "description": {
+            "fr-BE": "Attachement émotionnel et symbolique à l'organisation.",
+            "fr-FR": "Attachement émotionnel et symbolique à l'organisation.",
+            "nl-BE": "Emotionele en symbolische verbondenheid met de organisatie.",
+            "nl-NL": "Emotionele en symbolische verbondenheid met de organisatie.",
+            "en-GB": "Emotional and symbolic attachment to the organization.",
+            "de-DE": "Emotionale und symbolische Bindung an die Organisation.",
+            "es-ES": "Apego emocional y simbólico a la organización.",
+            "it-IT": "Attaccamento emotivo e simbolico all'organizzazione.",
+            "pt-PT": "Vínculo emocional e simbólico à organização."
+        },
+        "question_slugs": [
+            "speak_positively_company",
+            "company_strength_particularity",
+            "belonging_feel_place",
+            "company_pride_moment",
+            "values_company_alignment"
+        ]
+    },
+    {
+        "slug": "strategic_clarity_and_communication",
+        "name": {
+            "fr-BE": "Clarté de la stratégie et communication",
+            "fr-FR": "Clarté de la stratégie et communication",
+            "nl-BE": "Duidelijkheid van strategie en communicatie",
+            "nl-NL": "Duidelijkheid van strategie en communicatie",
+            "en-GB": "Strategic clarity and communication",
+            "de-DE": "Strategische Klarheit und Kommunikation",
+            "es-ES": "Claridad de la estrategia y comunicación",
+            "it-IT": "Chiarezza della strategia e comunicazione",
+            "pt-PT": "Clareza da estratégia e comunicação"
+        },
+        "description": {
+            "fr-BE": "Compréhension des orientations et de leurs impacts.",
+            "fr-FR": "Compréhension des orientations et de leurs impacts.",
+            "nl-BE": "Begrip van de richtingen en hun impact.",
+            "nl-NL": "Begrip van de richtingen en hun impact.",
+            "en-GB": "Understanding of directions and their impacts.",
+            "de-DE": "Verständnis der Ausrichtungen und ihrer Auswirkungen.",
+            "es-ES": "Comprensión de las orientaciones y sus impactos.",
+            "it-IT": "Comprensione degli orientamenti e dei loro impatti.",
+            "pt-PT": "Compreensão das orientações e dos seus impactos."
+        },
+        "question_slugs": [
+            "strategy_company_priorities",
+            "strategy_team_direction",
+            "communication_helper_understanding",
+            "communication_info_flow",
+            "communication_decision_timing"
+        ]
+    },
+    {
+        "slug": "satisfaction_purchasing_power",
+        "name": {
+            "fr-BE": "Satisfaction liée au pouvoir d'achat",
+            "fr-FR": "Satisfaction liée au pouvoir d'achat",
+            "nl-BE": "Tevredenheid over koopkracht",
+            "nl-NL": "Tevredenheid over koopkracht",
+            "en-GB": "Satisfaction related to purchasing power",
+            "de-DE": "Zufriedenheit mit der Kaufkraft",
+            "es-ES": "Satisfacción relacionada con el poder adquisitivo",
+            "it-IT": "Soddisfazione legata al potere d'acquisto",
+            "pt-PT": "Satisfação relacionada com o poder de compra"
+        },
+        "description": {
+            "fr-BE": "Perception du niveau de vie permis par la rémunération globale.",
+            "fr-FR": "Perception du niveau de vie permis par la rémunération globale.",
+            "nl-BE": "Perceptie van het levensstandaard mogelijk gemaakt door de totale vergoeding.",
+            "nl-NL": "Perceptie van het levensstandaard mogelijk gemaakt door de totale vergoeding.",
+            "en-GB": "Perception of living standard enabled by overall remuneration.",
+            "de-DE": "Wahrnehmung des Lebensstandards, der durch die Gesamtvergütung ermöglicht wird.",
+            "es-ES": "Percepción del nivel de vida permitido por la remuneración global.",
+            "it-IT": "Percezione del tenore di vita consentito dalla retribuzione complessiva.",
+            "pt-PT": "Perceção do nível de vida permitido pela remuneração global."
+        },
+        "question_slugs": [
+            "salary_covers_needs",
+            "have_you_renounced",
+            "feel_comfortable_discussing",
+            "benefits_offered_by",
+            "if_choose_lever"
+        ]
+    },
+    {
+        "slug": "overall_wellbeing_self_assessment",
+        "name": {
+            "fr-BE": "Bien-être global (auto-évaluation)",
+            "fr-FR": "Bien-être global (auto-évaluation)",
+            "nl-BE": "Algemeen welzijn (zelfevaluatie)",
+            "nl-NL": "Algemeen welzijn (zelfevaluatie)",
+            "en-GB": "Overall well-being (self-assessment)",
+            "de-DE": "Allgemeines Wohlbefinden (Selbsteinschätzung)",
+            "es-ES": "Bienestar general (autoevaluación)",
+            "it-IT": "Benessere globale (autovalutazione)",
+            "pt-PT": "Bem-estar global (autoavaliação)"
+        },
+        "description": {
+            "fr-BE": "Évaluation subjective de son état de santé physique, mentale et sociale.",
+            "fr-FR": "Évaluation subjective de son état de santé physique, mentale et sociale.",
+            "nl-BE": "Subjectieve evaluatie van fysieke, mentale en sociale gezondheid.",
+            "nl-NL": "Subjectieve evaluatie van fysieke, mentale en sociale gezondheid.",
+            "en-GB": "Subjective assessment of physical, mental and social health.",
+            "de-DE": "Subjektive Bewertung des körperlichen, geistigen und sozialen Gesundheitszustands.",
+            "es-ES": "Evaluación subjetiva de su estado de salud física, mental y social.",
+            "it-IT": "Valutazione soggettiva dello stato di salute fisica, mentale e sociale.",
+            "pt-PT": "Avaliação subjetiva do seu estado de saúde física, mental e social."
+        },
+        "question_slugs": [
+            "if_summarize_state",
+            "wellbeing_self_care",
+            "wellbeing_good_days_week",
+            "wellbeing_health_alert",
+            "what_contributes_most"
+        ]
+    }
+]

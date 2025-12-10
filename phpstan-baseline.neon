@@ -1,0 +1,605 @@
+parameters:
+	ignoreErrors:
+		# ArticleResourceCollection.php
+		-
+			message: "#Parameter \\#1 \\$financerId of method App\\\\Integrations\\\\InternalCommunication\\\\Services\\\\TagService\\:\\:findByFinancer\\(\\) expects string, array<int, string>\\|string given\\.$#"
+			count: 2
+			path: app/Integrations/InternalCommunication/Http/Resources/ArticleResourceCollection.php
+
+		-
+			message: "#Parameter \\#1 \\$financerId of method App\\\\Integrations\\\\InternalCommunication\\\\Services\\\\TokenQuotaService\\:\\:getQuotaForFinancer\\(\\) expects string, array<int, string>\\|string given\\.$#"
+			count: 1
+			path: app/Integrations/InternalCommunication/Http/Resources/ArticleResourceCollection.php
+
+		# ArticleVersionResource.php
+		-
+			message: "#Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getUrl\\(\\)\\.$#"
+			count: 1
+			path: app/Integrations/InternalCommunication/Http/Resources/ArticleVersionResource.php
+
+		# ArticleService.php
+		-
+			message: "#Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Builder<App\\\\Integrations\\\\InternalCommunication\\\\Models\\\\Article>\\:\\:pipeFiltered\\(\\)\\.$#"
+			count: 1
+			path: app/Integrations/InternalCommunication/Services/ArticleService.php
+
+		# HandleStripeWebhookAction.php
+		-
+			message: "#Parameter \\#3 \\$secret of method App\\\\Integrations\\\\Payments\\\\Stripe\\\\Services\\\\StripeWebhookService\\:\\:constructEvent\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: app/Integrations/Payments/Stripe/Actions/HandleStripeWebhookAction.php
+
+		-
+			message: "#Using nullsafe property access \"\\?\\->message\" on left side of \\?\\? is unnecessary\\. Use \\-> instead\\.$#"
+			count: 1
+			path: app/Integrations/Payments/Stripe/Actions/HandleStripeWebhookAction.php
+
+
+		# MerchantFactory.php
+		-
+			message: "#Method App\\\\Integrations\\\\Vouchers\\\\Amilon\\\\Database\\\\factories\\\\MerchantFactory\\:\\:withCategories\\(\\) has parameter \\$categoryNames with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Database/factories/MerchantFactory.php
+
+		# ProductFactory.php
+		-
+			message: "#Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$id\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Database/factories/ProductFactory.php
+
+		# OrderStatus.php
+		-
+			message: "#Class App\\\\Integrations\\\\Vouchers\\\\Amilon\\\\Enums\\\\OrderStatus extends generic class BenSampo\\\\Enum\\\\Enum but does not specify its types\\: TValue$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Enums/OrderStatus.php
+
+		-
+			message: "#Match expression does not handle remaining value\\: mixed$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Enums/OrderStatus.php
+
+		# ArticleController.php (Amilon)
+		-
+			message: "#Attribute class Dedoc\\\\Scramble\\\\Attributes\\\\ExcludeRouteFromDocs does not have the class target\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Http/Controllers/ArticleController.php
+
+		-
+			message: "#Method App\\\\Integrations\\\\Vouchers\\\\Amilon\\\\Services\\\\AmilonProductService\\:\\:getProducts\\(\\) invoked with 0 parameters, 1\\-3 required\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Http/Controllers/ArticleController.php
+
+		# PurchaseVoucherRequest.php
+		-
+			message: "#Cannot access property \\$id on App\\\\Models\\\\User\\|null\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Http/Requests/PurchaseVoucherRequest.php
+
+		# AmilonContractService.php
+		-
+			message: "#Parameter \\#4 \\$response of method App\\\\Integrations\\\\Vouchers\\\\Amilon\\\\Services\\\\AmilonContractService\\:\\:logApiCall\\(\\) expects array<string, mixed>, mixed given\\.$#"
+			count: 2
+			path: app/Integrations/Vouchers/Amilon/Services/AmilonContractService.php
+
+		# AmilonOrderService.php
+		-
+			message: "#Parameter \\#3 \\$externalOrderId of method App\\\\Integrations\\\\Vouchers\\\\Amilon\\\\Services\\\\AmilonOrderService\\:\\:createOrder\\(\\) expects string, null given\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Services/AmilonOrderService.php
+
+		-
+			message: "#Parameter \\#4 \\$userId of method App\\\\Integrations\\\\Vouchers\\\\Amilon\\\\Services\\\\AmilonOrderService\\:\\:createOrder\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Services/AmilonOrderService.php
+
+		# StripeWebhookService.php (Amilon)
+		-
+			message: "#Variable \\$paymentMetadata in PHPDoc tag @var does not exist\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Services/StripeWebhookService.php
+
+		# VoucherRecoveryService.php
+		-
+			message: "#Parameter \\$product of method App\\\\Integrations\\\\Vouchers\\\\Amilon\\\\Services\\\\AmilonOrderService\\:\\:createOrder\\(\\) expects App\\\\Integrations\\\\Vouchers\\\\Amilon\\\\Models\\\\Product, App\\\\Integrations\\\\Vouchers\\\\Amilon\\\\Models\\\\Product\\|null given\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Services/VoucherRecoveryService.php
+
+		-
+			message: "#Parameter \\$userId of method App\\\\Integrations\\\\Vouchers\\\\Amilon\\\\Services\\\\AmilonOrderService\\:\\:createOrder\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Services/VoucherRecoveryService.php
+
+		# MerchantAccessorsAndHelpers.php
+		-
+			message: "#Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$name\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Traits/MerchantAccessorsAndHelpers.php
+
+		# ProductAccessorsAndHelpers.php
+		-
+			message: "#Cannot access property \\$name on mixed\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Traits/ProductAccessorsAndHelpers.php
+
+		-
+			message: "#Parameter \\#1 \\$object_or_class of function property_exists expects object\\|string, mixed given\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Traits/ProductAccessorsAndHelpers.php
+
+		-
+			message: "#Parameter \\$get of static method Illuminate\\\\Database\\\\Eloquent\\\\Casts\\\\Attribute<mixed,mixed>\\:\\:make\\(\\) expects \\(callable\\(mixed, array<string, mixed>\\)\\: \\(float\\|null\\)\\)\\|null, Closure\\(int\\|null\\)\\: \\(float\\|null\\) given\\.$#"
+			count: 1
+			path: app/Integrations/Vouchers/Amilon/Traits/ProductAccessorsAndHelpers.php
+
+		# GetClassVideosAction.php
+		-
+			message: "#Method App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\Actions\\\\GetClassVideosAction\\:\\:execute\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Integrations/Wellbeing/WellWo/Actions/GetClassVideosAction.php
+
+		# GetProgramVideosAction.php
+		-
+			message: "#Method App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\Actions\\\\GetProgramVideosAction\\:\\:execute\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Integrations/Wellbeing/WellWo/Actions/GetProgramVideosAction.php
+
+		# WellWoDTO.php
+		-
+			message: "#Class App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\DTOs\\\\WellWoDTO implements generic interface Illuminate\\\\Contracts\\\\Support\\\\Arrayable but does not specify its types\\: TKey, TValue$#"
+			count: 1
+			path: app/Integrations/Wellbeing/WellWo/DTOs/WellWoDTO.php
+
+		-
+			message: "#Method App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\DTOs\\\\WellWoDTO\\:\\:fromApiResponse\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Integrations/Wellbeing/WellWo/DTOs/WellWoDTO.php
+
+		# ClassVideoResource.php
+		-
+			message: "#Method App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\Http\\\\Resources\\\\ClassVideoResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Integrations/Wellbeing/WellWo/Http/Resources/ClassVideoResource.php
+
+		# ProgramResource.php
+		-
+			message: "#Method App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\Http\\\\Resources\\\\ProgramResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Integrations/Wellbeing/WellWo/Http/Resources/ProgramResource.php
+
+		# VideoResource.php
+		-
+			message: "#Method App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\Http\\\\Resources\\\\VideoResource\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Integrations/Wellbeing/WellWo/Http/Resources/VideoResource.php
+
+		# WellWoAuthService.php
+		-
+			message: "#Method App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\Services\\\\WellWoAuthService\\:\\:getAuthToken\\(\\) has App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\Exceptions\\\\WellWoAuthException in PHPDoc @throws tag but it's not thrown\\.$#"
+			count: 1
+			path: app/Integrations/Wellbeing/WellWo/Services/WellWoAuthService.php
+
+		# WellWoClassService.php
+		-
+			message: "#Parameter \\#1 \\$data of static method App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\DTOs\\\\ClassVideoDTO\\:\\:fromApiResponse\\(\\) expects array<string, mixed>, array<mixed, mixed> given\\.$#"
+			count: 1
+			path: app/Integrations/Wellbeing/WellWo/Services/WellWoClassService.php
+
+		# WellWoProgramService.php
+		-
+			message: "#Parameter \\#1 \\$data of static method App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\DTOs\\\\VideoDTO\\:\\:fromApiResponse\\(\\) expects array<string, mixed>, array<mixed, mixed> given\\.$#"
+			count: 1
+			path: app/Integrations/Wellbeing/WellWo/Services/WellWoProgramService.php
+
+		# WellWoApiServiceTest.php
+		-
+			message: "#Parameter \\#1 \\$data of method App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\Services\\\\WellWoApiService\\:\\:post\\(\\) expects array<string, mixed>, string given\\.$#"
+			count: 1
+			path: app/Integrations/Wellbeing/WellWo/Tests/Unit/WellWoApiServiceTest.php
+
+		# WellWoAuthServiceTest.php
+		-
+			message: "#Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertIsArray\\(\\) with array will always evaluate to true\\.$#"
+			count: 1
+			path: app/Integrations/Wellbeing/WellWo/Tests/Unit/WellWoAuthServiceTest.php
+
+		-
+			message: "#Method App\\\\Integrations\\\\Wellbeing\\\\WellWo\\\\Services\\\\WellWoAuthService\\:\\:isTokenValid\\(\\) invoked with 0 parameters, 1 required\\.$#"
+			count: 2
+			path: app/Integrations/Wellbeing/WellWo/Tests/Unit/WellWoAuthServiceTest.php
+
+		# CompleteSIRHSyncJob.php
+		-
+			message: "#Call to an undefined method Illuminate\\\\Contracts\\\\Cache\\\\Repository\\:\\:getRedis\\(\\)\\.$#"
+			count: 1
+			path: app/Jobs/Apideck/CompleteSIRHSyncJob.php
+
+		# ProcessCsvInvitedUsersBatchJob.php
+		-
+			message: "#Method App\\\\Jobs\\\\ProcessCsvInvitedUsersBatchJob\\:\\:__construct\\(\\) has parameter \\$rows with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Jobs/ProcessCsvInvitedUsersBatchJob.php
+
+		# SendWelcomeEmailJob.php
+		-
+			message: "#Parameter \\#1 \\$queue of method App\\\\Jobs\\\\SendWelcomeEmailJob\\:\\:onQueue\\(\\) expects string\\|UnitEnum\\|null, mixed given\\.$#"
+			count: 1
+			path: app/Jobs/SendWelcomeEmailJob.php
+
+		# SyncTranslationMigrationsJob.php
+		-
+			message: "#Cannot access property \\$interface_origin on mixed\\.$#"
+			count: 1
+			path: app/Jobs/TranslationMigrations/SyncTranslationMigrationsJob.php
+
+		-
+			message: "#Cannot access property \\$id on mixed\\.$#"
+			count: 1
+			path: app/Jobs/TranslationMigrations/SyncTranslationMigrationsJob.php
+
+		# QuickStartPage.php
+		-
+			message: "#Property App\\\\Livewire\\\\AdminPanel\\\\QuickStartPage\\:\\:\\$steps \\(array<int, array\\{title\\: string, description\\: string, commands\\: array<int, string>\\}\\>\\) does not accept default value of type array\\{clone\\: 'Cloner le projet', setup\\: 'Configuration…', database\\: 'Base de données', services\\: 'Démarrer les…', verify\\: 'Vérifier l…'\\}\\.$#"
+			count: 1
+			path: app/Livewire/AdminPanel/QuickStartPage.php
+
+		# SearchBar.php
+		-
+			message: "#Property App\\\\Livewire\\\\AdminPanel\\\\SearchBar\\:\\:\\$results type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Livewire/AdminPanel/SearchBar.php
+
+		# TranslationManager.php
+		-
+			message: "#Parameter \\#1 \\$data of method App\\\\Actions\\\\Translation\\\\ImportTranslationsAction\\:\\:execute\\(\\) expects array\\{interface\\?\\: string, translations\\: array<string, array<string, string>>\\}, array\\{interface\\: string, translations\\: array<string, mixed>\\} given\\.$#"
+			count: 2
+			path: app/Livewire/Translation/TranslationManager.php
+
+		-
+			message: "#Property App\\\\Livewire\\\\Translation\\\\TranslationManager\\:\\:\\$editingValues \\(array<string, string>\\) does not accept array<int\\|string, string>\\.$#"
+			count: 1
+			path: app/Livewire/Translation/TranslationManager.php
+
+		# CsvImportErrorsMail.php
+		-
+			message: "#Method App\\\\Mail\\\\CsvImportErrorsMail\\:\\:__construct\\(\\) has parameter \\$failedRowsDetails with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Mail/CsvImportErrorsMail.php
+
+		-
+			message: "#Language construct isset\\(\\) should not be used\\.$#"
+			count: 1
+			path: app/Mail/CsvImportErrorsMail.php
+
+		-
+			message: "#Method App\\\\Mail\\\\CsvImportErrorsMail\\:\\:attachments\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Mail/CsvImportErrorsMail.php
+
+		# Audit.php
+		-
+			message: "#PHPDoc type array<string> of property App\\\\Models\\\\Audit\\:\\:\\$fillable is not covariant with PHPDoc type list<string> of overridden property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$fillable\\.$#"
+			count: 1
+			path: app/Models/Audit.php
+
+		# FinancerUser.php
+		-
+			message: "#Class App\\\\Models\\\\FinancerUser has PHPDoc tag @property for property \\$roles with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Models/FinancerUser.php
+
+		# ModulePricingHistory.php
+		-
+			message: "#Method App\\\\Models\\\\ModulePricingHistory\\:\\:module\\(\\) should return Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\BelongsTo<App\\\\Models\\\\Module, App\\\\Models\\\\ModulePricingHistory> but returns Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\BelongsTo<App\\\\Models\\\\Module, \\$this\\(App\\\\Models\\\\ModulePricingHistory\\)>\\.$#"
+			count: 1
+			path: app/Models/ModulePricingHistory.php
+
+		-
+			message: "#Method App\\\\Models\\\\ModulePricingHistory\\:\\:changedBy\\(\\) should return Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\BelongsTo<App\\\\Models\\\\User, App\\\\Models\\\\ModulePricingHistory> but returns Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\BelongsTo<App\\\\Models\\\\User, \\$this\\(App\\\\Models\\\\ModulePricingHistory\\)>\\.$#"
+			count: 1
+			path: app/Models/ModulePricingHistory.php
+
+		# UserAccessorsAndHelpers.php
+		-
+			message: "#Method App\\\\Models\\\\User\\:\\:getRolesArray\\(\\) should return array<int, string> but returns array<mixed>\\.$#"
+			count: 2
+			path: app/Models/Traits/User/UserAccessorsAndHelpers.php
+
+		-
+			message: "#Method App\\\\Models\\\\User\\:\\:getFinancersStatus\\(\\) should return array<int, array\\{id\\: int, name\\: string, status\\: string\\}>\\|string but returns list<array\\{id\\: string, name\\: string, status\\: 'active'\\|'inactive'\\}>\\.$#"
+			count: 1
+			path: app/Models/Traits/User/UserAccessorsAndHelpers.php
+
+		# TranslationKey.php
+		-
+			message: "#PHPDoc type array<int, string> of property App\\\\Models\\\\TranslationKey\\:\\:\\$fillable is not covariant with PHPDoc type list<string> of overridden property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$fillable\\.$#"
+			count: 1
+			path: app/Models/TranslationKey.php
+
+		-
+			message: "#Method App\\\\Models\\\\TranslationKey\\:\\:scopeForInterface\\(\\) has parameter \\$query with generic class Illuminate\\\\Database\\\\Eloquent\\\\Builder but does not specify its types\\: TModel$#"
+			count: 1
+			path: app/Models/TranslationKey.php
+
+		# TranslationMigration.php
+		-
+			message: "#Method App\\\\Models\\\\TranslationMigration\\:\\:scopePending\\(\\) has parameter \\$query with generic class Illuminate\\\\Database\\\\Eloquent\\\\Builder but does not specify its types\\: TModel$#"
+			count: 1
+			path: app/Models/TranslationMigration.php
+
+		-
+			message: "#Method App\\\\Models\\\\TranslationMigration\\:\\:scopeCompleted\\(\\) has parameter \\$query with generic class Illuminate\\\\Database\\\\Eloquent\\\\Builder but does not specify its types\\: TModel$#"
+			count: 1
+			path: app/Models/TranslationMigration.php
+
+		-
+			message: "#Method App\\\\Models\\\\TranslationMigration\\:\\:scopeForInterface\\(\\) has parameter \\$query with generic class Illuminate\\\\Database\\\\Eloquent\\\\Builder but does not specify its types\\: TModel$#"
+			count: 1
+			path: app/Models/TranslationMigration.php
+
+		# TranslationValue.php
+		-
+			message: "#PHPDoc type array<int, string> of property App\\\\Models\\\\TranslationValue\\:\\:\\$fillable is not covariant with PHPDoc type list<string> of overridden property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$fillable\\.$#"
+			count: 1
+			path: app/Models/TranslationValue.php
+
+		# User.php
+		-
+			message: "#Parameter \\$get of static method Illuminate\\\\Database\\\\Eloquent\\\\Casts\\\\Attribute<mixed,mixed>\\:\\:make\\(\\) expects \\(callable\\(mixed, array<string, mixed>\\)\\: string\\)\\|null, Closure\\(string\\|null\\)\\: string given\\.$#"
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: "#Access to an undefined property App\\\\Models\\\\FinancerIntegration\\|App\\\\Models\\\\FinancerModule\\|App\\\\Models\\\\FinancerUser\\:\\:\\$language\\.$#"
+			count: 1
+			path: app/Models/User.php
+
+		# SlackMessageWithAttachment.php
+		-
+			message: "#Method App\\\\Notifications\\\\SlackMessageWithAttachment\\:\\:rich\\(\\) has parameter \\$blocks with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Notifications/SlackMessageWithAttachment.php
+
+		# AdminPanelServiceProvider.php
+		-
+			message: "#Cannot access offset 'router' on Illuminate\\\\Contracts\\\\Foundation\\\\Application\\.$#"
+			count: 2
+			path: app/Providers/AdminPanelServiceProvider.php
+
+
+		# IdFilter.php (Division)
+		-
+			message: "#Parameter \\#2 \\.\\.\\.\\$arrays of function array_intersect expects array, mixed given\\.$#"
+			count: 1
+			path: app/QueryFilters/ModelSpecific/Division/IdFilter.php
+
+		# DivisionIdFilter.php (Financer)
+		-
+			message: "#Parameter \\#2 \\.\\.\\.\\$arrays of function array_intersect expects array, mixed given\\.$#"
+			count: 1
+			path: app/QueryFilters/ModelSpecific/Financer/DivisionIdFilter.php
+
+		# IdFilter.php (Financer)
+		-
+			message: "#Parameter \\#2 \\.\\.\\.\\$arrays of function array_intersect expects array, mixed given\\.$#"
+			count: 1
+			path: app/QueryFilters/ModelSpecific/Financer/IdFilter.php
+
+		-
+			message: "#Method App\\\\QueryFilters\\\\ModelSpecific\\\\Financer\\\\IdFilter\\:\\:normalizeValues\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/QueryFilters/ModelSpecific/Financer/IdFilter.php
+
+
+		-
+			message: "#Method App\\\\QueryFilters\\\\ModelSpecific\\\\User\\\\DivisionIdFilter\\:\\:normalizeValues\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/QueryFilters/ModelSpecific/User/DivisionIdFilter.php
+
+		# FinancerIdFilter.php (User)
+		-
+			message: "#Parameter \\#2 \\.\\.\\.\\$arrays of function array_intersect expects array, mixed given\\.$#"
+			count: 1
+			path: app/QueryFilters/ModelSpecific/User/FinancerIdFilter.php
+
+		# IsAdminFilter.php (User)
+		-
+			message: "#Parameter \\#1 \\$string of function strtolower expects string, mixed given\\.$#"
+			count: 1
+			path: app/QueryFilters/ModelSpecific/User/IsAdminFilter.php
+
+		# StatusFilter.php (User)
+		-
+			message: "#Parameter \\#2 \\$string of function explode expects string, mixed given\\.$#"
+			count: 1
+			path: app/QueryFilters/ModelSpecific/User/StatusFilter.php
+
+		# FinancerIdResolver.php
+		-
+			message: "#Method App\\\\Resolvers\\\\FinancerIdResolver\\:\\:resolve\\(\\) should return string\\|null but returns array<int, string>\\|string\\|null\\.$#"
+			count: 1
+			path: app/Resolvers/FinancerIdResolver.php
+
+		# ApiSchemaExtractor.php
+		-
+			message: "#Method App\\\\Services\\\\AdminPanel\\\\ApiSchemaExtractor\\:\\:parseValidationRule\\(\\) has parameter \\$rule with no type specified\\.$#"
+			count: 1
+			path: app/Services/AdminPanel/ApiSchemaExtractor.php
+
+		# CsvImportTrackerService.php
+		-
+			message: "#Call to function is_array\\(\\) with bool\\|Redis will always evaluate to false\\.$#"
+			count: 1
+			path: app/Services/CsvImportTrackerService.php
+
+		# DemoPurgeService.php
+		-
+			message: "#Parameter \\#2 \\$entities of method App\\\\Services\\\\DemoPurgeService\\:\\:purgeEntityType\\(\\) expects Illuminate\\\\Database\\\\Eloquent\\\\Collection<int, App\\\\Models\\\\DemoEntity>, Illuminate\\\\Database\\\\Eloquent\\\\Collection<int, App\\\\Models\\\\DemoEntity>\\|null given\\.$#"
+			count: 1
+			path: app/Services/DemoPurgeService.php
+
+		-
+			message: "#Method App\\\\Services\\\\DemoPurgeService\\:\\:getSoftDeleteCandidates\\(\\) should return array<int, array\\{type\\: string, id\\: int, name\\: string\\}> but returns list<array\\{type\\: string, id\\: string, name\\: string\\}>\\.$#"
+			count: 1
+			path: app/Services/DemoPurgeService.php
+
+		# ResourceCountService.php
+		-
+			message: "#Offset 1 on array\\{list<string>, list<non\\-empty\\-string>\\} on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: app/Services/Integration/ResourceCountService.php
+
+		# ArticlesPerEmployeeCalculator.php
+		-
+			message: "#Cannot cast mixed to int\\.$#"
+			count: 1
+			path: app/Services/Metrics/Calculators/ArticlesPerEmployeeCalculator.php
+
+		# ModuleUsageCalculator.php
+		-
+			message: "#Method App\\\\Services\\\\Metrics\\\\Calculators\\\\ModuleUsageCalculator\\:\\:calculate\\(\\) should return array\\{daily\\: array<int, array\\{date\\: string, modules\\: array<string, int>\\}>, modules\\: array<string, int>, total\\: int, moduleNames\\: Illuminate\\\\Database\\\\Eloquent\\\\Collection<string, App\\\\Models\\\\Module>\\} but returns array\\{daily\\: array\\{\\}, modules\\: array\\{\\}, total\\: 0\\}\\.$#"
+			count: 1
+			path: app/Services/Metrics/Calculators/ModuleUsageCalculator.php
+
+		# SessionTimeCalculator.php
+		-
+			message: "#Parameter \\#1 \\$array \\(list<array\\{date\\: mixed, count\\: 0\\|float\\}>\\) of array_values is already a list, call has no effect\\.$#"
+			count: 1
+			path: app/Services/Metrics/Calculators/SessionTimeCalculator.php
+
+		# ShortcutsClicksCalculator.php
+		-
+			message: "#Parameter \\#1 \\$key of method Illuminate\\\\Support\\\\Collection<\\(int\\|string\\),App\\\\Integrations\\\\HRTools\\\\Models\\\\Link>\\:\\:get\\(\\) expects \\(int\\|string\\), bool\\|float\\|int\\|string given\\.$#"
+			count: 1
+			path: app/Services/Metrics/Calculators/ShortcutsClicksCalculator.php
+
+		# MetricCalculatorFactory.php
+		-
+			message: "#Method App\\\\Services\\\\Metrics\\\\MetricCalculatorFactory\\:\\:getCalculatorMap\\(\\) should return array<string, class\\-string<App\\\\Services\\\\Metrics\\\\Contracts\\\\MetricCalculatorInterface>> but returns array<string, class\\-string>\\.$#"
+			count: 1
+			path: app/Services/Metrics/MetricCalculatorFactory.php
+
+		# MetricService.php
+		-
+			message: "#Cannot call method toArray\\(\\) on array<string, object>\\.$#"
+			count: 1
+			path: app/Services/Metrics/MetricService.php
+
+		# DivisionService.php
+		-
+			message: "#Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Builder<App\\\\Models\\\\Division>\\:\\:pipeFiltered\\(\\)\\.$#"
+			count: 1
+			path: app/Services/Models/DivisionService.php
+
+		# FinancerService.php
+		-
+			message: "#Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Builder<App\\\\Models\\\\Financer>\\:\\:pipeFiltered\\(\\)\\.$#"
+			count: 1
+			path: app/Services/Models/FinancerService.php
+
+
+		# UserService.php
+		-
+			message: "#Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Builder<App\\\\Models\\\\User>\\:\\:pipeFiltered\\(\\)\\.$#"
+			count: 1
+			path: app/Services/Models/UserSettingsService.php
+
+		# MixedPaymentService.php
+		-
+			message: "#Parameter \\#2 \\$num2 of function bccomp expects numeric\\-string, ''\\|numeric\\-string given\\.$#"
+			count: 1
+			path: app/Services/Payments/MixedPaymentService.php
+
+		# RoleManagementService.php
+		-
+			message: "#Parameter \\#1 \\$role of static method App\\\\Enums\\\\IDP\\\\RoleDefaults\\:\\:getAssignableRoles\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: app/Services/RoleManagementService.php
+
+		# CustomPathGenerator.php
+		-
+			message: "#Part \\$prefix \\(mixed\\) of encapsed string cannot be cast to string\\.$#"
+			count: 1
+			path: app/Support/Media/CustomPathGenerator.php
+
+		# TemporaryUrlGenerator.php
+		-
+			message: "#Cannot call method getPathForResponsiveImages\\(\\) on Spatie\\\\MediaLibrary\\\\Support\\\\PathGenerator\\\\PathGenerator\\|null\\.$#"
+			count: 1
+			path: app/Support/Media/TemporaryUrlGenerator.php
+
+		# DatabaseTestCase.php
+		-
+			message: "#Method App\\\\Testing\\\\DatabaseTestCase\\:\\:connectionsToTransact\\(\\) should return array<string> but returns array<string>\\|null\\.$#"
+			count: 1
+			path: app/Testing/DatabaseTestCase.php
+
+		# GlobalCachable.php
+		-
+			message: "#Method App\\\\Models\\\\FinancerMetric\\:\\:refreshAllCache\\(\\) should return Illuminate\\\\Database\\\\Eloquent\\\\Collection<int, static\\(App\\\\Models\\\\FinancerMetric\\)>\\|null but returns Illuminate\\\\Support\\\\Collection<int, static\\(App\\\\Models\\\\FinancerMetric\\)>\\.$#"
+			count: 1
+			path: app/Traits/GlobalCachable.php
+
+		# HasTemporaryMediaUrls.php
+		-
+			message: "#Trait App\\\\Traits\\\\HasTemporaryMediaUrls is used zero times and is not analysed\\.$#"
+			count: 1
+			path: app/Traits/HasTemporaryMediaUrls.php
+
+		# ValidateCognitoIds.php
+		-
+			message: "#Instanceof between App\\\\Models\\\\User and App\\\\Models\\\\User will always evaluate to true\\.$#"
+			count: 1
+			path: app/Console/Commands/Cognito/ValidateCognitoIds.php
+
+		# FinancerMetricsDTO.php
+		-
+			message: "#Method App\\\\DTOs\\\\Financer\\\\FinancerMetricsDTO\\:\\:castData\\(\\) should return array<int, array\\{date\\: string, count\\: int\\}> but returns array<mixed>\\.$#"
+			count: 1
+			path: app/DTOs/Financer/FinancerMetricsDTO.php
+
+		-
+			message: "#Method App\\\\DTOs\\\\Financer\\\\FinancerMetricsDTO\\:\\:castTrend\\(\\) should return array<int, array\\{date\\: string, value\\: float\\}> but returns array<mixed>\\.$#"
+			count: 1
+			path: app/DTOs/Financer/FinancerMetricsDTO.php
+
+		-
+			message: "#Method App\\\\DTOs\\\\Financer\\\\FinancerMetricsDTO\\:\\:castArticles\\(\\) should return array\\{views\\: int, unique_users\\: int\\} but returns array<mixed>\\.$#"
+			count: 1
+			path: app/DTOs/Financer/FinancerMetricsDTO.php
+
+		-
+			message: "#Method App\\\\DTOs\\\\Financer\\\\FinancerMetricsDTO\\:\\:castTools\\(\\) should return array\\{clicks\\: int, unique_users\\: int\\} but returns array<mixed>\\.$#"
+			count: 1
+			path: app/DTOs/Financer/FinancerMetricsDTO.php
+
+		-
+			message: "#Method App\\\\DTOs\\\\Financer\\\\FinancerMetricsDTO\\:\\:castModules\\(\\) should return array<int, array\\{name\\: string, unique_users\\: int, total_uses\\: int, trend\\: array<int, array\\{date\\: string, value\\: float\\}>\\}> but returns array<mixed>\\.$#"
+			count: 1
+			path: app/DTOs/Financer/FinancerMetricsDTO.php
+
+		-
+			message: "#Method App\\\\DTOs\\\\Financer\\\\FinancerMetricsDTO\\:\\:castCacheInfo\\(\\) should return array\\{cached_at\\: string, ttl_seconds\\: int\\} but returns array<mixed>\\.$#"
+			count: 1
+			path: app/DTOs/Financer/FinancerMetricsDTO.php
+
+		# CognitoUserService.php
+		-
+			message: "#Method App\\\\Services\\\\CognitoUserService\\:\\:prepareUserDataForCognito\\(\\) has parameter \\$user with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: app/Services/CognitoUserService.php
+
+		-
+			message: "#PHPDoc tag @param for parameter \\$user with type App\\\\Models\\\\User\\|array<string, mixed> is not subtype of native type array\\.$#"
+			count: 1
+			path: app/Services/CognitoUserService.php
+
+		-
+			message: "#Parameter \\#2 \\$string of function explode expects string, mixed given\\.$#"
+			count: 1
+			path: app/Services/CognitoUserService.php
+
+		# CsvImportTrackerService.php (nouvelle erreur)
+		-
+			message: "#Strict comparison using \\!\\=\\= between \\*NEVER\\* and array\\{\\} will always evaluate to true\\.$#"
+			count: 1
+			path: app/Services/CsvImportTrackerService.php

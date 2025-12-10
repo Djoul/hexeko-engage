@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "fastapi-mcp-server": {
+      "command": "python",
+      "args": ["/Users/fred/PhpstormProjects/mcp-server/mcp_server.py"],
+      "env": {
+        "PYTHONPATH": "/Users/fred/PhpstormProjects/mcp-server",
+        "LOG_LEVEL": "INFO"
+      }
+    }
+  },
+  "claude": {
+    "defaultModel": "claude-3-5-sonnet-20241022"
+  }
+}

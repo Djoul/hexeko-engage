@@ -1,0 +1,91 @@
+{
+  "metrics": {
+    "title": {
+      "active-beneficiaries": "Bénéficiaires actifs",
+      "activation-rate": "Taux d'activation",
+      "average-session-time": "Temps de session moyen",
+      "articles-viewed": "Articles consultés",
+      "module-usage": "Utilisation des modules",
+      "voucher-purchases": "Achats de chèques-cadeaux",
+      "shortcuts-clicks": "Clics sur raccourcis",
+      "article-reactions": "Réactions aux articles",
+      "articles-per-employee": "Articles par employé",
+      "bounce-rate": "Taux de rebond",
+      "voucher-average-amount": "Montant moyen des chèques"
+    },
+    "tooltip": {
+      "active-beneficiaries": "Nombre de bénéficiaires ayant utilisé la plateforme",
+      "activation-rate": "Pourcentage de bénéficiaires activés sur la période",
+      "average-session-time": "Durée moyenne des sessions utilisateur",
+      "articles-viewed": "Nombre total d'articles consultés",
+      "module-usage": "Statistiques d'utilisation par module",
+      "voucher-purchases": "Nombre de chèques-cadeaux achetés",
+      "shortcuts-clicks": "Nombre de clics sur les raccourcis",
+      "article-reactions": "Nombre de réactions aux articles",
+      "articles-per-employee": "Ratio d'articles consultés par employé",
+      "bounce-rate": "Pourcentage d'utilisateurs quittant après une page",
+      "voucher-average-amount": "Montant moyen par chèque-cadeau"
+    },
+    "unit": {
+      "percentage": "%",
+      "minutes": "min",
+      "views": "vues",
+      "uses": "utilisations",
+      "purchases": "achats",
+      "clicks": "clics",
+      "reactions": "réactions",
+      "ratio": "",
+      "currency": "€"
+    },
+    "label": {
+      "date": "Date",
+      "rate": "Taux",
+      "average-amount": "Montant moyen",
+      "total": "Total",
+      "articles": "Articles",
+      "tools": "Outils",
+      "median": "Médiane",
+      "volume": "Volume total",
+      "uses": "Utilisations",
+      "clicks": "Clics",
+      "ratio": "Ratio",
+      "total-reactions": "Total des réactions"
+    },
+    
+    "// Legacy keys (à supprimer après migration complète)": "",
+    "active_beneficiaries": {
+      "tooltip": "Nombre d'utilisateurs actifs sur la période sélectionnée"
+    },
+    "activation_rate": {
+      "tooltip": "Pourcentage d'utilisateurs ayant activé leur compte"
+    },
+    "average_session_time": {
+      "tooltip": "Temps moyen passé par session"
+    },
+    "hr_communications_views": {
+      "tooltip": "Nombre de vues sur les communications RH"
+    },
+    "module_usage": {
+      "tooltip": "Utilisation détaillée par module"
+    },
+    "voucher_purchases": {
+      "tooltip": "Nombre et volume de chèques-cadeaux achetés"
+    },
+    "shortcuts_clicks": {
+      "tooltip": "Nombre de clics sur les raccourcis",
+      "label": "Clics"
+    },
+    "article_reactions": {
+      "tooltip": "Engagement des utilisateurs avec les articles"
+    },
+    "articles_per_employee": {
+      "tooltip": "Nombre moyen d'articles consultés par employé"
+    },
+    "bounce_rate": {
+      "tooltip": "Pourcentage d'utilisateurs quittant après une seule page"
+    },
+    "voucher_average_amount": {
+      "tooltip": "Montant moyen des chèques-cadeaux"
+    }
+  }
+}

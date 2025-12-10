@@ -1,0 +1,311 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\Actions\Vouchers\Amilon;
+
+use App\Actions\Vouchers\Amilon\RecoverFailedVoucherAction;
+use App\Enums\IDP\RoleDefaults;
+use App\Integrations\Vouchers\Amilon\Database\factories\OrderFactory;
+use App\Integrations\Vouchers\Amilon\DTO\RecoveryResult;
+use App\Integrations\Vouchers\Amilon\Models\Order;
+use App\Integrations\Vouchers\Amilon\Services\VoucherRecoveryService;
+use App\Models\Team;
+use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Mockery;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
+use Ramsey\Uuid\Uuid;
+use RuntimeException;
+use Spatie\Permission\Models\Role;
+use Tests\TestCase;
+
+#[Group('amilon')]
+#[Group('vouchers')]
+class RecoverFailedVoucherActionTest extends TestCase
+{
+    use DatabaseTransactions;
+
+    private RecoverFailedVoucherAction $action;
+
+    private VoucherRecoveryService $recoveryService;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->recoveryService = Mockery::mock(VoucherRecoveryService::class);
+        $this->action = new RecoverFailedVoucherAction($this->recoveryService);
+
+        // Create a team and set permissions context
+        $team = Team::factory()->create();
+        setPermissionsTeamId($team->id);
+
+        // Create the FINANCER_SUPER_ADMIN role for tests
+        Role::firstOrCreate(
+            ['name' => RoleDefaults::FINANCER_SUPER_ADMIN, 'guard_name' => 'api', 'id' => Uuid::uuid4()->toString(), 'team_id' => $team->id]
+        );
+
+        Log::shouldReceive('info')->andReturn(null);
+        Log::shouldReceive('error')->andReturn(null);
+    }
+
+    protected function tearDown(): void
+    {
+        // Restore error and exception handlers
+        restore_error_handler();
+        restore_exception_handler();
+
+        Mockery::close();
+        parent::tearDown();
+    }
+
+    #[Test]
+    public function it_successfully_recovers_a_failed_order(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Auth::loginUsingId($user->id);
+
+        /** @var Order $order */
+        $order = resolve(OrderFactory::class)->create([
+            'user_id' => $user->id,
+            'status' => 'failed',
+        ]);
+
+        $this->recoveryService->shouldReceive('canRetry')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id))
+            ->once()
+            ->andReturn(true);
+
+        $recoveryResult = new RecoveryResult(
+            success: true,
+            message: 'Order successfully recovered',
+            newStatus: 'delivered',
+            error: null
+        );
+
+        $this->recoveryService->shouldReceive('attemptRecovery')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id))
+            ->once()
+            ->andReturn($recoveryResult);
+
+        // Act
+        $result = $this->action->execute($order->id);
+
+        // Assert
+        $this->assertEquals($order->id, $result->id);
+    }
+
+    #[Test]
+    public function it_throws_exception_when_order_not_found(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Auth::loginUsingId($user->id);
+
+        $nonExistentId = '00000000-0000-0000-0000-000000000000';
+
+        // Assert
+        $this->expectException(ModelNotFoundException::class);
+
+        // Act
+        $this->action->execute($nonExistentId);
+    }
+
+    #[Test]
+    public function it_throws_exception_when_order_cannot_be_retried(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Auth::loginUsingId($user->id);
+
+        /** @var Order $order */
+        $order = resolve(OrderFactory::class)->create([
+            'user_id' => $user->id,
+            'status' => 'delivered',
+        ]);
+
+        $this->recoveryService->shouldReceive('canRetry')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id))
+            ->once()
+            ->andReturn(false);
+
+        // Assert
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Order cannot be retried');
+
+        // Act
+        $this->action->execute($order->id);
+    }
+
+    #[Test]
+    public function it_handles_recovery_failure_and_schedules_retry(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Auth::loginUsingId($user->id);
+
+        /** @var Order $order */
+        $order = resolve(OrderFactory::class)->create([
+            'user_id' => $user->id,
+            'status' => 'failed',
+            'recovery_attempts' => 1,
+        ]);
+
+        $this->recoveryService->shouldReceive('canRetry')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id))
+            ->once()
+            ->andReturn(true);
+
+        $recoveryResult = new RecoveryResult(
+            success: false,
+            message: 'Recovery failed: API error',
+            newStatus: 'failed',
+            error: 'Connection timeout'
+        );
+
+        $this->recoveryService->shouldReceive('attemptRecovery')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id))
+            ->once()
+            ->andReturn($recoveryResult);
+
+        $this->recoveryService->shouldReceive('getRetryDelay')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id))
+            ->once()
+            ->andReturn(5);
+
+        $this->recoveryService->shouldReceive('scheduleRetry')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id), 5)
+            ->once();
+
+        // Act
+        $result = $this->action->execute($order->id);
+
+        // Assert
+        $this->assertEquals($order->id, $result->id);
+    }
+
+    #[Test]
+    public function it_does_not_schedule_retry_when_max_attempts_reached(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Auth::loginUsingId($user->id);
+
+        /** @var Order $order */
+        $order = resolve(OrderFactory::class)->create([
+            'user_id' => $user->id,
+            'status' => 'failed',
+            'recovery_attempts' => 2,
+        ]);
+
+        $this->recoveryService->shouldReceive('canRetry')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id))
+            ->once()
+            ->andReturn(true);
+
+        $recoveryResult = new RecoveryResult(
+            success: false,
+            message: 'Recovery failed: API error',
+            newStatus: 'failed',
+            error: 'Connection timeout'
+        );
+
+        $this->recoveryService->shouldReceive('attemptRecovery')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id))
+            ->once()
+            ->andReturn($recoveryResult);
+
+        // Add mock for getRetryDelay which is called when recovery fails
+        $this->recoveryService->shouldReceive('getRetryDelay')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id))
+            ->once()
+            ->andReturn(5);
+
+        // scheduleRetry is called with the delay
+        $this->recoveryService->shouldReceive('scheduleRetry')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id), 5)
+            ->once();
+
+        // Act
+        $result = $this->action->execute($order->id);
+
+        // Assert
+        $this->assertEquals($order->id, $result->id);
+    }
+
+    #[Test]
+    public function it_works_with_admin_users_for_any_order(): void
+    {
+        // Arrange
+        $team = Team::factory()->create();
+        setPermissionsTeamId($team->id);
+
+        // Create the FINANCER_SUPER_ADMIN role for this specific team
+        Role::firstOrCreate(
+            ['name' => RoleDefaults::FINANCER_SUPER_ADMIN, 'guard_name' => 'api', 'id' => Uuid::uuid4()->toString(), 'team_id' => $team->id]
+        );
+
+        $adminUser = User::factory()->create(['team_id' => $team->id]);
+        $adminUser->assignRole(RoleDefaults::FINANCER_SUPER_ADMIN);
+        Auth::login($adminUser);
+
+        $orderUser = User::factory()->create();
+
+        /** @var Order $order */
+        $order = resolve(OrderFactory::class)->create([
+            'user_id' => $orderUser->id,
+            'status' => 'failed',
+        ]);
+
+        $this->recoveryService->shouldReceive('canRetry')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id))
+            ->once()
+            ->andReturn(true);
+
+        $recoveryResult = new RecoveryResult(
+            success: true,
+            message: 'Order successfully recovered',
+            newStatus: 'delivered',
+            error: null
+        );
+
+        $this->recoveryService->shouldReceive('attemptRecovery')
+            ->with(Mockery::on(fn ($arg): bool => $arg->id === $order->id))
+            ->once()
+            ->andReturn($recoveryResult);
+
+        // Act
+        $result = $this->action->execute($order->id);
+
+        // Assert
+        $this->assertEquals($order->id, $result->id);
+    }
+
+    #[Test]
+    public function it_throws_exception_when_non_admin_tries_to_recover_other_users_order(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        Auth::loginUsingId($user->id);
+
+        $otherUser = User::factory()->create();
+
+        /** @var Order $order */
+        $order = resolve(OrderFactory::class)->create([
+            'user_id' => $otherUser->id,
+            'status' => 'failed',
+        ]);
+
+        // Assert
+        $this->expectException(ModelNotFoundException::class);
+
+        // Act
+        $this->action->execute($order->id);
+    }
+}

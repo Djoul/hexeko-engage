@@ -1,0 +1,44 @@
+<?php
+
+return [
+    'welcome' => [
+        'subject' => 'Bienvenue sur UpPlus+ !',
+        'title' => 'Bienvenue sur UpPlus+',
+        'greeting' => 'Bonjour, :name !',
+        'intro' => 'Vous avez été invité(e) à rejoindre UpPlus+ !',
+        'help' => 'Si vous avez la moindre question, n\'hésitez pas à nous contacter.',
+        'access' => 'Vous pouvez accéder à votre compte via le lien ci-dessous :',
+        'cta_button' => 'S\'inscrire',
+        'signature' => 'Cordialement,',
+        'team' => 'L\'équipe UpPlus+',
+        'footer_copyright' => '© :year UpPlus+. Tous droits réservés.',
+    ],
+    'cognito' => [
+        'reset_password' => [
+            'subject' => 'Réinitialisation de votre mot de passe',
+            'title' => 'Réinitialisation de mot de passe',
+            'heading' => 'Réinitialisez votre mot de passe',
+            'intro' => 'Vous avez demandé à réinitialiser votre mot de passe UpPlus+. Utilisez le code ci-dessous pour continuer.',
+            'code_label' => 'Votre code de vérification',
+            'expiry' => 'Ce code expire dans 15 minutes',
+            'instructions' => 'Entrez ce code dans l\'application pour définir un nouveau mot de passe.',
+            'warning_title' => 'Vous n\'avez pas demandé cette réinitialisation ?',
+            'warning_text' => 'Si vous n\'êtes pas à l\'origine de cette demande, ignorez cet email. Votre mot de passe actuel reste inchangé.',
+            'footer_copyright' => '© :year UpPlus+. Tous droits réservés.',
+            'footer_support' => 'Besoin d\'aide ? Contactez notre support.',
+        ],
+        'verification' => [
+            'subject' => 'Vérifiez votre adresse email',
+            'title' => 'Vérification d\'email',
+            'heading' => 'Vérifiez votre adresse email',
+            'intro' => 'Bienvenue sur UpPlus+ ! Pour finaliser votre inscription, veuillez vérifier votre adresse email avec le code ci-dessous.',
+            'code_label' => 'Votre code de vérification',
+            'expiry' => 'Ce code expire dans 24 heures',
+            'instructions' => 'Entrez ce code dans l\'application pour activer votre compte.',
+            'info_title' => 'Pourquoi cette vérification ?',
+            'info_text' => 'Cette étape garantit la sécurité de votre compte et nous permet de vous envoyer des notifications importantes.',
+            'footer_copyright' => '© :year UpPlus+. Tous droits réservés.',
+            'footer_support' => 'Besoin d\'aide ? Contactez notre support.',
+        ],
+    ],
+];

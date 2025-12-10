@@ -1,0 +1,294 @@
+{
+  "monitoring": {
+    "name": "WellWo API Health Monitoring",
+    "description": "Surveillance continue des endpoints WellWo pour détecter les problèmes de performance et disponibilité",
+    "schedule": {
+      "frequency": "hourly",
+      "timezone": "Europe/Paris",
+      "intervals": [
+        { "time": "06:00", "environment": "production" },
+        { "time": "12:00", "environment": "production" },
+        { "time": "18:00", "environment": "production" },
+        { "time": "00:00", "environment": "staging" }
+      ]
+    },
+    "environments": {
+      "production": {
+        "base_url": "https://api.up-engage.com/api/v1",
+        "timeout": 5000,
+        "retry_count": 2,
+        "alert_threshold": {
+          "response_time_ms": 2000,
+          "error_rate_percent": 5
+        }
+      },
+      "staging": {
+        "base_url": "https://staging-api.up-engage.com/api/v1",
+        "timeout": 8000,
+        "retry_count": 1,
+        "alert_threshold": {
+          "response_time_ms": 3000,
+          "error_rate_percent": 10
+        }
+      }
+    },
+    "test_suites": [
+      {
+        "name": "Critical Health Checks",
+        "folder": "Health Check",
+        "priority": "high",
+        "run_frequency": "every_5_minutes",
+        "tests": [
+          "WellWo API Health Status",
+          "Authentication Validation",
+          "Response Time Check"
+        ]
+      },
+      {
+        "name": "Core Functionality",
+        "folder": "Programs",
+        "priority": "medium",
+        "run_frequency": "hourly",
+        "tests": [
+          "Programs List Available",
+          "Program Details Accessible",
+          "Cache Performance"
+        ]
+      },
+      {
+        "name": "Video Content Delivery",
+        "folder": "Videos",
+        "priority": "medium",
+        "run_frequency": "every_2_hours",
+        "tests": [
+          "Video Details Response",
+          "CDN URL Validation",
+          "Video Streaming Ready"
+        ]
+      }
+    ],
+    "alerting": {
+      "channels": [
+        {
+          "type": "slack",
+          "webhook_url": "${SLACK_MONITORING_WEBHOOK}",
+          "channel": "#api-monitoring",
+          "conditions": [
+            "response_time > 2000ms",
+            "error_rate > 5%",
+            "3_consecutive_failures"
+          ]
+        },
+        {
+          "type": "email",
+          "recipients": ["devops@up-engage.com", "backend@up-engage.com"],
+          "conditions": [
+            "critical_failure",
+            "prolonged_outage_15min"
+          ]
+        },
+        {
+          "type": "pagerduty",
+          "integration_key": "${PAGERDUTY_INTEGRATION_KEY}",
+          "conditions": [
+            "production_critical_failure",
+            "complete_service_unavailable"
+          ]
+        }
+      ],
+      "escalation": {
+        "level_1": {
+          "delay_minutes": 5,
+          "channels": ["slack"]
+        },
+        "level_2": {
+          "delay_minutes": 15,
+          "channels": ["slack", "email"]
+        },
+        "level_3": {
+          "delay_minutes": 30,
+          "channels": ["slack", "email", "pagerduty"]
+        }
+      }
+    },
+    "metrics": {
+      "collection_interval": "1_minute",
+      "retention_days": 30,
+      "tracked_metrics": [
+        {
+          "name": "wellwo_response_time",
+          "type": "histogram",
+          "description": "Response time for WellWo API endpoints",
+          "labels": ["endpoint", "method", "status_code", "environment"]
+        },
+        {
+          "name": "wellwo_request_rate",
+          "type": "counter",
+          "description": "Number of requests to WellWo endpoints",
+          "labels": ["endpoint", "environment"]
+        },
+        {
+          "name": "wellwo_error_rate",
+          "type": "gauge",
+          "description": "Error rate percentage for WellWo API",
+          "labels": ["environment", "error_type"]
+        },
+        {
+          "name": "wellwo_cache_hit_rate",
+          "type": "gauge",
+          "description": "Cache hit rate for WellWo content",
+          "labels": ["content_type", "language"]
+        },
+        {
+          "name": "wellwo_availability",
+          "type": "gauge",
+          "description": "WellWo API availability percentage",
+          "labels": ["environment"]
+        }
+      ],
+      "dashboards": [
+        {
+          "name": "WellWo API Overview",
+          "panels": [
+            "Response Time Trend",
+            "Error Rate by Environment",
+            "Request Volume",
+            "Cache Performance",
+            "Endpoint Availability"
+          ]
+        },
+        {
+          "name": "WellWo Performance Details",
+          "panels": [
+            "P95 Response Times by Endpoint",
+            "Error Distribution by Status Code",
+            "Language-specific Performance",
+            "CDN Performance Metrics"
+          ]
+        }
+      ]
+    },
+    "health_checks": [
+      {
+        "name": "WellWo API Connectivity",
+        "endpoint": "/wellbeing/wellwo/health",
+        "method": "GET",
+        "expected_status": 200,
+        "timeout_ms": 3000,
+        "validation_rules": [
+          "response.status === 'healthy'",
+          "response.provider === 'wellwo'",
+          "response.version === 'v1'"
+        ]
+      },
+      {
+        "name": "WellWo Programs Availability",
+        "endpoint": "/wellbeing/wellwo/programs",
+        "method": "GET",
+        "query_params": { "lang": "es" },
+        "expected_status": 200,
+        "timeout_ms": 2000,
+        "validation_rules": [
+          "response.data.length >= 0",
+          "response.meta.cache_status !== undefined"
+        ]
+      },
+      {
+        "name": "WellWo Video Content",
+        "endpoint": "/wellbeing/wellwo/videos/32101",
+        "method": "GET",
+        "query_params": { "lang": "es" },
+        "expected_status": [200, 404],
+        "timeout_ms": 2500,
+        "validation_rules": [
+          "response.data || response.error",
+          "response_time < 2500"
+        ]
+      }
+    ],
+    "synthetic_tests": [
+      {
+        "name": "Complete WellWo User Journey",
+        "description": "Simulation d'un parcours utilisateur complet",
+        "steps": [
+          {
+            "step": 1,
+            "name": "Health Check",
+            "endpoint": "/wellbeing/wellwo/health",
+            "expected_duration_ms": 500
+          },
+          {
+            "step": 2,
+            "name": "Browse Programs",
+            "endpoint": "/wellbeing/wellwo/programs?lang=es",
+            "expected_duration_ms": 1000,
+            "extract_variable": "program_id",
+            "extract_path": "data[0].id"
+          },
+          {
+            "step": 3,
+            "name": "Get Program Details",
+            "endpoint": "/wellbeing/wellwo/programs/{{program_id}}?lang=es",
+            "expected_duration_ms": 800
+          },
+          {
+            "step": 4,
+            "name": "Get Program Videos",
+            "endpoint": "/wellbeing/wellwo/programs/{{program_id}}/videos?lang=es",
+            "expected_duration_ms": 1200,
+            "extract_variable": "video_id",
+            "extract_path": "data[0].id"
+          },
+          {
+            "step": 5,
+            "name": "Get Video Details",
+            "endpoint": "/wellbeing/wellwo/videos/{{video_id}}?lang=es",
+            "expected_duration_ms": 900
+          }
+        ],
+        "success_criteria": {
+          "total_duration_ms": 5000,
+          "success_rate_percent": 95,
+          "all_steps_complete": true
+        }
+      }
+    ],
+    "performance_baselines": {
+      "response_times": {
+        "health": { "p50": 200, "p95": 500, "p99": 1000 },
+        "programs_list": { "p50": 400, "p95": 1000, "p99": 1500 },
+        "program_details": { "p50": 300, "p95": 800, "p99": 1200 },
+        "program_videos": { "p50": 500, "p95": 1200, "p99": 2000 },
+        "video_details": { "p50": 350, "p95": 900, "p99": 1500 }
+      },
+      "availability_targets": {
+        "production": 99.9,
+        "staging": 99.0
+      },
+      "error_rate_thresholds": {
+        "warning": 2.0,
+        "critical": 5.0
+      }
+    }
+  },
+  "newman_monitoring_config": {
+    "collection": "./WellWo-API.postman_collection.json",
+    "environment": "../../../../postman/environments/production.postman_environment.json",
+    "monitor_folders": ["Health Check", "Programs", "Videos"],
+    "schedule": "0 */1 * * *",
+    "reporter_options": {
+      "export_globals": "./reports/monitoring/globals-{{timestamp}}.json",
+      "export_environment": "./reports/monitoring/environment-{{timestamp}}.json",
+      "json_report": "./reports/monitoring/newman-monitoring-{{timestamp}}.json",
+      "html_report": "./reports/monitoring/newman-monitoring-{{timestamp}}.html"
+    },
+    "notification_webhooks": [
+      {
+        "url": "${SLACK_WEBHOOK_URL}",
+        "on_success": false,
+        "on_failure": true,
+        "template": "WellWo API Monitoring Alert: {{status}} - {{summary}}"
+      }
+    ]
+  }
+}

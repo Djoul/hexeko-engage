@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Livewire\AdminPanel\Navigation;
+
+use App\Livewire\AdminPanel\Sidebar;
+use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Name;
+use Livewire\Component;
+
+#[Name('admin-panel.navigation.menu-level-1')]
+class MenuLevel1 extends Component
+{
+    public array $node = [];
+
+    public bool $isCollapsed = false;
+
+    public function navigate(): void
+    {
+        $pillar = (string) ($this->node['id'] ?? '');
+
+        if ($pillar === '') {
+            return;
+        }
+
+        $this->dispatch('sidebar-navigate', action: 'pillar', pillar: $pillar)
+            ->to(Sidebar::class);
+    }
+
+    public function render(): View
+    {
+        return view('livewire.admin-panel.navigation.menu-level-1');
+    }
+}
