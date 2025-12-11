@@ -18,6 +18,9 @@
 .env.production
 .env.local
 .env.*.local
+.env.testing
+.env.railway.example
+.env.worktree
 .gitlab/.env.local
 .gitlab/*.local
 .phpactor.json
