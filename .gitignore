@@ -66,6 +66,7 @@ planned_task.md
 /.specify/
 /.claude/
 /.junie/
+/.mcp.json
 /.playwright-mcp/
 /.playwright-mcp/admin-panel-documentation-expanded.png
 /.playwright-mcp/admin-panel-manager-translations.png
