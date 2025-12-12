@@ -7,11 +7,14 @@ namespace App\Listeners;
 use App\Events\UserAuthenticated;
 use App\Services\SlackService;
 use Exception;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
-class NotifyUserAuthenticationListener
+class NotifyUserAuthenticationListener implements ShouldQueue
 {
+    use InteractsWithQueue;
     public function __construct(
         private readonly SlackService $slackService
     ) {}

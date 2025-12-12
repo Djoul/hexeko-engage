@@ -26,6 +26,7 @@ class CognitoRepository implements AuthRepositoryInterface
      */
     public function login(array $credentials): array
     {
+        Log::info('CognitoRepository::login');
         try {
             $secretHash = base64_encode(
                 hash_hmac('sha256', $credentials['email'].$this->config['client_id'], $this->config['client_secret'],
@@ -59,6 +60,8 @@ class CognitoRepository implements AuthRepositoryInterface
                     'SECRET_HASH' => $secretHash,
                 ],
             ]);
+
+            Log::info('CognitoRepository::login::result', ['result' => $result->toArray()]);
 
             return $result->toArray();
 

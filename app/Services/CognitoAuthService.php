@@ -134,13 +134,9 @@ class CognitoAuthService
             }
             setPermissionsTeamId($globalTeamId);
 
+            // Only load roles for admin login - other relations loaded on demand
             return User::with([
                 'roles',
-                'permissions',
-                'financers',
-                'financers.integrations',
-                'financers.modules',
-                'financers.division',
             ])
                 ->where('email', $email)
                 ->where('cognito_id', $customGlobalId)

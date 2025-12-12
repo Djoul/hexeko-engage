@@ -61,6 +61,9 @@ class AuthenticateAdminAction
                 'email' => $user->email,
             ]);
 
+            // Load permissions efficiently - only what's needed for response
+            $permissions = $user->getAllPermissions()->pluck('name');
+
             return new TokenResponseDTO(
                 accessToken: $authResult['access_token'],
                 idToken: $authResult['id_token'],
@@ -73,7 +76,7 @@ class AuthenticateAdminAction
                     'first_name' => $user->first_name,
                     'last_name' => $user->last_name,
                     'roles' => $user->getRoleNames(),
-                    'permissions' => $user->getAllPermissions()->pluck('name'),
+                    'permissions' => $permissions,
                 ]
             );
         } catch (AuthenticationException $e) {
