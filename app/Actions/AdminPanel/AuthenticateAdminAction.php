@@ -98,11 +98,6 @@ class AuthenticateAdminAction
         // Set default guard to API for permission checks
         config(['permission.defaults.guard' => 'api']);
         // Set team context from user's team_id for Spatie Permission
-        $globalTeamId = Context::get('global_team_id');
-        if (! $globalTeamId) {
-            $globalTeamId = Team::value('id') ?? Team::firstOrFail(['id'])->id;
-            Context::add('global_team_id', $globalTeamId);
-        }
-        setPermissionsTeamId($globalTeamId);
+        setPermissionsTeamId(Context::get('global_team_id', Team::first(['id'])->id));
     }
 }

@@ -47,8 +47,7 @@ class AdminPanelAuthController extends Controller
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        $globalTeamId = Team::value('id') ?? Team::firstOrFail(['id'])->id;
-        Context::add('global_team_id', $globalTeamId);
+        Context::add('global_team_id', Team::first(['id'])->id);
         try {
             // First, try direct authentication with Cognito
             $cognitoResult = app(CognitoAuthService::class)->authenticate(
@@ -121,8 +120,7 @@ class AdminPanelAuthController extends Controller
      */
     public function verifyMfa(VerifyMfaRequest $request): JsonResponse
     {
-        $globalTeamId = Team::value('id') ?? Team::firstOrFail(['id'])->id;
-        Context::add('global_team_id', $globalTeamId);
+        Context::add('global_team_id', Team::first(['id'])->id);
         try {
             $response = $this->verifyMfaAction->execute(
                 username: $request->input('username'),

@@ -63,8 +63,6 @@ return [
         'client_secret' => env('AWS_COGNITO_CLIENT_SECRET'),
         'webhook_secret' => env('COGNITO_WEBHOOK_SECRET'),
         'hmac_strict_mode' => env('COGNITO_HMAC_STRICT_MODE', true),
-        'timeout' => env('AWS_COGNITO_TIMEOUT', 10),
-        'connect_timeout' => env('AWS_COGNITO_CONNECT_TIMEOUT', 5),
     ],
     'apideck' => [
         'key' => env('APIDECK_API_KEY'),
