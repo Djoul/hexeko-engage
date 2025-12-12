@@ -77,9 +77,9 @@ class VerifyMfaAction
             setPermissionsTeamId($user->team_id);
         } else {
             // Fallback to first available team if user has no team assigned
-            $firstTeam = Team::first(['id']);
-            if ($firstTeam) {
-                setPermissionsTeamId($firstTeam->id);
+            $globalTeamId = Team::value('id');
+            if ($globalTeamId) {
+                setPermissionsTeamId($globalTeamId);
             }
         }
     }

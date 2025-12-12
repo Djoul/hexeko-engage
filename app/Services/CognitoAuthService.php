@@ -19,9 +19,16 @@ class CognitoAuthService
 
     public function __construct()
     {
+        $timeout = config('services.cognito.timeout', 10);
+        $connectTimeout = config('services.cognito.connect_timeout', 5);
+
         $this->client = new CognitoIdentityProviderClient([
             'region' => config('services.cognito.region'),
             'version' => 'latest',
+            'http' => [
+                'timeout' => $timeout,
+                'connect_timeout' => $connectTimeout,
+            ],
         ]);
     }
 
@@ -120,7 +127,12 @@ class CognitoAuthService
             if (! $email) {
                 return null;
             }
-            setPermissionsTeamId(Context::get('global_team_id', Team::first(['id'])->id));
+            $globalTeamId = Context::get('global_team_id');
+            if (! $globalTeamId) {
+                $globalTeamId = Team::value('id') ?? Team::firstOrFail(['id'])->id;
+                Context::add('global_team_id', $globalTeamId);
+            }
+            setPermissionsTeamId($globalTeamId);
 
             return User::with([
                 'roles',
