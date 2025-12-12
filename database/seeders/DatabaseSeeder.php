@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Integrations\InternalCommunication\Database\Seeders\TagSeeder;
+use App\Integrations\InternalCommunication\Database\seeders\TagSeeder;
 use App\Integrations\Survey\Database\seeders\DemoSeeder;
 use App\Models\Permission;
 use App\Models\Role;
