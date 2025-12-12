@@ -3,6 +3,8 @@
 namespace App\Actions\Auth;
 
 use App\Services\CognitoService;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class LoginUserAction
 {
@@ -14,12 +16,13 @@ class LoginUserAction
      */
     public function handle(array $credentials): array
     {
-        //        try {
-        return $this->cognitoService->login($credentials);
-        //        } catch (Exception $e) {
-        //            \Log::error($e->getMessage());
-        //
-        //            return ['error' => $e->getMessage()];
-        //        }
+        Log::info('LoginUserAction');
+        try {
+            return $this->cognitoService->login($credentials);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+
+            return ['error' => $e->getMessage()];
+        }
     }
 }
